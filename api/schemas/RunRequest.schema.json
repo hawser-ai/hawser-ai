@@ -1,0 +1,1010 @@
+{
+  "$defs": {
+    "ApprovalPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "pre_approved": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Pre Approved",
+          "type": "array"
+        },
+        "require_for_external_write": {
+          "default": true,
+          "title": "Require For External Write",
+          "type": "boolean"
+        }
+      },
+      "title": "ApprovalPolicy",
+      "type": "object"
+    },
+    "ArtifactInput": {
+      "additionalProperties": false,
+      "description": "A stored Hawser artifact (e.g. the output of a previous run).",
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "artifact",
+          "default": "artifact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "artifact_id"
+      ],
+      "title": "ArtifactInput",
+      "type": "object"
+    },
+    "AssetInput": {
+      "additionalProperties": false,
+      "description": "An already-admitted asset.",
+      "properties": {
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "asset",
+          "default": "asset",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "title": "AssetInput",
+      "type": "object"
+    },
+    "ExecutionMode": {
+      "enum": [
+        "direct",
+        "workflow",
+        "agent"
+      ],
+      "title": "ExecutionMode",
+      "type": "string"
+    },
+    "FallbackPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidates"
+        },
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        }
+      },
+      "title": "FallbackPolicy",
+      "type": "object"
+    },
+    "InlineInput": {
+      "additionalProperties": false,
+      "description": "Small text or JSON given inline.",
+      "properties": {
+        "json": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Json"
+        },
+        "kind": {
+          "const": "inline",
+          "default": "inline",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        }
+      },
+      "title": "InlineInput",
+      "type": "object"
+    },
+    "Limits": {
+      "additionalProperties": false,
+      "description": "Hard caps. ``None`` means \"use the deployment default\".",
+      "properties": {
+        "max_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Usd"
+        },
+        "max_input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Input Tokens"
+        },
+        "max_loop_iterations": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Loop Iterations"
+        },
+        "max_media_duration_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Media Duration Ms"
+        },
+        "max_model_calls": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Model Calls"
+        },
+        "max_output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Output Tokens"
+        },
+        "max_pages": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Pages"
+        },
+        "max_parallel": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Parallel"
+        },
+        "max_pixels": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Pixels"
+        },
+        "max_plan_steps": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Plan Steps"
+        },
+        "max_sampled_frames": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Sampled Frames"
+        },
+        "max_sandbox_runs": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Sandbox Runs"
+        },
+        "max_tool_calls": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Tool Calls"
+        },
+        "max_wall_time_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Wall Time S"
+        }
+      },
+      "title": "Limits",
+      "type": "object"
+    },
+    "ModelPreference": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidates"
+        },
+        "pinned": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pinned"
+        },
+        "strategy": {
+          "default": "balanced",
+          "enum": [
+            "cheapest",
+            "fastest",
+            "best_quality",
+            "balanced"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "ModelPreference",
+      "type": "object"
+    },
+    "PathInput": {
+      "additionalProperties": false,
+      "description": "A local file path. Resolved and uploaded by the SDK before submission.",
+      "properties": {
+        "kind": {
+          "const": "path",
+          "default": "path",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "PathInput",
+      "type": "object"
+    },
+    "PlanningPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "cache": {
+          "default": true,
+          "title": "Cache",
+          "type": "boolean"
+        },
+        "context_tokens": {
+          "anyOf": [
+            {
+              "minimum": 500,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Tokens"
+        },
+        "max_replans": {
+          "default": 2,
+          "minimum": 0,
+          "title": "Max Replans",
+          "type": "integer"
+        }
+      },
+      "title": "PlanningPolicy",
+      "type": "object"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_public_urls": {
+          "default": false,
+          "title": "Allow Public Urls",
+          "type": "boolean"
+        },
+        "allowed_models": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Models"
+        },
+        "allowed_providers": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Providers"
+        },
+        "allowed_tools": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Tools"
+        },
+        "approvals": {
+          "$ref": "#/$defs/ApprovalPolicy",
+          "default": {
+            "pre_approved": [],
+            "require_for_external_write": true
+          }
+        },
+        "code_mode": {
+          "default": "disabled",
+          "enum": [
+            "disabled",
+            "enabled"
+          ],
+          "title": "Code Mode",
+          "type": "string"
+        },
+        "fallback": {
+          "$ref": "#/$defs/FallbackPolicy",
+          "default": {
+            "candidates": null,
+            "enabled": true
+          }
+        },
+        "generation": {
+          "default": "disabled",
+          "enum": [
+            "disabled",
+            "enabled"
+          ],
+          "title": "Generation",
+          "type": "string"
+        },
+        "limits": {
+          "$ref": "#/$defs/Limits",
+          "default": {
+            "max_cost_usd": null,
+            "max_input_tokens": null,
+            "max_loop_iterations": null,
+            "max_media_duration_ms": null,
+            "max_model_calls": null,
+            "max_output_tokens": null,
+            "max_pages": null,
+            "max_parallel": null,
+            "max_pixels": null,
+            "max_plan_steps": null,
+            "max_sampled_frames": null,
+            "max_sandbox_runs": null,
+            "max_tool_calls": null,
+            "max_wall_time_s": null
+          }
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExecutionMode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "planning": {
+          "$ref": "#/$defs/PlanningPolicy",
+          "default": {
+            "cache": true,
+            "context_tokens": null,
+            "max_replans": 2
+          }
+        },
+        "privacy": {
+          "$ref": "#/$defs/PrivacyPolicy",
+          "default": {
+            "allowed_regions": null,
+            "no_data_retention": false,
+            "no_hosted": false
+          }
+        },
+        "repair": {
+          "$ref": "#/$defs/RepairPolicy",
+          "default": {
+            "attempts": 1,
+            "max_cost_usd": null,
+            "max_seconds": null
+          }
+        },
+        "review_on_failure": {
+          "default": true,
+          "title": "Review On Failure",
+          "type": "boolean"
+        },
+        "validation": {
+          "$ref": "#/$defs/ValidationPolicy",
+          "default": {
+            "allow_model_judges": false,
+            "downgrade": {},
+            "escalate": {},
+            "max_unknown_fraction": null
+          }
+        }
+      },
+      "title": "Policy",
+      "type": "object"
+    },
+    "PrivacyPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_regions": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Regions"
+        },
+        "no_data_retention": {
+          "default": false,
+          "title": "No Data Retention",
+          "type": "boolean"
+        },
+        "no_hosted": {
+          "default": false,
+          "title": "No Hosted",
+          "type": "boolean"
+        }
+      },
+      "title": "PrivacyPolicy",
+      "type": "object"
+    },
+    "RepairPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 0,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "max_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Usd"
+        },
+        "max_seconds": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Seconds"
+        }
+      },
+      "title": "RepairPolicy",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "SkillRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 120,
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "SkillRef",
+      "type": "object"
+    },
+    "StorageInput": {
+      "additionalProperties": false,
+      "description": "An authenticated object-storage reference (``s3://bucket/key``).\n\nPublic URLs are not accepted (blueprint §4.1).",
+      "properties": {
+        "kind": {
+          "const": "storage",
+          "default": "storage",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "uri": {
+          "pattern": "^(s3|gs|az)://",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ],
+      "title": "StorageInput",
+      "type": "object"
+    },
+    "ValidationPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_model_judges": {
+          "default": false,
+          "title": "Allow Model Judges",
+          "type": "boolean"
+        },
+        "downgrade": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Severity"
+          },
+          "default": {},
+          "title": "Downgrade",
+          "type": "object"
+        },
+        "escalate": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Severity"
+          },
+          "default": {},
+          "title": "Escalate",
+          "type": "object"
+        },
+        "max_unknown_fraction": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Unknown Fraction"
+        }
+      },
+      "title": "ValidationPolicy",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/RunRequest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "What a caller submits. Either ``instruction`` or ``skill`` (or both) must be present.",
+  "properties": {
+    "idempotency_key": {
+      "anyOf": [
+        {
+          "maxLength": 255,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Idempotency Key"
+    },
+    "inputs": {
+      "default": [],
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "artifact": "#/$defs/ArtifactInput",
+            "asset": "#/$defs/AssetInput",
+            "inline": "#/$defs/InlineInput",
+            "path": "#/$defs/PathInput",
+            "storage": "#/$defs/StorageInput"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/PathInput"
+          },
+          {
+            "$ref": "#/$defs/InlineInput"
+          },
+          {
+            "$ref": "#/$defs/AssetInput"
+          },
+          {
+            "$ref": "#/$defs/ArtifactInput"
+          },
+          {
+            "$ref": "#/$defs/StorageInput"
+          }
+        ]
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "instruction": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Instruction"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Metadata",
+      "type": "object"
+    },
+    "mode": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExecutionMode"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "models": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ModelPreference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "output_schema": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Schema"
+    },
+    "policy": {
+      "$ref": "#/$defs/Policy",
+      "default": {
+        "allow_public_urls": false,
+        "allowed_models": null,
+        "allowed_providers": null,
+        "allowed_tools": null,
+        "approvals": {
+          "pre_approved": [],
+          "require_for_external_write": true
+        },
+        "code_mode": "disabled",
+        "fallback": {
+          "candidates": null,
+          "enabled": true
+        },
+        "generation": "disabled",
+        "limits": {
+          "max_cost_usd": null,
+          "max_input_tokens": null,
+          "max_loop_iterations": null,
+          "max_media_duration_ms": null,
+          "max_model_calls": null,
+          "max_output_tokens": null,
+          "max_pages": null,
+          "max_parallel": null,
+          "max_pixels": null,
+          "max_plan_steps": null,
+          "max_sampled_frames": null,
+          "max_sandbox_runs": null,
+          "max_tool_calls": null,
+          "max_wall_time_s": null
+        },
+        "mode": null,
+        "planning": {
+          "cache": true,
+          "context_tokens": null,
+          "max_replans": 2
+        },
+        "privacy": {
+          "allowed_regions": null,
+          "no_data_retention": false,
+          "no_hosted": false
+        },
+        "repair": {
+          "attempts": 1,
+          "max_cost_usd": null,
+          "max_seconds": null
+        },
+        "review_on_failure": true,
+        "validation": {
+          "allow_model_judges": false,
+          "downgrade": {},
+          "escalate": {},
+          "max_unknown_fraction": null
+        }
+      }
+    },
+    "skill": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SkillRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "tools": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tools"
+    }
+  },
+  "title": "RunRequest",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

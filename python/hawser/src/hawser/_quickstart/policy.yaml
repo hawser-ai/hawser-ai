@@ -1,0 +1,6 @@
+# Quickstart policy. See docs/concepts/policy.md for every field.
+limits:
+  max_cost_usd: 0.25
+repair:
+  attempts: 1
+review_on_failure: true

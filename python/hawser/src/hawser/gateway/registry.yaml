@@ -1,0 +1,140 @@
+# Model registry. Pricing is USD per million tokens (first-party API rates, cached 2026-10-06).
+# `hawser models check <id>` verifies an entry with one cheap live call.
+version: "2026-10-18"
+models:
+  - id: anthropic/claude-opus-5-5
+    provider: anthropic
+    model: claude-opus-5-5
+    display_name: Claude Opus 5.5
+    modalities: [text, image, document]
+    context_window: 1000000
+    max_output_tokens: 128000
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 4.0, output_per_mtok: 20.0, cache_read_per_mtok: 0.20, version: "2026-10-06" }
+    quality_prior: 0.9
+    speed_prior: 0.3
+  - id: anthropic/claude-sonnet-5-5
+    provider: anthropic
+    model: claude-sonnet-5-5
+    display_name: Claude Sonnet 5.5
+    modalities: [text, image, document]
+    context_window: 1000000
+    max_output_tokens: 128000
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 2.0, output_per_mtok: 10.0, cache_read_per_mtok: 0.20, version: "2026-10-06" }
+    quality_prior: 0.8
+    speed_prior: 0.6
+  - id: anthropic/claude-haiku-5-5
+    provider: anthropic
+    model: claude-haiku-5-5
+    display_name: Claude Haiku 5.5
+    modalities: [text, image, document]
+    context_window: 1000000
+    max_output_tokens: 128000
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    # Rates for prompts up to 100K tokens; longer prompts are billed higher by the provider.
+    pricing: { input_per_mtok: 0.10, output_per_mtok: 0.50, version: "2026-10-06" }
+    quality_prior: 0.6
+    speed_prior: 0.9
+    constraints: ["pricing_tier_changes_above_100k_input_tokens"]
+  # --- Routed via OpenRouter (OpenAI-compatible). Billed amounts come back on each response. ---
+  - id: openrouter/anthropic/claude-opus-5.5
+    provider: openrouter
+    model: anthropic/claude-opus-5.5
+    display_name: Claude Opus 5.5 (OpenRouter)
+    modalities: [text, image, document]
+    context_window: 1000000
+    max_output_tokens: 128000
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 4.0, output_per_mtok: 20.0, version: "openrouter-2026-10-18" }
+    quality_prior: 0.9
+    speed_prior: 0.3
+    constraints: ["routed_via_openrouter"]
+  - id: openrouter/anthropic/claude-sonnet-5.5
+    provider: openrouter
+    model: anthropic/claude-sonnet-5.5
+    display_name: Claude Sonnet 5.5 (OpenRouter)
+    modalities: [text, image, document]
+    context_window: 1000000
+    max_output_tokens: 128000
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 2.0, output_per_mtok: 10.0, version: "openrouter-2026-10-18" }
+    quality_prior: 0.8
+    speed_prior: 0.6
+    constraints: ["routed_via_openrouter"]
+  - id: openrouter/anthropic/claude-haiku-5.5
+    provider: openrouter
+    model: anthropic/claude-haiku-5.5
+    display_name: Claude Haiku 5.5 (OpenRouter)
+    modalities: [text, image, document]
+    context_window: 1000000
+    max_output_tokens: 128000
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 0.10, output_per_mtok: 0.50, version: "openrouter-2026-10-18" }
+    quality_prior: 0.6
+    speed_prior: 0.9
+    constraints: ["routed_via_openrouter"]
+  - id: openrouter/google/gemini-2.5-flash
+    provider: openrouter
+    model: google/gemini-2.5-flash
+    display_name: Gemini 2.5 Flash (OpenRouter)
+    modalities: [text, image, document]
+    context_window: 1048576
+    max_output_tokens: 65536
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 0.30, output_per_mtok: 2.50, version: "openrouter-2026-10-18" }
+    quality_prior: 0.65
+    speed_prior: 0.85
+    constraints: ["routed_via_openrouter"]
+  - id: openrouter/openai/gpt-4.1-mini
+    provider: openrouter
+    model: openai/gpt-4.1-mini
+    display_name: GPT-4.1 mini (OpenRouter)
+    modalities: [text, image]
+    context_window: 1047576
+    max_output_tokens: 32768
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: true, regions: [us], retains_data: false, trains_on_data: false }
+    pricing: { input_per_mtok: 0.40, output_per_mtok: 1.60, version: "openrouter-2026-10-18" }
+    quality_prior: 0.6
+    speed_prior: 0.8
+    constraints: ["routed_via_openrouter"]
+  # --- Local (self-hosted) via Ollama's OpenAI-compatible endpoint. No pricing: cost is 0. ---
+  - id: ollama/llama3.1
+    provider: ollama
+    model: llama3.1
+    display_name: Llama 3.1 8B (Ollama, local)
+    modalities: [text]
+    context_window: 128000
+    max_output_tokens: 8192
+    structured_output: true
+    tool_calling: true
+    streaming: true
+    data_handling: { hosted: false, regions: [local], retains_data: false, trains_on_data: false }
+    pricing: null
+    quality_prior: 0.4
+    speed_prior: 0.5
+    constraints: ["requires_local_ollama"]

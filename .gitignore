@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.hypothesis/
+.ruff_cache/
+.pyright/
+
+# Hawser local state
+.hawser/
+hawser.lock.tmp
+
+# Node
+node_modules/
+web/dist/
+
+# Go
+control/bin/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Generated evaluation datasets (rebuild with `python -m hawser_synth.dataset`); recorded cassettes are kept.
+datasets/**
+!datasets/**/cassettes/
+!datasets/**/cassettes/**
+.hawser-try/

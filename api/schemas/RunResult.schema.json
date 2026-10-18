@@ -1,0 +1,2151 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "description": "A lightweight pointer carried in results, events and RPC messages.",
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "media_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Media Type"
+        }
+      },
+      "required": [
+        "artifact_id"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "AudioSpanEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "audio_span",
+          "default": "audio_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "segment_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Segment Id"
+        },
+        "speaker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speaker"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "start_ms",
+        "end_ms"
+      ],
+      "title": "AudioSpanEvidence",
+      "type": "object"
+    },
+    "BBox": {
+      "additionalProperties": false,
+      "description": "Axis-aligned box; ``x0,y0`` is the top-left corner, ``x1,y1`` the bottom-right.",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "BBox",
+      "type": "object"
+    },
+    "CalculationEvidence": {
+      "additionalProperties": false,
+      "description": "A deterministic computation: the expression and the evidence ids of its inputs.",
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "expression": {
+          "title": "Expression",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "inputs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "kind": {
+          "const": "calculation",
+          "default": "calculation",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "expression"
+      ],
+      "title": "CalculationEvidence",
+      "type": "object"
+    },
+    "CoordinateSystem": {
+      "description": "Where a box/point lives. Evidence always records this so it can be mapped back.",
+      "enum": [
+        "pdf_points_tl",
+        "pixels",
+        "normalized"
+      ],
+      "title": "CoordinateSystem",
+      "type": "string"
+    },
+    "CropTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "number"
+        },
+        "kind": {
+          "const": "crop",
+          "default": "crop",
+          "title": "Kind",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "number"
+        },
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "title": "CropTransform",
+      "type": "object"
+    },
+    "DocumentRegionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Confidence"
+        },
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "coordinate_system": {
+          "$ref": "#/$defs/CoordinateSystem",
+          "default": "pdf_points_tl"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "document_region",
+          "default": "document_region",
+          "title": "Kind",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "page"
+      ],
+      "title": "DocumentRegionEvidence",
+      "type": "object"
+    },
+    "DpiTransform": {
+      "additionalProperties": false,
+      "description": "PDF points → pixels at a given DPI (72 points per inch).",
+      "properties": {
+        "dpi": {
+          "exclusiveMinimum": 0,
+          "title": "Dpi",
+          "type": "number"
+        },
+        "kind": {
+          "const": "dpi",
+          "default": "dpi",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dpi"
+      ],
+      "title": "DpiTransform",
+      "type": "object"
+    },
+    "ExecutionMode": {
+      "enum": [
+        "direct",
+        "workflow",
+        "agent"
+      ],
+      "title": "ExecutionMode",
+      "type": "string"
+    },
+    "ExifOrientTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "exif_orient",
+          "default": "exif_orient",
+          "title": "Kind",
+          "type": "string"
+        },
+        "orientation": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Orientation",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "orientation"
+      ],
+      "title": "ExifOrientTransform",
+      "type": "object"
+    },
+    "FieldMeta": {
+      "additionalProperties": false,
+      "description": "Per-field sidecar: evidence, issues and extraction status (ADR-0005).",
+      "properties": {
+        "anchor_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Confidence"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "issues": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/FieldStatus",
+          "default": "found"
+        }
+      },
+      "title": "FieldMeta",
+      "type": "object"
+    },
+    "FieldStatus": {
+      "enum": [
+        "found",
+        "unknown",
+        "not_applicable",
+        "derived"
+      ],
+      "title": "FieldStatus",
+      "type": "string"
+    },
+    "ImageRegionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "coordinate_system": {
+          "$ref": "#/$defs/CoordinateSystem",
+          "default": "pixels"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "image_region",
+          "default": "image_region",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "mask_artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mask Artifact Id"
+        },
+        "point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Point"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer"
+      ],
+      "title": "ImageRegionEvidence",
+      "type": "object"
+    },
+    "Issue": {
+      "additionalProperties": false,
+      "properties": {
+        "details": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Details",
+          "type": "object"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "pattern": "^(?:/(?:[^/~]|~0|~1)*)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "repair": {
+          "$ref": "#/$defs/RepairKind",
+          "default": "none"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Version"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        }
+      },
+      "required": [
+        "id",
+        "rule_id",
+        "severity",
+        "message"
+      ],
+      "title": "Issue",
+      "type": "object"
+    },
+    "LineageEvidence": {
+      "additionalProperties": false,
+      "description": "Points at a parent artifact and the transformation that produced the current one.",
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "lineage",
+          "default": "lineage",
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent_artifact_id": {
+          "title": "Parent Artifact Id",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "parent_artifact_id"
+      ],
+      "title": "LineageEvidence",
+      "type": "object"
+    },
+    "ModelCallUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "cache_read_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cache Read Tokens",
+          "type": "integer"
+        },
+        "cache_write_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cache Write Tokens",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "pricing_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pricing Version"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "input_tokens",
+        "output_tokens",
+        "cost_usd",
+        "latency_ms"
+      ],
+      "title": "ModelCallUsage",
+      "type": "object"
+    },
+    "PadTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "bottom": {
+          "minimum": 0,
+          "title": "Bottom",
+          "type": "number"
+        },
+        "kind": {
+          "const": "pad",
+          "default": "pad",
+          "title": "Kind",
+          "type": "string"
+        },
+        "left": {
+          "minimum": 0,
+          "title": "Left",
+          "type": "number"
+        },
+        "right": {
+          "minimum": 0,
+          "title": "Right",
+          "type": "number"
+        },
+        "top": {
+          "minimum": 0,
+          "title": "Top",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "top",
+        "right",
+        "bottom"
+      ],
+      "title": "PadTransform",
+      "type": "object"
+    },
+    "Point": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Point",
+      "type": "object"
+    },
+    "ProducerRef": {
+      "additionalProperties": false,
+      "description": "What produced an artifact, evidence item or result: a tool, a model or the runtime.",
+      "properties": {
+        "config_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Config Hash"
+        },
+        "kind": {
+          "enum": [
+            "tool",
+            "model",
+            "system"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ],
+      "title": "ProducerRef",
+      "type": "object"
+    },
+    "RepairKind": {
+      "description": "What the runtime may try for a repairable issue (blueprint §16).",
+      "enum": [
+        "retrieve",
+        "reocr",
+        "remodel",
+        "ask_field",
+        "recalculate",
+        "reexecute",
+        "review",
+        "none"
+      ],
+      "title": "RepairKind",
+      "type": "string"
+    },
+    "RotateTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "about": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Point"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "degrees": {
+          "title": "Degrees",
+          "type": "number"
+        },
+        "kind": {
+          "const": "rotate",
+          "default": "rotate",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "degrees"
+      ],
+      "title": "RotateTransform",
+      "type": "object"
+    },
+    "RuleRun": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "issues": {
+          "minimum": 0,
+          "title": "Issues",
+          "type": "integer"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "rule_id",
+        "duration_ms",
+        "issues"
+      ],
+      "title": "RuleRun",
+      "type": "object"
+    },
+    "RunStatus": {
+      "description": "Run lifecycle. See :mod:`hawser.runtime.state` for the allowed transitions.",
+      "enum": [
+        "queued",
+        "admitting",
+        "planning",
+        "running",
+        "awaiting_approval",
+        "validating",
+        "repairing",
+        "needs_review",
+        "accepted",
+        "rejected",
+        "failed",
+        "cancelled"
+      ],
+      "title": "RunStatus",
+      "type": "string"
+    },
+    "RunWarning": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Details",
+          "type": "object"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "RunWarning",
+      "type": "object"
+    },
+    "ScaleTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "scale",
+          "default": "scale",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sx": {
+          "exclusiveMinimum": 0,
+          "title": "Sx",
+          "type": "number"
+        },
+        "sy": {
+          "exclusiveMinimum": 0,
+          "title": "Sy",
+          "type": "number"
+        }
+      },
+      "required": [
+        "sx",
+        "sy"
+      ],
+      "title": "ScaleTransform",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "TextSpanEvidence": {
+      "additionalProperties": false,
+      "description": "A character range in a text/JSON input or in a derived text artifact.",
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "text_span",
+          "default": "text_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "start",
+        "end"
+      ],
+      "title": "TextSpanEvidence",
+      "type": "object"
+    },
+    "TimeOffsetTransform": {
+      "additionalProperties": false,
+      "description": "Output time t maps to input time ``t + offset_ms`` (for clips and chunks).",
+      "properties": {
+        "kind": {
+          "const": "time_offset",
+          "default": "time_offset",
+          "title": "Kind",
+          "type": "string"
+        },
+        "offset_ms": {
+          "title": "Offset Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "offset_ms"
+      ],
+      "title": "TimeOffsetTransform",
+      "type": "object"
+    },
+    "ToolCallUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "cpu_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Ms"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "tool",
+        "latency_ms"
+      ],
+      "title": "ToolCallUsage",
+      "type": "object"
+    },
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "model_calls": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModelCallUsage"
+          },
+          "title": "Model Calls",
+          "type": "array"
+        },
+        "models_used": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Models Used",
+          "type": "array"
+        },
+        "registry_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Registry Version"
+        },
+        "tool_calls": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ToolCallUsage"
+          },
+          "title": "Tool Calls",
+          "type": "array"
+        },
+        "totals": {
+          "$ref": "#/$defs/UsageTotals",
+          "default": {
+            "cost_usd": 0.0,
+            "input_tokens": 0,
+            "media_duration_ms": 0,
+            "model_calls": 0,
+            "output_tokens": 0,
+            "pages_processed": 0,
+            "pixels_decoded": 0,
+            "repair_attempts": 0,
+            "sampled_frames": 0,
+            "sandbox_runs": 0,
+            "tool_calls": 0,
+            "wall_time_ms": 0
+          }
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    },
+    "UsageTotals": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "media_duration_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Media Duration Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "pages_processed": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pages Processed",
+          "type": "integer"
+        },
+        "pixels_decoded": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pixels Decoded",
+          "type": "integer"
+        },
+        "repair_attempts": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Repair Attempts",
+          "type": "integer"
+        },
+        "sampled_frames": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Sampled Frames",
+          "type": "integer"
+        },
+        "sandbox_runs": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Sandbox Runs",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "wall_time_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Wall Time Ms",
+          "type": "integer"
+        }
+      },
+      "title": "UsageTotals",
+      "type": "object"
+    },
+    "ValidationReport": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "issues": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "rules_run": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RuleRun"
+          },
+          "title": "Rules Run",
+          "type": "array"
+        }
+      },
+      "title": "ValidationReport",
+      "type": "object"
+    },
+    "VideoSpanEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "frame_artifact_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Frame Artifact Ids",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "video_span",
+          "default": "video_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "scene_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scene Id"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "track_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Track Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "start_ms",
+        "end_ms"
+      ],
+      "title": "VideoSpanEvidence",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/RunResult.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The response contract (blueprint §2).",
+  "properties": {
+    "artifacts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ArtifactRef"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed At"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error"
+    },
+    "evidence": {
+      "default": [],
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "audio_span": "#/$defs/AudioSpanEvidence",
+            "calculation": "#/$defs/CalculationEvidence",
+            "document_region": "#/$defs/DocumentRegionEvidence",
+            "image_region": "#/$defs/ImageRegionEvidence",
+            "lineage": "#/$defs/LineageEvidence",
+            "text_span": "#/$defs/TextSpanEvidence",
+            "video_span": "#/$defs/VideoSpanEvidence"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/DocumentRegionEvidence"
+          },
+          {
+            "$ref": "#/$defs/ImageRegionEvidence"
+          },
+          {
+            "$ref": "#/$defs/AudioSpanEvidence"
+          },
+          {
+            "$ref": "#/$defs/VideoSpanEvidence"
+          },
+          {
+            "$ref": "#/$defs/TextSpanEvidence"
+          },
+          {
+            "$ref": "#/$defs/CalculationEvidence"
+          },
+          {
+            "$ref": "#/$defs/LineageEvidence"
+          }
+        ]
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "field_meta": {
+      "default": {},
+      "patternProperties": {
+        "^(?:/(?:[^/~]|~0|~1)*)*$": {
+          "$ref": "#/$defs/FieldMeta"
+        }
+      },
+      "title": "Field Meta",
+      "type": "object"
+    },
+    "mode": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExecutionMode"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "plan_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Plan Id"
+    },
+    "result": {
+      "anyOf": [
+        {},
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Result"
+    },
+    "revision_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Revision Id"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/RunStatus"
+    },
+    "trace_id": {
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "usage": {
+      "$ref": "#/$defs/Usage",
+      "default": {
+        "model_calls": [],
+        "models_used": [],
+        "registry_version": null,
+        "tool_calls": [],
+        "totals": {
+          "cost_usd": 0.0,
+          "input_tokens": 0,
+          "media_duration_ms": 0,
+          "model_calls": 0,
+          "output_tokens": 0,
+          "pages_processed": 0,
+          "pixels_decoded": 0,
+          "repair_attempts": 0,
+          "sampled_frames": 0,
+          "sandbox_runs": 0,
+          "tool_calls": 0,
+          "wall_time_ms": 0
+        }
+      }
+    },
+    "validation": {
+      "$ref": "#/$defs/ValidationReport",
+      "default": {
+        "duration_ms": 0,
+        "issues": [],
+        "rules_run": []
+      }
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RunWarning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "status",
+    "trace_id",
+    "created_at"
+  ],
+  "title": "RunResult",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

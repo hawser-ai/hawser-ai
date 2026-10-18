@@ -1,0 +1,126 @@
+{
+  "$defs": {
+    "LineItem": {
+      "properties": {
+        "sku": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Vendor stock-keeping unit, if printed",
+          "title": "Sku"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "quantity": {
+          "title": "Quantity",
+          "type": "number"
+        },
+        "unit_price": {
+          "title": "Unit Price",
+          "type": "number"
+        },
+        "line_total": {
+          "title": "Line Total",
+          "type": "number"
+        }
+      },
+      "required": [
+        "description",
+        "quantity",
+        "unit_price",
+        "line_total"
+      ],
+      "title": "LineItem",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "invoice_number": {
+      "title": "Invoice Number",
+      "type": "string"
+    },
+    "invoice_date": {
+      "description": "ISO 8601 date, YYYY-MM-DD",
+      "title": "Invoice Date",
+      "type": "string"
+    },
+    "due_date": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ISO 8601 date, YYYY-MM-DD",
+      "title": "Due Date"
+    },
+    "vendor_name": {
+      "title": "Vendor Name",
+      "type": "string"
+    },
+    "customer_name": {
+      "title": "Customer Name",
+      "type": "string"
+    },
+    "purchase_order_number": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Purchase Order Number"
+    },
+    "currency": {
+      "description": "ISO 4217 code",
+      "title": "Currency",
+      "type": "string"
+    },
+    "line_items": {
+      "items": {
+        "$ref": "#/$defs/LineItem"
+      },
+      "title": "Line Items",
+      "type": "array"
+    },
+    "subtotal": {
+      "title": "Subtotal",
+      "type": "number"
+    },
+    "tax": {
+      "title": "Tax",
+      "type": "number"
+    },
+    "total": {
+      "title": "Total",
+      "type": "number"
+    }
+  },
+  "required": [
+    "invoice_number",
+    "invoice_date",
+    "vendor_name",
+    "customer_name",
+    "currency",
+    "line_items",
+    "subtotal",
+    "tax",
+    "total"
+  ],
+  "title": "Invoice",
+  "type": "object"
+}

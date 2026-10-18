@@ -1,0 +1,100 @@
+{
+  "$defs": {
+    "RepairKind": {
+      "description": "What the runtime may try for a repairable issue (blueprint §16).",
+      "enum": [
+        "retrieve",
+        "reocr",
+        "remodel",
+        "ask_field",
+        "recalculate",
+        "reexecute",
+        "review",
+        "none"
+      ],
+      "title": "RepairKind",
+      "type": "string"
+    },
+    "Severity": {
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/Issue.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "details": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Details",
+      "type": "object"
+    },
+    "evidence": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "field": {
+      "anyOf": [
+        {
+          "pattern": "^(?:/(?:[^/~]|~0|~1)*)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Field"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "repair": {
+      "$ref": "#/$defs/RepairKind",
+      "default": "none"
+    },
+    "rule_id": {
+      "title": "Rule Id",
+      "type": "string"
+    },
+    "rule_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rule Version"
+    },
+    "severity": {
+      "$ref": "#/$defs/Severity"
+    }
+  },
+  "required": [
+    "id",
+    "rule_id",
+    "severity",
+    "message"
+  ],
+  "title": "Issue",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

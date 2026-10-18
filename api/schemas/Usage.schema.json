@@ -1,0 +1,320 @@
+{
+  "$defs": {
+    "ModelCallUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "cache_read_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cache Read Tokens",
+          "type": "integer"
+        },
+        "cache_write_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cache Write Tokens",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "pricing_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pricing Version"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "input_tokens",
+        "output_tokens",
+        "cost_usd",
+        "latency_ms"
+      ],
+      "title": "ModelCallUsage",
+      "type": "object"
+    },
+    "ToolCallUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "cpu_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Ms"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "tool",
+        "latency_ms"
+      ],
+      "title": "ToolCallUsage",
+      "type": "object"
+    },
+    "UsageTotals": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "media_duration_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Media Duration Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "pages_processed": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pages Processed",
+          "type": "integer"
+        },
+        "pixels_decoded": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pixels Decoded",
+          "type": "integer"
+        },
+        "repair_attempts": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Repair Attempts",
+          "type": "integer"
+        },
+        "sampled_frames": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Sampled Frames",
+          "type": "integer"
+        },
+        "sandbox_runs": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Sandbox Runs",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "wall_time_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Wall Time Ms",
+          "type": "integer"
+        }
+      },
+      "title": "UsageTotals",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/Usage.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "model_calls": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ModelCallUsage"
+      },
+      "title": "Model Calls",
+      "type": "array"
+    },
+    "models_used": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Models Used",
+      "type": "array"
+    },
+    "registry_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Registry Version"
+    },
+    "tool_calls": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ToolCallUsage"
+      },
+      "title": "Tool Calls",
+      "type": "array"
+    },
+    "totals": {
+      "$ref": "#/$defs/UsageTotals",
+      "default": {
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "media_duration_ms": 0,
+        "model_calls": 0,
+        "output_tokens": 0,
+        "pages_processed": 0,
+        "pixels_decoded": 0,
+        "repair_attempts": 0,
+        "sampled_frames": 0,
+        "sandbox_runs": 0,
+        "tool_calls": 0,
+        "wall_time_ms": 0
+      }
+    }
+  },
+  "title": "Usage",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

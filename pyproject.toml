@@ -1,0 +1,82 @@
+[project]
+name = "hawser-monorepo"
+version = "0.0.0"
+description = "Workspace root for the Hawser monorepo (not published)."
+requires-python = ">=3.12"
+dependencies = ["hawser", "hawser-media", "hawser-evals", "hawser-synth"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["python/hawser", "python/hawser_media", "python/hawser_evals", "python/hawser_synth"]
+
+[tool.uv.sources]
+hawser = { workspace = true }
+hawser-media = { workspace = true }
+hawser-evals = { workspace = true }
+hawser-synth = { workspace = true }
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-xdist>=3.6",
+  "hypothesis>=6.112",
+  "ruff>=0.7",
+  "pyright>=1.1.380",
+  "pre-commit>=4.0",
+  "types-pyyaml",
+  "types-jsonschema",
+]
+
+# ---------------------------------------------------------------------------
+# Lint / format
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "N", "RUF", "PL", "PT", "RET"]
+ignore = [
+  "PLR0913", # too many arguments — contract models have many fields
+  "PLR2004", # magic values in tests
+  "RUF012",  # mutable class attributes (pydantic handles these)
+  "N818",    # error names follow the blueprint taxonomy (PolicyViolation, BudgetExceeded ...)
+]
+# TC* (typing-only imports) is deliberately not enabled: pydantic evaluates annotations at runtime.
+
+[tool.ruff.lint.per-file-ignores]
+"python/*/tests/**" = ["PLR", "S101", "PT018", "PLC0415", "B007", "RUF001", "ANN"]
+"python/hawser/src/hawser/evidence/anchor.py" = ["RUF001"]  # the Unicode table is the point
+
+[tool.ruff.lint.isort]
+known-first-party = ["hawser", "hawser_media", "hawser_evals", "hawser_synth"]
+
+# ---------------------------------------------------------------------------
+# Types
+# ---------------------------------------------------------------------------
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+include = [
+  "python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src",
+  "python/hawser/tests", "python/hawser_media/tests",
+]
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportMissingTypeArgument = false
+venvPath = "."
+venv = ".venv"
+reportMissingTypeStubs = false
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["python/hawser/tests", "python/hawser_media/tests", "python/hawser_evals/tests"]
+markers = ["live: calls a real model provider; runs only in the nightly job"]
+addopts = "-q -ra --import-mode=importlib"
+filterwarnings = ["error::DeprecationWarning:hawser.*"]

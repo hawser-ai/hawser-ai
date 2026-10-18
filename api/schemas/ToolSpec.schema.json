@@ -1,0 +1,236 @@
+{
+  "$defs": {
+    "CostEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "fixed_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Fixed Usd",
+          "type": "number"
+        },
+        "per_megapixel_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Per Megapixel Usd",
+          "type": "number"
+        },
+        "per_minute_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Per Minute Usd",
+          "type": "number"
+        },
+        "per_page_usd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Per Page Usd",
+          "type": "number"
+        }
+      },
+      "title": "CostEstimate",
+      "type": "object"
+    },
+    "RetryClass": {
+      "enum": [
+        "never",
+        "safe",
+        "idempotent_with_key"
+      ],
+      "title": "RetryClass",
+      "type": "string"
+    },
+    "SideEffect": {
+      "enum": [
+        "none",
+        "local_artifact",
+        "external_read",
+        "external_write"
+      ],
+      "title": "SideEffect",
+      "type": "string"
+    },
+    "ToolLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu S"
+        },
+        "max_input_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Input Bytes"
+        },
+        "max_output_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Output Bytes"
+        },
+        "memory_mb": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Mb"
+        },
+        "wall_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wall S"
+        }
+      },
+      "title": "ToolLimits",
+      "type": "object"
+    },
+    "ToolLocation": {
+      "enum": [
+        "inprocess",
+        "worker",
+        "remote",
+        "sandbox"
+      ],
+      "title": "ToolLocation",
+      "type": "string"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/ToolSpec.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "cost_estimate": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CostEstimate"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "idempotency": {
+      "default": "pure",
+      "pattern": "^(pure|keyed|none)$",
+      "title": "Idempotency",
+      "type": "string"
+    },
+    "input_schema": {
+      "additionalProperties": true,
+      "title": "Input Schema",
+      "type": "object"
+    },
+    "limits": {
+      "$ref": "#/$defs/ToolLimits",
+      "default": {
+        "cpu_s": null,
+        "max_input_bytes": null,
+        "max_output_bytes": null,
+        "memory_mb": null,
+        "wall_s": null
+      }
+    },
+    "location": {
+      "$ref": "#/$defs/ToolLocation",
+      "default": "inprocess"
+    },
+    "modalities": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Modalities",
+      "type": "array"
+    },
+    "name": {
+      "maxLength": 120,
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+      "title": "Name",
+      "type": "string"
+    },
+    "output_schema": {
+      "additionalProperties": true,
+      "title": "Output Schema",
+      "type": "object"
+    },
+    "permissions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Permissions",
+      "type": "array"
+    },
+    "produces_evidence": {
+      "default": false,
+      "title": "Produces Evidence",
+      "type": "boolean"
+    },
+    "retry": {
+      "$ref": "#/$defs/RetryClass",
+      "default": "safe"
+    },
+    "side_effect": {
+      "$ref": "#/$defs/SideEffect",
+      "default": "none"
+    },
+    "version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "description",
+    "input_schema",
+    "output_schema"
+  ],
+  "title": "ToolSpec",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

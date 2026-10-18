@@ -1,0 +1,1380 @@
+{
+  "$defs": {
+    "AudioSpanEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "audio_span",
+          "default": "audio_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "segment_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Segment Id"
+        },
+        "speaker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speaker"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "start_ms",
+        "end_ms"
+      ],
+      "title": "AudioSpanEvidence",
+      "type": "object"
+    },
+    "BBox": {
+      "additionalProperties": false,
+      "description": "Axis-aligned box; ``x0,y0`` is the top-left corner, ``x1,y1`` the bottom-right.",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "BBox",
+      "type": "object"
+    },
+    "CalculationEvidence": {
+      "additionalProperties": false,
+      "description": "A deterministic computation: the expression and the evidence ids of its inputs.",
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "expression": {
+          "title": "Expression",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "inputs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "kind": {
+          "const": "calculation",
+          "default": "calculation",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "expression"
+      ],
+      "title": "CalculationEvidence",
+      "type": "object"
+    },
+    "CoordinateSystem": {
+      "description": "Where a box/point lives. Evidence always records this so it can be mapped back.",
+      "enum": [
+        "pdf_points_tl",
+        "pixels",
+        "normalized"
+      ],
+      "title": "CoordinateSystem",
+      "type": "string"
+    },
+    "CropTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "number"
+        },
+        "kind": {
+          "const": "crop",
+          "default": "crop",
+          "title": "Kind",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "number"
+        },
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "title": "CropTransform",
+      "type": "object"
+    },
+    "DocumentRegionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Confidence"
+        },
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "coordinate_system": {
+          "$ref": "#/$defs/CoordinateSystem",
+          "default": "pdf_points_tl"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "document_region",
+          "default": "document_region",
+          "title": "Kind",
+          "type": "string"
+        },
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "page"
+      ],
+      "title": "DocumentRegionEvidence",
+      "type": "object"
+    },
+    "DpiTransform": {
+      "additionalProperties": false,
+      "description": "PDF points → pixels at a given DPI (72 points per inch).",
+      "properties": {
+        "dpi": {
+          "exclusiveMinimum": 0,
+          "title": "Dpi",
+          "type": "number"
+        },
+        "kind": {
+          "const": "dpi",
+          "default": "dpi",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dpi"
+      ],
+      "title": "DpiTransform",
+      "type": "object"
+    },
+    "ExifOrientTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "exif_orient",
+          "default": "exif_orient",
+          "title": "Kind",
+          "type": "string"
+        },
+        "orientation": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Orientation",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "orientation"
+      ],
+      "title": "ExifOrientTransform",
+      "type": "object"
+    },
+    "ImageRegionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BBox"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "coordinate_system": {
+          "$ref": "#/$defs/CoordinateSystem",
+          "default": "pixels"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "image_region",
+          "default": "image_region",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "mask_artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mask Artifact Id"
+        },
+        "point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Point"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer"
+      ],
+      "title": "ImageRegionEvidence",
+      "type": "object"
+    },
+    "LineageEvidence": {
+      "additionalProperties": false,
+      "description": "Points at a parent artifact and the transformation that produced the current one.",
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "lineage",
+          "default": "lineage",
+          "title": "Kind",
+          "type": "string"
+        },
+        "parent_artifact_id": {
+          "title": "Parent Artifact Id",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "parent_artifact_id"
+      ],
+      "title": "LineageEvidence",
+      "type": "object"
+    },
+    "PadTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "bottom": {
+          "minimum": 0,
+          "title": "Bottom",
+          "type": "number"
+        },
+        "kind": {
+          "const": "pad",
+          "default": "pad",
+          "title": "Kind",
+          "type": "string"
+        },
+        "left": {
+          "minimum": 0,
+          "title": "Left",
+          "type": "number"
+        },
+        "right": {
+          "minimum": 0,
+          "title": "Right",
+          "type": "number"
+        },
+        "top": {
+          "minimum": 0,
+          "title": "Top",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "top",
+        "right",
+        "bottom"
+      ],
+      "title": "PadTransform",
+      "type": "object"
+    },
+    "Point": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Point",
+      "type": "object"
+    },
+    "ProducerRef": {
+      "additionalProperties": false,
+      "description": "What produced an artifact, evidence item or result: a tool, a model or the runtime.",
+      "properties": {
+        "config_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Config Hash"
+        },
+        "kind": {
+          "enum": [
+            "tool",
+            "model",
+            "system"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ],
+      "title": "ProducerRef",
+      "type": "object"
+    },
+    "RotateTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "about": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Point"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "degrees": {
+          "title": "Degrees",
+          "type": "number"
+        },
+        "kind": {
+          "const": "rotate",
+          "default": "rotate",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "degrees"
+      ],
+      "title": "RotateTransform",
+      "type": "object"
+    },
+    "ScaleTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "scale",
+          "default": "scale",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sx": {
+          "exclusiveMinimum": 0,
+          "title": "Sx",
+          "type": "number"
+        },
+        "sy": {
+          "exclusiveMinimum": 0,
+          "title": "Sy",
+          "type": "number"
+        }
+      },
+      "required": [
+        "sx",
+        "sy"
+      ],
+      "title": "ScaleTransform",
+      "type": "object"
+    },
+    "TextSpanEvidence": {
+      "additionalProperties": false,
+      "description": "A character range in a text/JSON input or in a derived text artifact.",
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "text_span",
+          "default": "text_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "start",
+        "end"
+      ],
+      "title": "TextSpanEvidence",
+      "type": "object"
+    },
+    "TimeOffsetTransform": {
+      "additionalProperties": false,
+      "description": "Output time t maps to input time ``t + offset_ms`` (for clips and chunks).",
+      "properties": {
+        "kind": {
+          "const": "time_offset",
+          "default": "time_offset",
+          "title": "Kind",
+          "type": "string"
+        },
+        "offset_ms": {
+          "title": "Offset Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "offset_ms"
+      ],
+      "title": "TimeOffsetTransform",
+      "type": "object"
+    },
+    "VideoSpanEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "frame_artifact_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Frame Artifact Ids",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "video_span",
+          "default": "video_span",
+          "title": "Kind",
+          "type": "string"
+        },
+        "producer": {
+          "$ref": "#/$defs/ProducerRef"
+        },
+        "scene_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scene Id"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "track_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Track Id"
+        },
+        "transform_chain": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "crop": "#/$defs/CropTransform",
+                "dpi": "#/$defs/DpiTransform",
+                "exif_orient": "#/$defs/ExifOrientTransform",
+                "pad": "#/$defs/PadTransform",
+                "rotate": "#/$defs/RotateTransform",
+                "scale": "#/$defs/ScaleTransform",
+                "time_offset": "#/$defs/TimeOffsetTransform"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CropTransform"
+              },
+              {
+                "$ref": "#/$defs/ScaleTransform"
+              },
+              {
+                "$ref": "#/$defs/RotateTransform"
+              },
+              {
+                "$ref": "#/$defs/ExifOrientTransform"
+              },
+              {
+                "$ref": "#/$defs/PadTransform"
+              },
+              {
+                "$ref": "#/$defs/DpiTransform"
+              },
+              {
+                "$ref": "#/$defs/TimeOffsetTransform"
+              }
+            ]
+          },
+          "title": "Transform Chain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "producer",
+        "start_ms",
+        "end_ms"
+      ],
+      "title": "VideoSpanEvidence",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/Evidence.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "discriminator": {
+    "mapping": {
+      "audio_span": "#/$defs/AudioSpanEvidence",
+      "calculation": "#/$defs/CalculationEvidence",
+      "document_region": "#/$defs/DocumentRegionEvidence",
+      "image_region": "#/$defs/ImageRegionEvidence",
+      "lineage": "#/$defs/LineageEvidence",
+      "text_span": "#/$defs/TextSpanEvidence",
+      "video_span": "#/$defs/VideoSpanEvidence"
+    },
+    "propertyName": "kind"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/DocumentRegionEvidence"
+    },
+    {
+      "$ref": "#/$defs/ImageRegionEvidence"
+    },
+    {
+      "$ref": "#/$defs/AudioSpanEvidence"
+    },
+    {
+      "$ref": "#/$defs/VideoSpanEvidence"
+    },
+    {
+      "$ref": "#/$defs/TextSpanEvidence"
+    },
+    {
+      "$ref": "#/$defs/CalculationEvidence"
+    },
+    {
+      "$ref": "#/$defs/LineageEvidence"
+    }
+  ],
+  "title": "Evidence",
+  "x-hawser-contract-version": "0.1.0"
+}

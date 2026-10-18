@@ -1,0 +1,216 @@
+{
+  "$defs": {
+    "ArtifactInput": {
+      "additionalProperties": false,
+      "description": "A stored Hawser artifact (e.g. the output of a previous run).",
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "artifact",
+          "default": "artifact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "artifact_id"
+      ],
+      "title": "ArtifactInput",
+      "type": "object"
+    },
+    "AssetInput": {
+      "additionalProperties": false,
+      "description": "An already-admitted asset.",
+      "properties": {
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "asset",
+          "default": "asset",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "title": "AssetInput",
+      "type": "object"
+    },
+    "InlineInput": {
+      "additionalProperties": false,
+      "description": "Small text or JSON given inline.",
+      "properties": {
+        "json": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Json"
+        },
+        "kind": {
+          "const": "inline",
+          "default": "inline",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        }
+      },
+      "title": "InlineInput",
+      "type": "object"
+    },
+    "PathInput": {
+      "additionalProperties": false,
+      "description": "A local file path. Resolved and uploaded by the SDK before submission.",
+      "properties": {
+        "kind": {
+          "const": "path",
+          "default": "path",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "PathInput",
+      "type": "object"
+    },
+    "StorageInput": {
+      "additionalProperties": false,
+      "description": "An authenticated object-storage reference (``s3://bucket/key``).\n\nPublic URLs are not accepted (blueprint §4.1).",
+      "properties": {
+        "kind": {
+          "const": "storage",
+          "default": "storage",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "uri": {
+          "pattern": "^(s3|gs|az)://",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri"
+      ],
+      "title": "StorageInput",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/InputRef.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "discriminator": {
+    "mapping": {
+      "artifact": "#/$defs/ArtifactInput",
+      "asset": "#/$defs/AssetInput",
+      "inline": "#/$defs/InlineInput",
+      "path": "#/$defs/PathInput",
+      "storage": "#/$defs/StorageInput"
+    },
+    "propertyName": "kind"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/PathInput"
+    },
+    {
+      "$ref": "#/$defs/InlineInput"
+    },
+    {
+      "$ref": "#/$defs/AssetInput"
+    },
+    {
+      "$ref": "#/$defs/ArtifactInput"
+    },
+    {
+      "$ref": "#/$defs/StorageInput"
+    }
+  ],
+  "title": "InputRef",
+  "x-hawser-contract-version": "0.1.0"
+}

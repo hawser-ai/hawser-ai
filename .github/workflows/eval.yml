@@ -1,0 +1,34 @@
+name: eval
+
+# Replayed evaluation of the reference workflow on every PR (no provider keys, no cost).
+# The dataset is regenerated deterministically; recorded responses live in the repo.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  reference-workflow:
+    runs-on: ubuntu-latest
+    env:
+      HAWSER_RECORD_MODE: replay
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-packages
+      - name: Build the dataset
+        run: uv run python -m hawser_synth.dataset datasets/invoice-po/v1 --n 60
+      - name: Replay the smoke subset (Claude Haiku 5.5 via OpenRouter recording)
+        run: |
+          uv run hawser eval run --dataset datasets/invoice-po/v1 --tag smoke --tag native \
+            --model openrouter/anthropic/claude-haiku-5.5 --out eval-out
+      - name: Gate
+        run: uv run hawser eval gate eval-out --thresholds evals/thresholds.yaml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: eval-out

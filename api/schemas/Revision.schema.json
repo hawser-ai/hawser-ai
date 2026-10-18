@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "FieldMeta": {
+      "additionalProperties": false,
+      "description": "Per-field sidecar: evidence, issues and extraction status (ADR-0005).",
+      "properties": {
+        "anchor_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Confidence"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "issues": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/FieldStatus",
+          "default": "found"
+        }
+      },
+      "title": "FieldMeta",
+      "type": "object"
+    },
+    "FieldStatus": {
+      "enum": [
+        "found",
+        "unknown",
+        "not_applicable",
+        "derived"
+      ],
+      "title": "FieldStatus",
+      "type": "string"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/Revision.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A result snapshot. Machine revisions are immutable; reviews create new ones.",
+  "properties": {
+    "author": {
+      "title": "Author",
+      "type": "string"
+    },
+    "comment": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Comment"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "field_meta": {
+      "default": {},
+      "patternProperties": {
+        "^(?:/(?:[^/~]|~0|~1)*)*$": {
+          "$ref": "#/$defs/FieldMeta"
+        }
+      },
+      "title": "Field Meta",
+      "type": "object"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "machine",
+        "reviewed"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "parent_revision_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Revision Id"
+    },
+    "result": {
+      "anyOf": [
+        {},
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Result"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "run_id",
+    "tenant_id",
+    "kind",
+    "result",
+    "author",
+    "created_at"
+  ],
+  "title": "Revision",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

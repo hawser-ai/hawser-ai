@@ -1,0 +1,71 @@
+name: invoice-po-reconciliation
+version: 1.0.0
+description: Reconcile a supplier invoice against its purchase order — matched line items, deltas, header discrepancies, totals and a review decision, with page evidence.
+mode: workflow
+instruction: Reconcile the invoice with the purchase order.
+inputs:
+  invoice:
+    type: document
+    description: The supplier invoice (PDF or image).
+  purchase_order:
+    type: document
+    description: The buyer's purchase order.
+output_schema: schemas.py:ReconciliationResult
+tools:
+  - document.extract
+  - compute.align_line_items
+  - compute.check_arithmetic
+  - compute.reconcile
+validators:
+  - id: rules.formats
+    params:
+      formats:
+        /invoice/invoice_date: date
+        /invoice/currency: iso4217
+        /purchase_order/po_date: date
+        /purchase_order/currency: iso4217
+        /invoice/line_items/*/quantity: positive
+        /purchase_order/line_items/*/quantity: positive
+  - id: rules.expressions
+    params:
+      rules:
+        - name: invoice_totals
+          expr: approx(invoice.subtotal + invoice.tax, invoice.total, 0.02)
+          message: invoice subtotal + tax does not equal the printed total
+          field: /invoice/total
+          repair: review
+        - name: invoice_line_sum
+          expr: approx(sum(invoice.line_items[:].line_total), invoice.subtotal, 0.05)
+          message: invoice line totals do not add up to the subtotal
+          field: /invoice/subtotal
+          repair: review
+        - name: po_totals
+          expr: approx(purchase_order.subtotal + purchase_order.tax, purchase_order.total, 0.02)
+          message: purchase order subtotal + tax does not equal the printed total
+          field: /purchase_order/total
+          repair: review
+        - name: no_discrepancies
+          expr: reconciliation.summary_status == "match"
+          message: the invoice and purchase order disagree; a reviewer must decide
+          field: /reconciliation/summary_status
+          repair: review
+  - invoice_po.summary_consistent
+evidence:
+  required:
+    - /invoice/total
+    - /invoice/invoice_number
+    - /purchase_order/total
+    - /purchase_order/po_number
+  preferred:
+    - /invoice/line_items/*/line_total
+    - /purchase_order/line_items/*/line_total
+policy:
+  repair:
+    attempts: 1
+  review_on_failure: true
+prompts:
+  extract_invoice: prompts/extract_invoice.md
+  extract_po: prompts/extract_po.md
+evals:
+  - datasets/invoice-po/v1
+compatibility: ">=0.1,<0.2"

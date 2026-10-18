@@ -1,0 +1,19 @@
+[project]
+name = "hawser-media"
+version = "0.1.0a0"
+description = "Document, image, audio and video primitives for Hawser."
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic>=2.9,<3",
+  "pypdfium2>=4.30",
+  "pillow>=10.4",
+  "filetype>=1.2",
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hawser_media"]

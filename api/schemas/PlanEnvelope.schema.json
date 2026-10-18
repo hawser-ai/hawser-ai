@@ -1,0 +1,98 @@
+{
+  "$defs": {
+    "ExecutionMode": {
+      "enum": [
+        "direct",
+        "workflow",
+        "agent"
+      ],
+      "title": "ExecutionMode",
+      "type": "string"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/PlanEnvelope.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "edges": {
+      "default": [],
+      "items": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "type": "array"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "estimated_cost_usd": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Estimated Cost Usd"
+    },
+    "goal": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Goal"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "mode": {
+      "$ref": "#/$defs/ExecutionMode"
+    },
+    "nodes": {
+      "default": [],
+      "items": {},
+      "title": "Nodes",
+      "type": "array"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "source": {
+      "default": "planner",
+      "pattern": "^(planner|skill|cached|direct)$",
+      "title": "Source",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "run_id",
+    "mode",
+    "created_at"
+  ],
+  "title": "PlanEnvelope",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

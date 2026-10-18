@@ -1,0 +1,155 @@
+{
+  "$defs": {
+    "ExecutionMode": {
+      "enum": [
+        "direct",
+        "workflow",
+        "agent"
+      ],
+      "title": "ExecutionMode",
+      "type": "string"
+    },
+    "RunStatus": {
+      "description": "Run lifecycle. See :mod:`hawser.runtime.state` for the allowed transitions.",
+      "enum": [
+        "queued",
+        "admitting",
+        "planning",
+        "running",
+        "awaiting_approval",
+        "validating",
+        "repairing",
+        "needs_review",
+        "accepted",
+        "rejected",
+        "failed",
+        "cancelled"
+      ],
+      "title": "RunStatus",
+      "type": "string"
+    },
+    "SkillRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 120,
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "SkillRef",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/RunSummary.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "List-view projection of a run.",
+  "properties": {
+    "artifact_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Artifact Count",
+      "type": "integer"
+    },
+    "completed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Completed At"
+    },
+    "cost_usd": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Cost Usd",
+      "type": "number"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Metadata",
+      "type": "object"
+    },
+    "mode": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExecutionMode"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "output_artifact_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Output Artifact Ids",
+      "type": "array"
+    },
+    "skill": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SkillRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status": {
+      "$ref": "#/$defs/RunStatus"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "tenant_id",
+    "status",
+    "created_at"
+  ],
+  "title": "RunSummary",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

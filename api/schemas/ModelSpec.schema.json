@@ -1,0 +1,260 @@
+{
+  "$defs": {
+    "DataHandling": {
+      "additionalProperties": false,
+      "properties": {
+        "hosted": {
+          "default": true,
+          "title": "Hosted",
+          "type": "boolean"
+        },
+        "regions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Regions",
+          "type": "array"
+        },
+        "retains_data": {
+          "default": false,
+          "title": "Retains Data",
+          "type": "boolean"
+        },
+        "trains_on_data": {
+          "default": false,
+          "title": "Trains On Data",
+          "type": "boolean"
+        }
+      },
+      "title": "DataHandling",
+      "type": "object"
+    },
+    "Modality": {
+      "enum": [
+        "text",
+        "image",
+        "document",
+        "audio",
+        "video"
+      ],
+      "title": "Modality",
+      "type": "string"
+    },
+    "Pricing": {
+      "additionalProperties": false,
+      "description": "USD per million tokens unless stated otherwise.",
+      "properties": {
+        "cache_read_per_mtok": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Read Per Mtok"
+        },
+        "cache_write_per_mtok": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Write Per Mtok"
+        },
+        "input_per_mtok": {
+          "minimum": 0,
+          "title": "Input Per Mtok",
+          "type": "number"
+        },
+        "output_per_mtok": {
+          "minimum": 0,
+          "title": "Output Per Mtok",
+          "type": "number"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input_per_mtok",
+        "output_per_mtok",
+        "version"
+      ],
+      "title": "Pricing",
+      "type": "object"
+    },
+    "RetryBehaviour": {
+      "additionalProperties": false,
+      "properties": {
+        "base_delay_ms": {
+          "default": 500,
+          "minimum": 0,
+          "title": "Base Delay Ms",
+          "type": "integer"
+        },
+        "max_attempts": {
+          "default": 3,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "max_delay_ms": {
+          "default": 20000,
+          "minimum": 0,
+          "title": "Max Delay Ms",
+          "type": "integer"
+        },
+        "timeout_ms": {
+          "default": 120000,
+          "minimum": 0,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "title": "RetryBehaviour",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/ModelSpec.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "constraints": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "context_window": {
+      "exclusiveMinimum": 0,
+      "title": "Context Window",
+      "type": "integer"
+    },
+    "data_handling": {
+      "$ref": "#/$defs/DataHandling",
+      "default": {
+        "hosted": true,
+        "regions": [],
+        "retains_data": false,
+        "trains_on_data": false
+      }
+    },
+    "display_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Display Name"
+    },
+    "enabled": {
+      "default": true,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "id": {
+      "pattern": "^[a-z0-9-]+/[A-Za-z0-9._:/-]+$",
+      "title": "Id",
+      "type": "string"
+    },
+    "max_output_tokens": {
+      "exclusiveMinimum": 0,
+      "title": "Max Output Tokens",
+      "type": "integer"
+    },
+    "modalities": {
+      "default": [
+        "text"
+      ],
+      "items": {
+        "$ref": "#/$defs/Modality"
+      },
+      "title": "Modalities",
+      "type": "array"
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "pricing": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Pricing"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "provider": {
+      "title": "Provider",
+      "type": "string"
+    },
+    "quality_prior": {
+      "default": 0.5,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Quality Prior",
+      "type": "number"
+    },
+    "retry": {
+      "$ref": "#/$defs/RetryBehaviour",
+      "default": {
+        "base_delay_ms": 500,
+        "max_attempts": 3,
+        "max_delay_ms": 20000,
+        "timeout_ms": 120000
+      }
+    },
+    "speed_prior": {
+      "default": 0.5,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Speed Prior",
+      "type": "number"
+    },
+    "streaming": {
+      "default": false,
+      "title": "Streaming",
+      "type": "boolean"
+    },
+    "structured_output": {
+      "default": false,
+      "title": "Structured Output",
+      "type": "boolean"
+    },
+    "tool_calling": {
+      "default": false,
+      "title": "Tool Calling",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "model",
+    "context_window",
+    "max_output_tokens"
+  ],
+  "title": "ModelSpec",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

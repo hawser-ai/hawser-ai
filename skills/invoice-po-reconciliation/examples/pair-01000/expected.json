@@ -1,0 +1,210 @@
+{
+  "result": {
+    "invoice": {
+      "invoice_number": "INV-2026-01000",
+      "invoice_date": "2026-06-30",
+      "due_date": "2026-07-14",
+      "vendor_name": "Keystone Industrial Pty",
+      "customer_name": "Aurochs Software Pvt Ltd",
+      "purchase_order_number": "PO-80082",
+      "currency": "EUR",
+      "line_items": [
+        {
+          "sku": "NT-0808",
+          "description": "Nyloc nut M8, pack of 100",
+          "quantity": 4.0,
+          "unit_price": 123.06,
+          "line_total": 492.24
+        },
+        {
+          "sku": "CB-5503",
+          "description": "Cable gland PG13.5 IP68",
+          "quantity": 10.0,
+          "unit_price": 42.14,
+          "line_total": 421.4
+        },
+        {
+          "sku": "LB-4420",
+          "description": "Lithium grease 400 g cartridge",
+          "quantity": 24.0,
+          "unit_price": 34.17,
+          "line_total": 820.08
+        },
+        {
+          "sku": "SC-6007",
+          "description": "Self-tapping screw 4.2 x 16, box of 500",
+          "quantity": 24.0,
+          "unit_price": 26.98,
+          "line_total": 647.52
+        },
+        {
+          "sku": "SP-3310",
+          "description": "Spring pin 6 x 30",
+          "quantity": 12.0,
+          "unit_price": 124.94,
+          "line_total": 1499.28
+        },
+        {
+          "sku": "TM-1180",
+          "description": "Thermal paste 10 g tube",
+          "quantity": 4.0,
+          "unit_price": 5.66,
+          "line_total": 22.64
+        }
+      ],
+      "subtotal": 3903.16,
+      "tax": 780.63,
+      "total": 4683.79
+    },
+    "purchase_order": {
+      "po_number": "PO-80082",
+      "po_date": "2026-06-17",
+      "vendor_name": "Keystone Industrial Pty",
+      "buyer_name": "Aurochs Software Pvt Ltd",
+      "currency": "EUR",
+      "line_items": [
+        {
+          "sku": "NT-0808",
+          "description": "Nyloc nut M8, pack of 100",
+          "quantity": 4.0,
+          "unit_price": 123.06,
+          "line_total": 492.24
+        },
+        {
+          "sku": "CB-5503",
+          "description": "Cable gland PG13.5 IP68",
+          "quantity": 10.0,
+          "unit_price": 42.14,
+          "line_total": 421.4
+        },
+        {
+          "sku": "LB-4420",
+          "description": "Lithium grease 400 g cartridge",
+          "quantity": 24.0,
+          "unit_price": 34.17,
+          "line_total": 820.08
+        },
+        {
+          "sku": "SC-6007",
+          "description": "Self-tapping screw 4.2 x 16, box of 500",
+          "quantity": 24.0,
+          "unit_price": 26.98,
+          "line_total": 647.52
+        },
+        {
+          "sku": "SP-3310",
+          "description": "Spring pin 6 x 30",
+          "quantity": 12.0,
+          "unit_price": 124.94,
+          "line_total": 1499.28
+        },
+        {
+          "sku": "TM-1180",
+          "description": "Thermal paste 10 g tube",
+          "quantity": 4.0,
+          "unit_price": 5.66,
+          "line_total": 22.64
+        }
+      ],
+      "subtotal": 3903.16,
+      "tax": 780.63,
+      "total": 4683.79
+    },
+    "reconciliation": {
+      "matched_items": [
+        {
+          "sku": "NT-0808",
+          "description": "Nyloc nut M8, pack of 100",
+          "match_method": "sku",
+          "invoice_quantity": 4.0,
+          "po_quantity": 4.0,
+          "invoice_unit_price": 123.06,
+          "po_unit_price": 123.06,
+          "quantity_delta": 0.0,
+          "price_delta": 0.0,
+          "amount_delta": 0.0,
+          "invoice_index": 0,
+          "po_index": 0
+        },
+        {
+          "sku": "CB-5503",
+          "description": "Cable gland PG13.5 IP68",
+          "match_method": "sku",
+          "invoice_quantity": 10.0,
+          "po_quantity": 10.0,
+          "invoice_unit_price": 42.14,
+          "po_unit_price": 42.14,
+          "quantity_delta": 0.0,
+          "price_delta": 0.0,
+          "amount_delta": 0.0,
+          "invoice_index": 1,
+          "po_index": 1
+        },
+        {
+          "sku": "LB-4420",
+          "description": "Lithium grease 400 g cartridge",
+          "match_method": "sku",
+          "invoice_quantity": 24.0,
+          "po_quantity": 24.0,
+          "invoice_unit_price": 34.17,
+          "po_unit_price": 34.17,
+          "quantity_delta": 0.0,
+          "price_delta": 0.0,
+          "amount_delta": 0.0,
+          "invoice_index": 2,
+          "po_index": 2
+        },
+        {
+          "sku": "SC-6007",
+          "description": "Self-tapping screw 4.2 x 16, box of 500",
+          "match_method": "sku",
+          "invoice_quantity": 24.0,
+          "po_quantity": 24.0,
+          "invoice_unit_price": 26.98,
+          "po_unit_price": 26.98,
+          "quantity_delta": 0.0,
+          "price_delta": 0.0,
+          "amount_delta": 0.0,
+          "invoice_index": 3,
+          "po_index": 3
+        },
+        {
+          "sku": "SP-3310",
+          "description": "Spring pin 6 x 30",
+          "match_method": "sku",
+          "invoice_quantity": 12.0,
+          "po_quantity": 12.0,
+          "invoice_unit_price": 124.94,
+          "po_unit_price": 124.94,
+          "quantity_delta": 0.0,
+          "price_delta": 0.0,
+          "amount_delta": 0.0,
+          "invoice_index": 4,
+          "po_index": 4
+        },
+        {
+          "sku": "TM-1180",
+          "description": "Thermal paste 10 g tube",
+          "match_method": "sku",
+          "invoice_quantity": 4.0,
+          "po_quantity": 4.0,
+          "invoice_unit_price": 5.66,
+          "po_unit_price": 5.66,
+          "quantity_delta": 0.0,
+          "price_delta": 0.0,
+          "amount_delta": 0.0,
+          "invoice_index": 5,
+          "po_index": 5
+        }
+      ],
+      "unmatched_invoice_items": [],
+      "unmatched_po_items": [],
+      "header_discrepancies": [],
+      "invoice_total": 4683.79,
+      "po_total": 4683.79,
+      "total_delta": 0.0,
+      "discrepancy_count": 0,
+      "summary_status": "match"
+    }
+  }
+}

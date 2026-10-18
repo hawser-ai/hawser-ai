@@ -1,0 +1,8 @@
+# CI quality gate for the reference workflow (replayed smoke subset, native-text pairs).
+# `hawser eval gate <report> --thresholds evals/thresholds.yaml`
+field_accuracy: { min: 0.98 }
+doc_pass_rate: { min: 0.95 }
+status_accuracy: { min: 0.95 }
+failed_rate: { max: 0.0 }
+evidence_coverage: { min: 0.95 }
+model_calls_mean: { max: 2.5 }

@@ -1,0 +1,497 @@
+{
+  "$defs": {
+    "AssetManifest": {
+      "additionalProperties": false,
+      "description": "Everything admission learned about an input before any model saw it.",
+      "properties": {
+        "audio": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AudioProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "declared_media_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declared Media Type"
+        },
+        "estimated_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Cost Usd"
+        },
+        "execution_classes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Execution Classes",
+          "type": "array"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImageProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "limits": {
+          "$ref": "#/$defs/LimitsApplied"
+        },
+        "media_class": {
+          "$ref": "#/$defs/MediaClass"
+        },
+        "media_type": {
+          "title": "Media Type",
+          "type": "string"
+        },
+        "pdf": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PdfProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TextProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "video": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VideoProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "warnings": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "media_class",
+        "media_type",
+        "size_bytes",
+        "limits"
+      ],
+      "title": "AssetManifest",
+      "type": "object"
+    },
+    "AudioProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "minimum": 1,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "codec": {
+          "title": "Codec",
+          "type": "string"
+        },
+        "container": {
+          "title": "Container",
+          "type": "string"
+        },
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "sample_rate_hz": {
+          "exclusiveMinimum": 0,
+          "title": "Sample Rate Hz",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "codec",
+        "container",
+        "duration_ms",
+        "channels",
+        "sample_rate_hz"
+      ],
+      "title": "AudioProbe",
+      "type": "object"
+    },
+    "ImageProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "exif_orientation": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exif Orientation"
+        },
+        "frames": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Frames",
+          "type": "integer"
+        },
+        "has_icc": {
+          "default": false,
+          "title": "Has Icc",
+          "type": "boolean"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "mode": {
+          "title": "Mode",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "mode"
+      ],
+      "title": "ImageProbe",
+      "type": "object"
+    },
+    "LimitsApplied": {
+      "additionalProperties": false,
+      "description": "The admission limits in force when the asset was admitted (for reproducibility).",
+      "properties": {
+        "max_bytes": {
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_duration_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Duration Ms"
+        },
+        "max_pages": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Pages"
+        },
+        "max_pixels": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Pixels"
+        }
+      },
+      "required": [
+        "max_bytes"
+      ],
+      "title": "LimitsApplied",
+      "type": "object"
+    },
+    "MediaClass": {
+      "enum": [
+        "text",
+        "json",
+        "pdf",
+        "office",
+        "image",
+        "audio",
+        "video"
+      ],
+      "title": "MediaClass",
+      "type": "string"
+    },
+    "PdfProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "chars_per_page": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Chars Per Page",
+          "type": "array"
+        },
+        "encrypted": {
+          "default": false,
+          "title": "Encrypted",
+          "type": "boolean"
+        },
+        "estimated_render_pixels": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Estimated Render Pixels",
+          "type": "integer"
+        },
+        "has_forms": {
+          "default": false,
+          "title": "Has Forms",
+          "type": "boolean"
+        },
+        "page_count": {
+          "minimum": 0,
+          "title": "Page Count",
+          "type": "integer"
+        },
+        "page_sizes_pt": {
+          "default": [],
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Page Sizes Pt",
+          "type": "array"
+        }
+      },
+      "required": [
+        "page_count"
+      ],
+      "title": "PdfProbe",
+      "type": "object"
+    },
+    "TextProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "chars": {
+          "minimum": 0,
+          "title": "Chars",
+          "type": "integer"
+        },
+        "valid_json": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Json"
+        },
+        "valid_utf8": {
+          "default": true,
+          "title": "Valid Utf8",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "chars"
+      ],
+      "title": "TextProbe",
+      "type": "object"
+    },
+    "VideoProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_tracks": {
+          "minimum": 0,
+          "title": "Audio Tracks",
+          "type": "integer"
+        },
+        "codec": {
+          "title": "Codec",
+          "type": "string"
+        },
+        "container": {
+          "title": "Container",
+          "type": "string"
+        },
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "estimated_decoded_pixels": {
+          "minimum": 0,
+          "title": "Estimated Decoded Pixels",
+          "type": "integer"
+        },
+        "fps": {
+          "exclusiveMinimum": 0,
+          "title": "Fps",
+          "type": "number"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "codec",
+        "container",
+        "duration_ms",
+        "width",
+        "height",
+        "fps",
+        "audio_tracks",
+        "estimated_decoded_pixels"
+      ],
+      "title": "VideoProbe",
+      "type": "object"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/Asset.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_hash": {
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "manifest": {
+      "$ref": "#/$defs/AssetManifest"
+    },
+    "media_class": {
+      "$ref": "#/$defs/MediaClass"
+    },
+    "media_type": {
+      "title": "Media Type",
+      "type": "string"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Name"
+    },
+    "original_artifact_id": {
+      "title": "Original Artifact Id",
+      "type": "string"
+    },
+    "scoped_hash": {
+      "title": "Scoped Hash",
+      "type": "string"
+    },
+    "size_bytes": {
+      "minimum": 0,
+      "title": "Size Bytes",
+      "type": "integer"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "tenant_id",
+    "media_class",
+    "media_type",
+    "size_bytes",
+    "content_hash",
+    "scoped_hash",
+    "original_artifact_id",
+    "manifest",
+    "created_at"
+  ],
+  "title": "Asset",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}

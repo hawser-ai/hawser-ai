@@ -1,0 +1,69 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HAWSER_RECORD_MODE: replay
+
+jobs:
+  python:
+    name: python (${{ matrix.os }}, ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv sync --all-packages --python ${{ matrix.python }}
+      - name: Lint
+        run: |
+          uv run ruff check python
+          uv run ruff format --check python
+      - name: Typecheck
+        run: uv run pyright
+      - name: Contract schemas are current
+        run: uv run python -m hawser.models.export --out api/schemas --check
+      - name: Tests
+        run: uv run pytest -n auto
+
+  secrets:
+    name: secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  licenses:
+    name: dependency licences
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-packages
+      - name: Fail on copyleft dependencies (ADR-0007, ADR-0009)
+        run: |
+          uv pip install pip-licenses
+          uv run pip-licenses --format=markdown --with-urls > licenses.md
+          cat licenses.md
+          ! uv run pip-licenses --format=csv | grep -Ei '(^|,)"?(GPL|AGPL|LGPL|SSPL)' || (echo "copyleft dependency found" && exit 1)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: licenses
+          path: licenses.md

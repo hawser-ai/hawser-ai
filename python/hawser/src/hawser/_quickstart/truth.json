@@ -1,0 +1,63 @@
+{
+  "invoice_number": "INV-2026-00042",
+  "invoice_date": "2026-05-21",
+  "due_date": "2026-06-04",
+  "vendor_name": "Northwind Components Ltd",
+  "customer_name": "Aurochs Software Pvt Ltd",
+  "purchase_order_number": "PO-23434",
+  "currency": "USD",
+  "line_items": [
+    {
+      "sku": "WS-2210",
+      "description": "Flat washer M8 stainless, pack of 200",
+      "quantity": 50.0,
+      "unit_price": 108.96,
+      "line_total": 5448.0
+    },
+    {
+      "sku": "GK-9004",
+      "description": "Gasket kit, nitrile, assorted",
+      "quantity": 50.0,
+      "unit_price": 36.99,
+      "line_total": 1849.5
+    },
+    {
+      "sku": "HX-1042",
+      "description": "Hex bolt M8 x 40 zinc plated, box of 100",
+      "quantity": 50.0,
+      "unit_price": 76.38,
+      "line_total": 3819.0
+    },
+    {
+      "sku": "TM-1180",
+      "description": "Thermal paste 10 g tube",
+      "quantity": 24.0,
+      "unit_price": 106.68,
+      "line_total": 2560.32
+    },
+    {
+      "sku": "LB-4420",
+      "description": "Lithium grease 400 g cartridge",
+      "quantity": 1.0,
+      "unit_price": 136.95,
+      "line_total": 136.95
+    },
+    {
+      "sku": "SC-6007",
+      "description": "Self-tapping screw 4.2 x 16, box of 500",
+      "quantity": 3.0,
+      "unit_price": 126.12,
+      "line_total": 378.36
+    },
+    {
+      "sku": "BR-7781",
+      "description": "Ball bearing 6204-2RS",
+      "quantity": 10.0,
+      "unit_price": 51.1,
+      "line_total": 511.0
+    }
+  ],
+  "subtotal": 14703.13,
+  "tax": 735.16,
+  "total": 15438.29
+}

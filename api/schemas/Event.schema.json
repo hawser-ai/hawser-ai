@@ -1,0 +1,100 @@
+{
+  "$defs": {
+    "EventType": {
+      "enum": [
+        "run.created",
+        "run.status_changed",
+        "asset.admitted",
+        "asset.rejected",
+        "plan.created",
+        "plan.rejected",
+        "step.started",
+        "step.completed",
+        "step.failed",
+        "step.skipped",
+        "model.called",
+        "model.fallback",
+        "tool.called",
+        "tool.denied",
+        "context.selected",
+        "evidence.anchored",
+        "validation.completed",
+        "repair.started",
+        "repair.no_progress",
+        "review.requested",
+        "review.decided",
+        "approval.requested",
+        "approval.decided",
+        "budget.reserved",
+        "budget.settled",
+        "budget.released",
+        "budget.exceeded",
+        "result.assembled",
+        "artifact.created",
+        "sandbox.executed",
+        "webhook.delivered"
+      ],
+      "title": "EventType",
+      "type": "string"
+    }
+  },
+  "$id": "https://hawser.dev/schemas/0.1.0/Event.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "at": {
+      "format": "date-time",
+      "title": "At",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Payload",
+      "type": "object"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "seq": {
+      "minimum": 1,
+      "title": "Seq",
+      "type": "integer"
+    },
+    "step_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Step Id"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "type": {
+      "$ref": "#/$defs/EventType"
+    }
+  },
+  "required": [
+    "id",
+    "run_id",
+    "tenant_id",
+    "seq",
+    "type",
+    "at"
+  ],
+  "title": "Event",
+  "type": "object",
+  "x-hawser-contract-version": "0.1.0"
+}
