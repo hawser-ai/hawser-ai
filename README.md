@@ -57,27 +57,44 @@ branches and bounded loops, and a retrieval-based context manager. `hawser run -
 "<goal>" -f a.pdf -f b.pdf`; `hawser inspect run_… --plan`. The three-mode comparison on the
 reference skill is published in the benchmark page.
 
+**Phase 5 — Control plane and durable execution.** `hawserd` (the `hawser-server` package):
+a REST API generated into `api/openapi/openapi.json`, API keys and tenancy, Postgres and
+S3/MinIO storage behind the same store protocols, a leased durable worker that resumes crashed
+runs from step checkpoints, SSE event streams, signed webhooks with retries and a dead-letter
+list, Docker Compose, and an SDK/CLI HTTP backend. A conformance suite runs the same scenarios
+against the local runtime and the server. Python end to end — see ADR-0010 for why Go and
+Temporal were dropped.
+
+```bash
+make up                                            # postgres + minio + hawserd + worker
+hawser init --server http://localhost:8080 && export HAWSER_API_KEY=<printed key>
+hawser run -i "Extract the invoice." -f invoice.pdf --schema quickstart/invoice.schema.json
+hawserd serve --dev                                # or: SQLite + in-process worker, no Docker
+```
+
 Docs: [quickstart](docs/quickstart.md) · [skills](docs/concepts/skills.md) ·
 [validation](docs/concepts/validation.md) · [review](docs/concepts/review.md) ·
 [evals](docs/concepts/evals.md) · [models](docs/concepts/models.md) ·
-[tools](docs/concepts/tools.md) · [agent](docs/concepts/agent.md). Not yet: the server and
-UI (Phases 5–6), OCR for scanned pages (Phase 7), audio/video (Phases 8–9).
+[tools](docs/concepts/tools.md) · [agent](docs/concepts/agent.md) ·
+[server](docs/concepts/server.md) · [operator guide](docs/operator/). Not yet: the web UI
+(Phase 6), OCR for scanned pages (Phase 7), audio/video (Phases 8–9).
 
 ## Repository layout
 
 ```
 api/schemas/            generated JSON Schema for every contract model (CI checks drift)
-api/openapi/            public REST contract (Phase 5)
-api/proto/              internal gRPC contracts (Phase 5)
-control/                Go control plane: hawserd (Phase 5)
+api/openapi/            generated OpenAPI document for hawserd (CI checks drift)
+api/proto/              reserved for internal RPC contracts (unused; ADR-0010)
 python/hawser/          the `hawser` package: SDK, local runtime, CLI, contract models
+python/hawser_server/   `hawserd`: API, durable worker, migrations, admin (Phase 5)
 python/hawser_media/    document, image, audio, video primitives (Phase 1+)
 python/hawser_evals/    evaluation engine (Phase 2)
+python/hawser_synth/    synthetic documents and datasets for tests and evals
 sandbox/                generated-code sandbox broker and adapters (Phase 10)
 skills/                 versioned skill bundles (Phase 2)
 mcp/                    MCP server and client adapters (Phase 11)
 web/                    playground, inspector and review UI (Phase 6)
-deploy/                 compose and helm
+deploy/                 docker image, compose (Phase 5); helm (Phase 11)
 examples/               reference workflows and the quickstart
 docs/                   ADRs, architecture, security, operator guides
 ```
@@ -88,12 +105,15 @@ Requires [`uv`](https://docs.astral.sh/uv/). Python 3.12 is fetched automaticall
 
 ```bash
 make setup      # venv, all packages, pre-commit hooks
-make check      # lint + typecheck + schema drift + tests (what CI runs)
+make check      # lint + typecheck + schema/OpenAPI drift + tests (what CI runs)
 make schemas    # regenerate api/schemas after changing hawser.models
+make openapi    # regenerate api/openapi/openapi.json after changing hawserd routes
 ```
 
 Tests never call a model provider; everything runs from recorded cassettes
-(`HAWSER_RECORD_MODE=replay`). Live runs are nightly and budget-capped.
+(`HAWSER_RECORD_MODE=replay`). Server tests run on SQLite and on an embedded Postgres
+(`pgserver`, no service needed); set `HAWSER_TEST_DATABASE_URL` to use your own or
+`HAWSER_SKIP_PG=1` to skip. Live runs are nightly and budget-capped.
 
 ## Licence
 

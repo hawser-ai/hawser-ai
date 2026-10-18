@@ -1,6 +1,6 @@
 # ADR-0002: Python-first local runtime; Temporal is the only production durability model
 
-- **Status:** accepted
+- **Status:** accepted; the Go/Temporal parts of decisions 2–3 are superseded by ADR-0010
 - **Date:** 2026-10-18
 - **Phase:** 0
 

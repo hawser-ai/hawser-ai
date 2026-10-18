@@ -101,4 +101,41 @@ def is_terminal(status: RunStatus) -> bool:
     return status in TERMINAL_STATUSES
 
 
-__all__ = ["ALLOWED_TRANSITIONS", "can_transition", "is_terminal", "status_for_error", "transition"]
+def status_path(current: RunStatus, target: RunStatus) -> list[RunStatus]:
+    """The shortest legal sequence of statuses from ``current`` to ``target`` (inclusive of
+    ``target``, exclusive of ``current``). Raises :class:`InvalidTransition` if none exists."""
+    if current == target:
+        return []
+    previous: dict[RunStatus, RunStatus] = {}
+    frontier = [current]
+    seen = {current}
+    while frontier:
+        nxt: list[RunStatus] = []
+        for s in frontier:
+            for n in ALLOWED_TRANSITIONS[s]:
+                if n in seen:
+                    continue
+                seen.add(n)
+                previous[n] = s
+                if n == target:
+                    path = [n]
+                    while path[-1] != current:
+                        path.append(previous[path[-1]])
+                    return list(reversed(path[:-1]))
+                if n not in TERMINAL_STATUSES:
+                    nxt.append(n)
+        frontier = nxt
+    raise InvalidTransition(
+        f"no path from {current.value} to {target.value}",
+        details={"from": current.value, "to": target.value},
+    )
+
+
+__all__ = [
+    "ALLOWED_TRANSITIONS",
+    "can_transition",
+    "is_terminal",
+    "status_for_error",
+    "status_path",
+    "transition",
+]

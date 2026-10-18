@@ -11,7 +11,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any, Final
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 #: Tenant id used by the local runtime. A valid ULID (all zeros) so the id scheme holds.
 LOCAL_TENANT: Final = "ten_00000000000000000000000000"
@@ -55,6 +55,18 @@ class HawserConfig(BaseModel):
     #: Extra skill bundle directories (``./skills`` and ``~/.hawser/skills`` are always searched).
     skill_paths: list[Path] = Field(default_factory=list)
 
+    #: When set, the SDK and CLI talk to a ``hawserd`` server instead of the local runtime.
+    server_url: str | None = None
+    #: API key for the server; prefer the ``HAWSER_API_KEY`` environment variable over the file.
+    api_key: str | None = None
+
+    @field_validator("skill_paths", mode="before")
+    @classmethod
+    def _split_paths(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return [p for p in value.split(os.pathsep) if p] or [p for p in value.split(",") if p]
+        return value
+
     @classmethod
     def load(cls, *, cwd: Path | None = None, **overrides: Any) -> HawserConfig:
         """Build a config from ``hawser.toml`` in ``cwd`` (if any), the env and overrides."""
@@ -67,6 +79,12 @@ class HawserConfig(BaseModel):
             section = data.get("hawser", {})
             if isinstance(section, dict):
                 values.update(section)  # type: ignore[arg-type]
+            server = data.get("server", {})
+            if isinstance(server, dict):
+                if server.get("url"):
+                    values["server_url"] = server["url"]
+                if server.get("api_key"):
+                    values["api_key"] = server["api_key"]
             # A project-local config implies a project-local home unless told otherwise.
             values.setdefault("home", str(cwd / ".hawser"))
         for name in cls.model_fields:

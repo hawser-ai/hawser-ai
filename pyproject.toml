@@ -3,19 +3,23 @@ name = "hawser-monorepo"
 version = "0.0.0"
 description = "Workspace root for the Hawser monorepo (not published)."
 requires-python = ">=3.12"
-dependencies = ["hawser", "hawser-media", "hawser-evals", "hawser-synth"]
+dependencies = ["hawser", "hawser-media", "hawser-evals", "hawser-synth", "hawser-server"]
 
 [tool.uv]
 package = false
 
 [tool.uv.workspace]
-members = ["python/hawser", "python/hawser_media", "python/hawser_evals", "python/hawser_synth"]
+members = [
+  "python/hawser", "python/hawser_media", "python/hawser_evals", "python/hawser_synth",
+  "python/hawser_server",
+]
 
 [tool.uv.sources]
 hawser = { workspace = true }
 hawser-media = { workspace = true }
 hawser-evals = { workspace = true }
 hawser-synth = { workspace = true }
+hawser-server = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -27,6 +31,9 @@ dev = [
   "pre-commit>=4.0",
   "types-pyyaml",
   "types-jsonschema",
+  "pgserver>=0.1.4",
+  "moto[s3]>=5.0",
+  "boto3-stubs[s3]",
 ]
 
 # ---------------------------------------------------------------------------
@@ -35,7 +42,10 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-src = ["python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src"]
+src = [
+  "python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src",
+  "python/hawser_server/src",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "N", "RUF", "PL", "PT", "RET"]
@@ -50,9 +60,10 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "python/*/tests/**" = ["PLR", "S101", "PT018", "PLC0415", "B007", "RUF001", "ANN"]
 "python/hawser/src/hawser/evidence/anchor.py" = ["RUF001"]  # the Unicode table is the point
+"python/hawser/src/hawser/conformance/**" = ["PT", "PLR"]  # scenarios assert by design
 
 [tool.ruff.lint.isort]
-known-first-party = ["hawser", "hawser_media", "hawser_evals", "hawser_synth"]
+known-first-party = ["hawser", "hawser_media", "hawser_evals", "hawser_synth", "hawser_server"]
 
 # ---------------------------------------------------------------------------
 # Types
@@ -62,7 +73,8 @@ pythonVersion = "3.12"
 typeCheckingMode = "strict"
 include = [
   "python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src",
-  "python/hawser/tests", "python/hawser_media/tests",
+  "python/hawser_server/src",
+  "python/hawser/tests", "python/hawser_media/tests", "python/hawser_server/tests",
 ]
 reportUnknownMemberType = false
 reportUnknownVariableType = false
@@ -76,7 +88,10 @@ reportMissingTypeStubs = false
 # Tests
 # ---------------------------------------------------------------------------
 [tool.pytest.ini_options]
-testpaths = ["python/hawser/tests", "python/hawser_media/tests", "python/hawser_evals/tests"]
+testpaths = [
+  "python/hawser/tests", "python/hawser_media/tests", "python/hawser_evals/tests",
+  "python/hawser_server/tests",
+]
 markers = ["live: calls a real model provider; runs only in the nightly job"]
 addopts = "-q -ra --import-mode=importlib"
 filterwarnings = ["error::DeprecationWarning:hawser.*"]

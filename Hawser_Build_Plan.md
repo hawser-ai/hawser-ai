@@ -628,75 +628,151 @@ Exit demo done: `hawser run --mode agent` plans and executes; `hawser inspect --
 
 ---
 
-## Phase 5 — Control plane and durable execution (8 weeks)
+## Phase 5 — Control plane and durable execution (Python; revised by ADR-0010)
+
+> **Revision (2026-10-18).** The original Phase 5 specified a Go control plane with Temporal.
+> ADR-0010 replaces it with a Python control plane (`hawser-server`, `hawserd`) and a
+> Postgres-leased durable worker. The goal, the public contract (OpenAPI, SSE, webhooks,
+> idempotency, API keys, tenancy columns) and the exit demo are unchanged; the implementation
+> stack is not. The original text is preserved in git history.
 
 ### Goal
-The same SDK and CLI work against a server. Runs are durable (crash recovery, timeouts, cancellation, idempotency, review/approval pauses), accessible via REST/OpenAPI, SSE and signed webhooks, with Postgres metadata and S3-compatible artifacts, deployable with Docker Compose **[B§10.2, B§22, B§25, B§26]**.
+The same SDK and CLI work against a server. Runs are durable (crash recovery, timeouts,
+cancellation, idempotency, review/approval pauses), accessible via REST/OpenAPI, SSE and signed
+webhooks, with Postgres metadata and S3-compatible artifacts, deployable with Docker Compose
+**[B§10.2, B§22, B§25, B§26]**.
 
 ### Scope
-**In:** Go API server, Postgres schema + migrations, S3 artifact store + signed URLs, Temporal workflows (Go) + Python activity workers, gRPC for sync calls, API keys + tenancy columns (single-tenant semantics for now), SSE, webhooks, Compose, SDK HTTP backend, conformance suite, operator docs.
-**Out:** RBAC/orgs/billing (Phase 12), web UI (Phase 6).
+**In:** `hawser-server` package (`hawserd serve | worker | migrate | admin | openapi`), Postgres
+metadata store + forward-only migrations, S3 artifact store + signed URLs (MinIO in Compose),
+leased durable worker with heartbeats and crash recovery, API keys + tenancy columns
+(single-tenant semantics), SSE with resume, signed webhooks with retries and a dead-letter list,
+Compose, SDK HTTP backend (`hawser.Client(base_url=..., api_key=...)`), `hawser --server`,
+conformance suite run against both backends, operator docs.
+**Out:** RBAC/orgs/billing (Phase 12), web UI (Phase 6), Go, Temporal.
 
 ### Work packages
 
-#### WP5.1 — OpenAPI contract [B§22]
-- `api/openapi/openapi.yaml` hand-authored, referencing `api/schemas/*` via `$ref`. Resources: `/v1/assets`, `/v1/runs`, `/v1/runs/{id}/events` (SSE), `/v1/runs/{id}/steps`, `/v1/runs/{id}/result`, `/v1/runs/{id}/revisions`, `/v1/runs/{id}/cancel`, `/v1/reviews`, `/v1/approvals`, `/v1/skills`, `/v1/models`, `/v1/tools`, `/v1/schemas`, `/v1/evidence/{id}`, `/v1/artifacts/{id}` (+`/url`), `/v1/datasets`, `/v1/evals`, `/v1/usage`, `/v1/webhooks`, `/healthz`, `/readyz`.
-- Conventions: cursor pagination, `Idempotency-Key` header on POST `/runs`, `ETag`/`If-Match` on reviews, problem+json errors mapped from the error taxonomy, `X-Hawser-Request-Id`.
-- Generate: Go server stubs (`oapi-codegen`), Python client (`openapi-python-client` or hand-written thin client over `httpx` — prefer hand-written for control; generated models), TS client (Phase 11).
+#### WP5.1 — Engine extraction and OpenAPI contract [B§22]
+- Factor `LocalRuntime` into an `Engine` (submit/execute/resume/get/list over any
+  `MetadataStore` + `ArtifactStore` + `Gateway` + `SkillRegistry`) so the worker and the local
+  runtime share one execution path. `Runtime.wait(run_id, timeout)` joins the protocol.
+- `api/openapi/openapi.json` is **generated** by `hawserd openapi` from the FastAPI app, whose
+  bodies are the contract models; CI checks drift. Resources: `/v1/assets`, `/v1/runs`,
+  `/v1/runs/{id}` (summary), `/v1/runs/{id}/result`, `/v1/runs/{id}/events` (JSON or SSE by
+  `Accept`), `/v1/runs/{id}/steps`, `/v1/runs/{id}/revisions`, `/v1/runs/{id}/cancel`,
+  `/v1/reviews/...`, `/v1/approvals/...`, `/v1/skills`, `/v1/models`, `/v1/tools`,
+  `/v1/artifacts/{id}` (+`/content`, `/url`), `/v1/webhooks` (+ deliveries), `/v1/usage`,
+  `/healthz`, `/readyz`.
+- Conventions: `Idempotency-Key` on `POST /v1/runs`; `If-Match` (review version) on review
+  edits/decisions; problem+json errors carrying the error-taxonomy `code`;
+  `X-Hawser-Request-Id` on every response.
 
-#### WP5.2 — Go control plane
-- Layout: `control/cmd/hawserd` (serve, migrate, admin), `control/internal/{http,auth,tenancy,policy,usage,artifacts,runs,reviews,webhooks,events}`, `control/workflows` (Temporal).
-- Stack: `chi` router, `sqlc` for queries, `goose` migrations, `pgx`, `zerolog`/`slog`, OpenTelemetry traces + metrics from day one **[B§25]**.
-- Auth: API keys (`hk_live_...`), hashed at rest (argon2id), scoped to a tenant + project; `Authorization: Bearer`. Service-to-service auth between Go and Python via mTLS or a shared internal token on a private network (Compose) — document the choice.
-- Tenancy: every table has `tenant_id`; every query is written with `tenant_id = $1`; a test harness asserts no query omits it (grep-based lint on sqlc queries + an integration test that tries cross-tenant reads).
+#### WP5.2 — Server, auth, tenancy
+- FastAPI app; dependency-injected `Services` (stores, queue, gateway config, skills).
+- API keys `hk_live_<id>_<secret>`: argon2id hash at rest, prefix index, `revoked_at`,
+  `last_used_at`; `Authorization: Bearer`. `hawserd admin create-tenant`, `create-key`,
+  `revoke-key`. `HAWSER_DEV_API_KEY` bootstraps a tenant + key for Compose/dev only.
+- Every table carries `tenant_id`; every read of a tenant-owned object checks ownership; a test
+  asserts cross-tenant reads return 404; a lint test asserts every list query in the Postgres
+  store filters on `tenant_id`.
 
-#### WP5.3 — Postgres schema
-Tables (all with `tenant_id`, `created_at`, `updated_at`): `tenants`, `projects`, `api_keys`, `assets`, `asset_manifests`, `artifacts`, `runs`, `run_policies` (snapshot), `steps`, `events` (append-only, `seq` per run), `results`, `revisions`, `evidence`, `validation_issues`, `skills`, `skill_versions`, `models` (registry snapshot), `tools`, `schemas`, `datasets`, `eval_runs`, `eval_results`, `reviews`, `review_decisions`, `approvals`, `usage_ledger` (`kind: reservation|settlement|release`, `amount_usd`, `tokens`, `run_id`, `step_id`), `webhooks`, `webhook_deliveries`, `audit_events`.
-- Partitioning: `events` by month from day one (cheap now, painful later).
-- Retention: `artifacts.retain_until`; a scheduled job deletes expired objects and marks rows.
+#### WP5.3 — Postgres schema and migrations
+- `hawser_server/migrations/NNNN_*.sql`, applied by `hawserd migrate` (forward-only, recorded in
+  `schema_migrations`). Tables mirror the local store (assets, artifacts, runs, steps, events,
+  results, revisions, reviews, approvals) plus `tenants`, `api_keys`, `jobs`, `webhooks`,
+  `webhook_deliveries`. `events` has `(run_id, seq)` as primary key; per-run sequence assigned
+  under an advisory lock.
+- The same contract tests run against `SQLiteMetadataStore` and `PostgresMetadataStore`
+  (embedded Postgres in tests via `pgserver`; a service container in CI).
 
 #### WP5.4 — Artifact service [B§19]
-- `S3ArtifactStore` (AWS SDK v2 in Go; `boto3`/`aioboto3` in Python workers) with the same key scheme as local; MinIO in Compose.
-- Signed URLs (presigned GET, TTL ≤ 15 min default) or proxy streaming through `hawserd` when `artifacts.proxy=true` **[B§19]**.
-- Multipart upload for inputs > 8 MB; upload flow: `POST /assets` → presigned PUT → `POST /assets/{id}/complete` → admission runs as an activity.
+- `S3ArtifactStore` (boto3; MinIO in Compose) with the local key scheme; presigned GET URLs
+  (TTL ≤ 15 min default) or proxied streaming (`GET /v1/artifacts/{id}/content`).
+- Uploads: `POST /v1/assets` (multipart, size-limited by config) admits immediately and returns
+  the `Asset`; runs reference assets by id. Presigned multipart upload for very large inputs is
+  deferred to Phase 7/8 when media sizes demand it.
 
-#### WP5.5 — Durable execution with Temporal [B§10.2]
-- Workflow `RunWorkflow(run_id)` in Go (deterministic orchestration only): activities `AdmitAssets`, `ResolveSkill`, `Plan` (Python), `ExecuteStep` (Python; one activity per step, `step_key` as activity idempotency key), `Validate` (Python), `DecideAcceptance` (Go, pure), `Repair` (Python), `Finalize` (Go), `DeliverWebhook` (Go).
-- Signals: `cancel`, `review_decision{revision}`, `approval_decision{approval_id, decision}`. Queries: `progress`. Timers: `policy.max_wall_time_s`, review timeout (configurable; default none).
-- Python workers: Temporal Python SDK workers on task queues `hawser-models`, `hawser-media` (separate scaling). Activities call the exact Phase 1–4 functions; heartbeats every 10 s for long steps; checkpoints via `MetadataStore` so a retried activity resumes within a step where possible (chunked media in Phases 8–9 rely on this).
-- Idempotency: `POST /runs` with `Idempotency-Key` → `runs.idempotency_key` unique per tenant; duplicate returns the original run. Steps are idempotent via `step_key`. External side effects: tools with `side_effect=external_write` must accept an `action_id` (stable per step) and the broker records `(action_id, status)` for reconciliation **[B§10.2]**.
-- Crash recovery test: kill a worker mid-`ExecuteStep`; the run resumes at the step boundary with no duplicated model cost beyond that step **[B§30]**.
-- `LocalRuntime` remains for development and tests; both backends run the conformance suite (WP5.8).
+#### WP5.5 — Durable execution (leased worker) [B§10.2]
+- `jobs(run_id PK, tenant_id, state pending|leased|done, attempts, max_attempts, available_at,
+  lease_owner, lease_expires_at, resume bool)`. `hawserd worker --concurrency N` leases with
+  `FOR UPDATE SKIP LOCKED`, heartbeats every `lease/3`, executes via the `Engine` with
+  `resuming=True` on any attempt > 1, marks done.
+- Crash recovery: an expired lease is re-leased by any worker; finished steps replay from
+  checkpoints. After `max_attempts` the run fails with `worker_attempts_exhausted`.
+- Signals: `runs.cancel_requested_at` (API) is checked by the engine before every step →
+  `Cancelled`. Approval decisions re-enqueue the run (`resume=true`). Review decisions need no
+  worker. `policy.limits.max_wall_time_s` is checked at step boundaries.
+- Idempotency: `POST /v1/runs` with `Idempotency-Key` returns the original run for the tenant.
+  External side effects keep the Phase 3 `action_id` reconciliation.
+- Kill test: a worker is killed mid-step; the run completes on another worker with no repeated
+  model call.
 
 #### WP5.6 — Events, SSE, webhooks [B§22]
-- Events written to Postgres by whoever produces them (Go or Python) via a small gRPC `EventSink` service in Go (or direct DB writes from Python — choose gRPC to keep one writer and ordering guarantees).
-- SSE endpoint streams events from `seq > Last-Event-ID`, with keep-alives and resume.
-- Webhooks: per-tenant endpoints with secret; `Hawser-Signature: t=<ts>,v1=<hmac_sha256>`; retries with exponential backoff up to 24 h; `delivery_id` for consumer-side dedup; dead-letter list in the API **[B§24, B§30]**.
+- SSE: `id: <seq>`, `event: <type>`, `data: <Event JSON>`, keep-alive comments, resume from
+  `Last-Event-ID`; the stream closes when the run reaches a terminal, resting or paused state.
+- Webhooks: per-tenant endpoints with a secret shown once; events `run.completed`,
+  `run.needs_review`, `run.awaiting_approval`, `review.decided`; `Hawser-Signature:
+  t=<ts>,v1=<hmac-sha256(secret, "<ts>.<body>")>`; retries with exponential backoff (capped,
+  up to 24 h); `delivery_id` for consumer dedup; `GET /v1/webhooks/{id}/deliveries` lists the
+  dead letters.
 
 #### WP5.7 — Deployment [B§26]
-- `deploy/compose/docker-compose.yaml`: `postgres`, `temporal` (+ UI), `minio`, `hawserd`, `hawser-worker-models`, `hawser-worker-media`, `otel-collector` (optional profile). `make up` brings it up; `hawser init --server http://localhost:8080` configures the CLI.
-- Images: multi-stage builds, non-root, pinned base digests, SBOM via `syft` in CI, vulnerability scan via `grype`/`trivy` **[B§24]**.
-- Operator docs: config reference (env vars), secrets, backup/restore (pg_dump + bucket sync), upgrade (migrations are forward-only; `hawserd migrate status`), uninstall, health endpoints, telemetry opt-in flag (default off) **[B§26]**.
+- `deploy/compose/docker-compose.yaml`: `postgres`, `minio`, `hawserd`, `hawser-worker`.
+  `make up` brings it up and prints the dev API key; `hawser init --server http://localhost:8080`
+  configures the CLI.
+- `deploy/docker/Dockerfile`: multi-stage `uv` build, non-root, pinned base image.
+- Operator docs: config reference (env vars), secrets, backup/restore, upgrade (`hawserd
+  migrate`), health endpoints.
 
 #### WP5.8 — SDK HTTP backend and conformance suite
-- `hawser.Client(base_url=..., api_key=...)` implements the same `Runtime` protocol over HTTP; `hawser run --server` flag or `hawser.toml [server]`.
-- Conformance suite `python/hawser/conformance/`: runs the reference workflow and a matrix of edge cases (cancel, review, approval, idempotent resubmit, budget exceeded) against any `Runtime`; CI runs it against `LocalRuntime` and against Compose (service containers).
+- `RemoteRuntime` (httpx) implements `Runtime`; `hawser.Client(base_url=..., api_key=...)`;
+  `hawser --server URL` or `[server]` in `hawser.toml`; `hawser run` streams SSE progress.
+  `hawser review ...` and `hawser approve ...` work against the server through the same facades.
+- `python/hawser/src/hawser/conformance/`: scenarios parameterised over a `Runtime` (recorded
+  extraction → accepted; idempotent resubmit; budget exceeded → needs_review; review approve →
+  reviewed revision; event ordering; cancel). CI runs it against `LocalRuntime` and against
+  `hawserd` (SQLite dev mode and Postgres).
 
 ### Tests
-- sqlc query tenancy lint; cross-tenant read integration test.
-- Temporal workflow unit tests with the Go test suite (replay tests of workflow histories to catch non-determinism).
-- Worker kill test (Compose, `docker kill` mid-run).
-- Webhook signature verification and retry/dedup.
+- Store contract tests on SQLite and Postgres; tenancy lint; cross-tenant 404 test.
+- Queue tests: lease, heartbeat, expiry, SKIP LOCKED under concurrency, poison runs.
+- Worker kill test (subprocess killed mid-step; recovery with no repeated model call).
+- Webhook signature verification, retry schedule, dead-letter listing.
 - Conformance suite on both backends.
 
 ### Exit criteria (demo)
-`make up`, `hawser init --server`, `hawser run` on the reference pair → live progress via SSE in the terminal → `needs_review` → `hawser review approve` (sends a signal) → webhook received by a sample listener with a valid signature. Killing the worker during extraction does not lose the run.
-
-### Estimate: 8 weeks.
+`make up`, `hawser init --server`, `hawser run` on the reference pair → live progress via SSE
+in the terminal → `needs_review` → `hawser review approve` → webhook received by a sample
+listener with a valid signature. Killing the worker during extraction does not lose the run.
 
 ### Risks
-- Temporal learning curve and determinism rules. Mitigation: keep all logic in activities; the Go workflow is a thin sequencer; replay tests in CI.
-- Dual-language schema drift. Mitigation: generated types only; CI compares JSON Schema hash embedded in Go and Python builds.
+- Bespoke lease logic. Mitigation: small table, property-style concurrency tests, kill test in
+  CI.
+- Polling SSE under many concurrent streams. Mitigation: short-poll with backoff now;
+  `LISTEN/NOTIFY` later without API change.
+
+### Status (2026-10-18): implemented
+All eight work packages shipped in Python (`python/hawser_server`, ADR-0010). Deviations and
+notes:
+- The `Engine` extraction (WP5.1) made `LocalRuntime` a thin wrapper; the worker and the local
+  runtime share one execution path, including cancel/deadline checks at step boundaries.
+- The metadata store became one SQL implementation with a backend per driver (SQLite via
+  `sqlite3`, Postgres via `pg8000` — BSD, chosen over LGPL `psycopg` for the licence gate);
+  schema is a migration list applied by both.
+- Uploads go through the API (`POST /v1/assets`, multipart, size-limited); presigned multipart
+  upload for very large media is deferred to the media phases. `s3://` inputs work when S3 is
+  configured.
+- The worker kill test is an in-process simulation (a blocked adapter, forced lease expiry, a
+  second worker taking over, the first discovering it lost the lease and discarding its work)
+  rather than `docker kill`; the semantics are the same and it runs in every CI job.
+- Reviewed overlays downgrade the machine's error-severity issues to `info` (marked
+  `resolved_by`) so an accepted-after-review result still satisfies the result contract.
+- Compose has four services (Postgres, MinIO, `hawserd`, worker). The image was not built in
+  this environment (no Docker available); the Dockerfile and compose file are untested.
+- Tests: 48 server tests (store contract on both backends via embedded Postgres, queue
+  concurrency, auth, API end to end, SSE, webhooks, worker takeover, SDK + CLI against a live
+  uvicorn, S3 via moto, OpenAPI drift) plus the conformance suite on both backends.
 
 ---
 

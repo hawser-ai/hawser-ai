@@ -9,18 +9,18 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from hawser.config import HawserConfig
+from hawser.cli.common import AnyRuntime
+from hawser.cli.common import runtime as _runtime
 from hawser.errors import HawserError
 from hawser.models.review import ReviewStatus
-from hawser.runtime.local import LocalRuntime
 
 review_app = typer.Typer(help="Human review of needs_review runs.", no_args_is_help=True)
 console = Console()
 err = Console(stderr=True)
 
 
-def _rt() -> LocalRuntime:
-    return LocalRuntime(HawserConfig.load())
+def _rt() -> AnyRuntime:
+    return _runtime()
 
 
 def _parse_value(raw: str) -> Any:

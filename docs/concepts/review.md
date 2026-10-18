@@ -21,3 +21,12 @@ hawser runs export run_… --revision machine|reviewed|latest
   `runs export --revision machine` always returns the untouched model output.
 
 From Python: `runtime.reviews.open / edit / approve / reject / revisions / current_result`.
+
+## After approval: what `get()` returns
+
+The machine result is immutable. Once a reviewer approves, `get()` (and `GET /v1/runs/{id}/result`)
+returns the machine result overlaid with the reviewed revision: `status` from the run,
+`result` from the revision, `revision_id` pointing at it. The machine's error-severity
+validation issues stay in the report for the record, downgraded to `info` with
+`details.resolved_by = <revision id>`, because an accepted result cannot carry error-severity
+issues. `hawser runs export --revision machine` still shows the untouched machine view.

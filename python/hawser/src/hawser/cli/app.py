@@ -18,13 +18,16 @@ from rich.table import Table
 
 from hawser import __version__
 from hawser.cli.approvals import approvals_app, approve_cmd
+from hawser.cli.common import STATE, AnyRuntime
+from hawser.cli.common import runtime as _any_runtime
 from hawser.cli.evals import compare_cmd, eval_app
 from hawser.cli.review import review_app
 from hawser.cli.skills import skill_app
 from hawser.client import Client
-from hawser.config import CONFIG_FILENAME, HawserConfig, RecordMode
-from hawser.models import Policy, RunResult, RunStatus
+from hawser.config import CONFIG_FILENAME, RecordMode
+from hawser.models import Event, Policy, RunResult, RunStatus
 from hawser.runtime.local import LocalRuntime
+from hawser.runtime.remote import RemoteRuntime
 
 app = typer.Typer(
     name="hawser",
@@ -67,8 +70,17 @@ def _main(
     version: Annotated[
         bool, typer.Option("--version", callback=_version, is_eager=True, help="Show the version.")
     ] = False,
+    server: Annotated[
+        str | None,
+        typer.Option("--server", help="hawserd URL (or HAWSER_SERVER_URL / [server] url)."),
+    ] = None,
+    api_key: Annotated[
+        str | None, typer.Option("--api-key", help="API key for --server (or HAWSER_API_KEY).")
+    ] = None,
 ) -> None:
     """Hawser: build verifiable multimodal AI workflows with your choice of models."""
+    STATE["server_url"] = server
+    STATE["api_key"] = api_key
 
 
 # -- helpers -------------------------------------------------------------------------------
@@ -80,7 +92,8 @@ def _runtime(
     cassette: Path | None = None,
     record_mode: str | None = None,
     model: str | None = None,
-) -> LocalRuntime:
+    force_local: bool = False,
+) -> AnyRuntime:
     overrides: dict[str, Any] = {}
     if cassette is not None:
         overrides["cassette_dir"] = cassette
@@ -89,7 +102,23 @@ def _runtime(
         overrides["record_mode"] = record_mode
     if model is not None:
         overrides["default_model"] = model
-    return LocalRuntime(HawserConfig.load(cwd=cwd, **overrides))
+    return _any_runtime(cwd, force_local=force_local, **overrides)
+
+
+def _local(**kwargs: Any) -> LocalRuntime:
+    rt = _runtime(force_local=True, **kwargs)
+    assert isinstance(rt, LocalRuntime)
+    return rt
+
+
+def _progress(event: Event) -> None:
+    p = event.payload
+    if event.type.value == "step.started":
+        console.print(f"[dim]{event.seq:>3}[/] step {p.get('key')} started")
+    elif event.type.value == "step.completed":
+        console.print(f"[dim]{event.seq:>3}[/] step {p.get('key')} completed")
+    elif event.type.value == "run.status_changed":
+        console.print(f"[dim]{event.seq:>3}[/] {p.get('from')} -> {p.get('to')}")
 
 
 def _load_schema(spec: str) -> dict[str, Any] | type[BaseModel]:
@@ -115,7 +144,7 @@ def _load_policy(path: Path | None) -> Policy:
     return Policy.model_validate(raw)
 
 
-def _print_result(result: RunResult, *, as_json: bool, runtime: LocalRuntime | None = None) -> None:
+def _print_result(result: RunResult, *, as_json: bool, runtime: AnyRuntime | None = None) -> None:
     if as_json:
         console.print_json(result.model_dump_json())
         return
@@ -225,6 +254,9 @@ def _exit_code(status: RunStatus) -> int:
 def init(
     directory: Annotated[Path, typer.Argument(help="Project directory to initialise.")] = Path("."),
     force: Annotated[bool, typer.Option("--force", help="Overwrite existing files.")] = False,
+    server: Annotated[
+        str | None, typer.Option("--server", help="Point the CLI and SDK at a hawserd URL.")
+    ] = None,
 ) -> None:
     """Create hawser.toml, a local .hawser/ store and the quickstart example."""
     directory.mkdir(parents=True, exist_ok=True)
@@ -232,12 +264,20 @@ def init(
     if toml.exists() and not force:
         err.print(f"[yellow]{toml} already exists; use --force to overwrite[/]")
     else:
-        toml.write_text(
+        text = (
             "[hawser]\n"
             '# default_model = "anthropic/claude-opus-5-5"\n'
             '# default_effort = "low"\n'
-            "# max_pages = 200\n",
-            encoding="utf-8",
+            "# max_pages = 200\n"
+        )
+        if server:
+            text += (
+                f'\n[server]\nurl = "{server}"\n# api_key: set HAWSER_API_KEY in the environment\n'
+            )
+        toml.write_text(text, encoding="utf-8")
+    if server:
+        console.print(
+            f"server [bold]{server}[/]; export HAWSER_API_KEY=<key> before running commands"
         )
     (directory / ".hawser").mkdir(exist_ok=True)
     qs = directory / "quickstart"
@@ -281,7 +321,7 @@ def quickstart(
     if not (qs / "invoice.pdf").exists():
         err.print("[red]no quickstart/ directory here; run `hawser init` first[/]")
         raise typer.Exit(1)
-    runtime = _runtime(
+    runtime = _local(
         cassette=qs / "cassette",
         record_mode=RecordMode.record.value if live else RecordMode.replay.value,
         model=model,
@@ -329,14 +369,19 @@ def run(  # noqa: PLR0917
 ) -> None:
     """Run an instruction over inputs, optionally into a schema."""
     runtime = _runtime(cassette=cassette, record_mode=record_mode, model=model)
-    client = Client(runtime)
-    result = client.run(
+    request = Client.build_request(
         instruction,
         inputs=list(inputs or []),
         output_schema=_load_schema(schema) if schema else None,
         policy=_load_policy(policy),
         models=model,
     )
+    handle = runtime.submit(request)
+    if isinstance(runtime, RemoteRuntime) and not as_json:
+        console.print(f"[dim]submitted {handle.run_id} to {runtime.base_url}[/]")
+        for event in runtime.stream_events(handle.run_id):
+            _progress(event)
+    result = handle.result()
     _print_result(result, as_json=as_json, runtime=runtime)
     raise typer.Exit(_exit_code(result.status))
 
@@ -378,7 +423,7 @@ def inspect(  # noqa: PLR0912
     steps = Table(title="Steps")
     for col in ("key", "kind", "status", "ms", "calls", "cost"):
         steps.add_column(col)
-    for s in runtime.meta.list_steps(run_id):
+    for s in runtime.steps(run_id):
         ms = ""
         if s.started_at and s.completed_at:
             ms = str(int((s.completed_at - s.started_at).total_seconds() * 1000))
@@ -494,7 +539,7 @@ def models_check(
     """Verify a registry entry with a few cheap live calls (text, structured output, image)."""
     from hawser.gateway.testing import compatibility_checks, summarize  # noqa: PLC0415
 
-    runtime = _runtime()
+    runtime = _local()
     spec = runtime.gateway.registry.get(model_id)
     adapter = runtime.gateway.adapters.get(spec.provider)
     if adapter is None:
@@ -511,7 +556,7 @@ def models_check(
 @models_app.command("list")
 def models_list() -> None:
     """List registry models with capabilities and pricing."""
-    runtime = _runtime()
+    runtime = _local()
     table = Table(title=f"Models (registry {runtime.gateway.registry.version})")
     for col in ("id", "modalities", "context", "structured", "$/Mtok in", "$/Mtok out", "hosted"):
         table.add_column(col)

@@ -9,10 +9,9 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from hawser.config import HawserConfig
+from hawser.cli.common import runtime as _runtime
 from hawser.errors import HawserError
 from hawser.models import ApprovalStatus
-from hawser.runtime.local import LocalRuntime
 
 approvals_app = typer.Typer(help="Approvals for side-effecting tool actions.", no_args_is_help=True)
 console = Console()
@@ -27,7 +26,7 @@ def approvals_list(
     run_id: Annotated[str | None, typer.Option("--run")] = None,
 ) -> None:
     """List approvals (pending by default)."""
-    rt = LocalRuntime(HawserConfig.load())
+    rt = _runtime()
     table = Table(title="Approvals")
     for col in ("approval", "run", "tool", "action", "status", "payload", "requested"):
         table.add_column(col)
@@ -55,7 +54,7 @@ def approve_cmd(
     ] = False,
 ) -> None:
     """Approve (or reject) every pending action of a run, then resume it."""
-    rt = LocalRuntime(HawserConfig.load())
+    rt = _runtime()
     pending = rt.approvals.list(run_id=run_id, status=ApprovalStatus.pending)
     if not pending:
         err.print(f"[yellow]no pending approvals for {run_id}[/]")

@@ -36,6 +36,8 @@ jobs:
         run: uv run pyright
       - name: Contract schemas are current
         run: uv run python -m hawser.models.export --out api/schemas --check
+      - name: OpenAPI document is current
+        run: uv run hawserd openapi --out api/openapi/openapi.json --check
       - name: Tests
         run: uv run pytest -n auto
 

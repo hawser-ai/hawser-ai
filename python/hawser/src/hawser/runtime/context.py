@@ -8,6 +8,7 @@ budget derived from the model's context window. Selections are recorded as an ev
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -58,6 +59,8 @@ class RunContext:
     skill: Any = None
     #: True when re-executing a paused run; status transitions already made are skipped.
     resuming: bool = False
+    #: Resolves object-storage inputs (``s3://bucket/key``) when the deployment allows them.
+    object_reader: Callable[[str], bytes] | None = None
 
     @property
     def run_id(self) -> str:

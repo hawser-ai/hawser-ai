@@ -1,0 +1,16 @@
+.git
+.venv
+.hawser
+.hawserd
+.hawser-try
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+.hypothesis
+datasets
+docs
+web
+examples
+*.log
+.env
+.env.*

@@ -35,13 +35,31 @@ def _input(value: InputLike) -> InputRef:
 
 
 class Client:
+    """``Client()`` uses the local runtime, or the server named by ``base_url`` /
+    ``HAWSER_SERVER_URL`` (with ``api_key`` / ``HAWSER_API_KEY``)."""
+
     def __init__(
-        self, runtime: Runtime | None = None, *, config: HawserConfig | None = None
+        self,
+        runtime: Runtime | None = None,
+        *,
+        config: HawserConfig | None = None,
+        base_url: str | None = None,
+        api_key: str | None = None,
     ) -> None:
         if runtime is None:
-            from hawser.runtime.local import LocalRuntime  # noqa: PLC0415 - avoid import cycle at module load
+            cfg = config or HawserConfig.load()
+            url = base_url or cfg.server_url
+            if url:
+                from hawser.runtime.remote import RemoteRuntime  # noqa: PLC0415 - lazy
 
-            runtime = LocalRuntime(config)
+                key = api_key or cfg.api_key
+                if not key:
+                    raise ValueError("an API key is required to talk to a Hawser server")
+                runtime = RemoteRuntime(url, key)
+            else:
+                from hawser.runtime.local import LocalRuntime  # noqa: PLC0415 - avoid cycle
+
+                runtime = LocalRuntime(cfg)
         self.runtime = runtime
 
     def run(
@@ -109,6 +127,9 @@ class Client:
 
     def list(self, *, limit: int = 50) -> list[RunSummary]:
         return self.runtime.list(limit=limit)
+
+    def cancel(self, run_id: str) -> bool:
+        return self.runtime.cancel(run_id)
 
 
 _default: Client | None = None

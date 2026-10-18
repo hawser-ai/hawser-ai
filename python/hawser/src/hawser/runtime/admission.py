@@ -3,29 +3,37 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 from pydantic import BaseModel
 
 from hawser.clock import now
+from hawser.config import HawserConfig
 from hawser.errors import AdmissionError, BudgetExceeded, ToolError
 from hawser.hashing import content_hash, scoped_hash
 from hawser.ids import new_id
 from hawser.models import (
     ArtifactInput,
     ArtifactKind,
+    ArtifactRef,
     Asset,
     AssetInput,
     AssetManifest,
     EventType,
     InlineInput,
     InputRef,
+    Limits,
     MediaClass,
     PathInput,
     StorageInput,
 )
 from hawser.models.asset import ImageProbe, LimitsApplied, PdfProbe, TextProbe
+from hawser.runtime.artifacts import ArtifactService
 from hawser.runtime.context import RunContext
+from hawser.storage import MetadataStore
 from hawser_media import MediaKind, sniff
 from hawser_media import image as image_mod
 from hawser_media import pdf as pdf_mod
@@ -42,7 +50,43 @@ class AssetList(BaseModel):
     assets: list[Asset]
 
 
-def _load(ctx: RunContext, ref: InputRef) -> tuple[bytes, str | None, str | None]:
+def _no_emit(type: EventType, payload: dict[str, Any]) -> None:
+    return
+
+
+@dataclass
+class Admitter:
+    """What admission needs. Built from a run, or standalone for uploads without a run."""
+
+    config: HawserConfig
+    tenant_id: str
+    meta: MetadataStore
+    artifacts: ArtifactService
+    limits: Limits = field(default_factory=Limits)
+    run_id: str | None = None
+    emit: Callable[[EventType, dict[str, Any]], None] = _no_emit
+    artifact_refs: list[ArtifactRef] = field(default_factory=list)
+    object_reader: Callable[[str], bytes] | None = None
+
+    @classmethod
+    def from_run(cls, ctx: RunContext) -> Admitter:
+        def emit(type: EventType, payload: dict[str, Any]) -> None:
+            ctx.emitter.emit(type, payload)
+
+        return cls(
+            config=ctx.config,
+            tenant_id=ctx.tenant_id,
+            meta=ctx.meta,
+            artifacts=ctx.artifacts,
+            limits=ctx.request.policy.limits,
+            run_id=ctx.run_id,
+            emit=emit,
+            artifact_refs=ctx.artifact_refs,
+            object_reader=ctx.object_reader,
+        )
+
+
+def _load(ctx: Admitter, ref: InputRef) -> tuple[bytes, str | None, str | None]:
     """Return ``(bytes, name, declared_media_type)`` for a non-asset input."""
     if isinstance(ref, PathInput):
         path = Path(ref.path).expanduser()
@@ -71,17 +115,26 @@ def _load(ctx: RunContext, ref: InputRef) -> tuple[bytes, str | None, str | None
             artifact.meta.media_type,
         )
     if isinstance(ref, StorageInput):
-        raise AdmissionError(
-            "object-storage references are not supported by the local runtime (Phase 5)",
-            code="storage_refs_unsupported",
-            details={"uri": ref.uri},
-        )
+        if ctx.object_reader is None:
+            raise AdmissionError(
+                "object-storage references are not supported by this runtime",
+                code="storage_refs_unsupported",
+                details={"uri": ref.uri},
+            )
+        try:
+            data = ctx.object_reader(ref.uri)
+        except Exception as exc:
+            raise AdmissionError(
+                f"could not read {ref.uri}: {exc}", code="storage_read_failed"
+            ) from exc
+        return data, ref.name or ref.uri.rsplit("/", 1)[-1], None
     raise AdmissionError(f"unsupported input kind {ref.kind}", code="input_kind_unsupported")
 
 
-def admit_inputs(ctx: RunContext, inputs: list[InputRef]) -> AssetList:
+def admit_inputs(run_ctx: RunContext, inputs: list[InputRef]) -> AssetList:
     if not inputs:
         return AssetList(assets=[])
+    ctx = Admitter.from_run(run_ctx)
     assets: list[Asset] = []
     for ref in inputs:
         if isinstance(ref, AssetInput):
@@ -96,7 +149,7 @@ def admit_inputs(ctx: RunContext, inputs: list[InputRef]) -> AssetList:
 
 
 def admit_bytes(
-    ctx: RunContext, data: bytes, *, name: str | None, declared_media_type: str | None = None
+    ctx: Admitter, data: bytes, *, name: str | None, declared_media_type: str | None = None
 ) -> Asset:
     cfg = ctx.config
     limits = LimitsApplied(
@@ -132,7 +185,7 @@ def admit_bytes(
             converted = office_to_pdf(data, sniffed.media_type)
         except ToolError as exc:
             raise AdmissionError(f"{name!r}: {exc.message}", code=exc.code) from exc
-        ctx.emitter.emit(
+        ctx.emit(
             EventType.tool_called,
             {
                 "tool": "convert.office_to_pdf",
@@ -153,9 +206,7 @@ def admit_bytes(
     sh = scoped_hash(ctx.tenant_id, ch)
     existing = ctx.meta.find_asset(ctx.tenant_id, sh)
     if existing is not None:
-        ctx.emitter.emit(
-            EventType.asset_admitted, {"asset_id": existing.id, "name": name, "dedup": True}
-        )
+        ctx.emit(EventType.asset_admitted, {"asset_id": existing.id, "name": name, "dedup": True})
         return existing
 
     manifest = AssetManifest(
@@ -168,12 +219,10 @@ def admit_bytes(
     try:
         _probe(manifest, sniffed.kind, data, cfg.max_pages, cfg.max_pixels)
     except MediaError as exc:
-        ctx.emitter.emit(
-            EventType.asset_rejected, {"name": name, "code": exc.code, "message": exc.message}
-        )
+        ctx.emit(EventType.asset_rejected, {"name": name, "code": exc.code, "message": exc.message})
         raise AdmissionError(f"{name!r}: {exc.message}", code=exc.code) from exc
 
-    lim = ctx.request.policy.limits
+    lim = ctx.limits
     if (
         manifest.pdf is not None
         and lim.max_pages is not None
@@ -211,7 +260,7 @@ def admit_bytes(
     )
     ctx.meta.put_asset(asset)
     ctx.artifact_refs.append(original.ref())
-    ctx.emitter.emit(
+    ctx.emit(
         EventType.asset_admitted,
         {
             "asset_id": asset.id,
@@ -271,4 +320,4 @@ def _probe(
         manifest.execution_classes = ["text"]
 
 
-__all__ = ["AssetList", "admit_bytes", "admit_inputs"]
+__all__ = ["Admitter", "AssetList", "admit_bytes", "admit_inputs"]

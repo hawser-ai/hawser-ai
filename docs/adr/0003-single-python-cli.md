@@ -1,6 +1,6 @@
 # ADR-0003: One developer CLI in Python; the Go binary is the server
 
-- **Status:** accepted
+- **Status:** accepted (ADR-0010: `hawserd` is Python too; this ADR's `hawserd` references read as the Python server)
 - **Date:** 2026-10-18
 - **Phase:** 0
 

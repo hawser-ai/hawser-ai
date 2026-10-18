@@ -12,6 +12,7 @@ build/
 
 # Hawser local state
 .hawser/
+.hawserd/
 hawser.lock.tmp
 
 # Node

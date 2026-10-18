@@ -18,6 +18,7 @@ from ulid import ULID
 PREFIXES: Final[dict[str, str]] = {
     "ten": "tenant",
     "prj": "project",
+    "key": "api key",
     "asset": "asset",
     "art": "artifact",
     "run": "run",

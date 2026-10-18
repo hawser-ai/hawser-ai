@@ -33,6 +33,10 @@ from hawser.storage import MetadataStore
 T = TypeVar("T")
 
 
+class ExecutionAborted(Exception):
+    """Stop executing without recording anything (e.g. a worker lost its lease)."""
+
+
 class StepHandle:
     """Given to a step function: identity plus usage recording."""
 
@@ -62,12 +66,19 @@ class StepExecutor:
         *,
         run_id: str,
         usage: Usage,
+        before_step: Callable[[], None] | None = None,
+        commit_guard: Callable[[], None] | None = None,
     ) -> None:
         self.meta = meta
         self.artifacts = artifacts
         self.emitter = emitter
         self.run_id = run_id
         self.usage = usage
+        #: Called before any new (non-checkpointed) step starts: cancel and deadline checks.
+        self.before_step = before_step
+        #: Called before a finished step is persisted; raise :class:`ExecutionAborted` to
+        #: discard it (a worker whose lease was taken over must not overwrite the new owner).
+        self.commit_guard = commit_guard
 
     def run(
         self,
@@ -86,6 +97,8 @@ class StepExecutor:
             )
             return self._load(existing.output_ref, output_type)  # type: ignore[return-value]
 
+        if self.before_step is not None:
+            self.before_step()
         step = Step(
             id=new_id("step"),
             run_id=self.run_id,
@@ -103,6 +116,10 @@ class StepExecutor:
         handle = StepHandle(step)
         try:
             output = fn(handle)
+            if self.commit_guard is not None:
+                self.commit_guard()
+        except ExecutionAborted:
+            raise
         except HawserError as exc:
             exc.with_context(run_id=self.run_id, step_id=step.id)
             self._fail(step, exc.to_dict())
@@ -147,4 +164,4 @@ class StepExecutor:
         return json.loads(raw)
 
 
-__all__ = ["StepExecutor", "StepHandle"]
+__all__ = ["ExecutionAborted", "StepExecutor", "StepHandle"]

@@ -60,9 +60,10 @@ itself*. It gets the extracted fields right (99.3%) but **accepts all three disc
 is what makes the result verifiable: the workflow and the planner both route the comparison
 through deterministic tools, and both catch every discrepancy.
 
-The planner, given only the goal, inputs, tool catalogue and limits, produced the same shape as
-the hand-written workflow — extract invoice, extract PO, `compute.align_line_items`,
-`compute.reconcile`, assemble — on its first valid attempt. An earlier attempt was rejected
+The planner, given only the goal, inputs, tool catalogue and limits, produced a plan with the
+same shape as the hand-written workflow and two extra checks of its own: extract invoice,
+extract PO, `validate` both, `compute.check_arithmetic`, `compute.align_line_items`,
+`compute.reconcile`, `validate` the reconciliation, exit — on its first valid attempt. An earlier attempt was rejected
 statically for inventing a tool argument name, which is why tool input schemas are now inferred
 from signatures and checked before any plan runs.
 

@@ -1,0 +1,93 @@
+# Hawser self-hosted stack (Phase 5): Postgres, MinIO, hawserd API, durable worker.
+#   make up           # from the repository root
+#   hawser init --server http://localhost:8080 && export HAWSER_API_KEY=<printed key>
+#
+# Secrets below are development defaults. Override them with a .env file next to this
+# compose file (HAWSER_DEV_API_KEY, POSTGRES_PASSWORD, MINIO_ROOT_PASSWORD) before exposing
+# the stack beyond localhost.
+
+name: hawser
+
+x-hawserd-env: &hawserd-env
+  HAWSERD_DATABASE_URL: postgresql://hawser:${POSTGRES_PASSWORD:-hawser}@postgres:5432/hawser
+  HAWSERD_S3_BUCKET: hawser
+  HAWSERD_S3_ENDPOINT_URL: http://minio:9000
+  HAWSERD_S3_REGION: us-east-1
+  HAWSERD_S3_ACCESS_KEY: ${MINIO_ROOT_USER:-hawser}
+  HAWSERD_S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-hawser-minio-dev}
+  HAWSERD_PUBLIC_URL: ${HAWSER_PUBLIC_URL:-http://localhost:8080}
+  HAWSERD_DEV_API_KEY: ${HAWSER_DEV_API_KEY:-hk_live_compose-dev-key-change-me-0000000000}
+  HAWSERD_LEASE_SECONDS: "60"
+  HAWSERD_WORKER_CONCURRENCY: "2"
+  # Model providers: pass through from the host environment.
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+  OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  HAWSER_DEFAULT_MODEL: ${HAWSER_DEFAULT_MODEL:-anthropic/claude-opus-5-5}
+  HAWSER_RECORD_MODE: ${HAWSER_RECORD_MODE:-live}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hawser
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hawser}
+      POSTGRES_DB: hawser
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hawser -d hawser"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-hawser}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-hawser-minio-dev}
+    ports:
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  hawserd:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    image: hawser/hawserd:local
+    command: ["serve", "--migrate"]
+    environment:
+      <<: *hawserd-env
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    volumes:
+      - ../../skills:/app/skills:ro
+
+  worker:
+    image: hawser/hawserd:local
+    command: ["worker"]
+    environment:
+      <<: *hawserd-env
+    depends_on:
+      hawserd:
+        condition: service_started
+    volumes:
+      - ../../skills:/app/skills:ro
+    deploy:
+      replicas: 1
+
+volumes:
+  postgres-data:
+  minio-data:
