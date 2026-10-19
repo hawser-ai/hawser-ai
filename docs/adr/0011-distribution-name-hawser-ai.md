@@ -1,6 +1,6 @@
 # ADR-0011: Publish the core package as `hawser-ai`; keep `import hawser` and the `hawser` command
 
-- **Status:** accepted
+- **Status:** accepted; point 2 (which distributions are published) is superseded by ADR-0012
 - **Date:** 2026-10-19
 - **Phase:** release 0.1
 

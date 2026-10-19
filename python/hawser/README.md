@@ -66,6 +66,8 @@ Set `ANTHROPIC_API_KEY`, `OPENROUTER_API_KEY` or `OPENAI_API_KEY` for the provid
 
 - **Step-by-step guide:** https://github.com/hawser-ai/hawser-ai#get-started
 - **Documentation:** https://github.com/hawser-ai/hawser-ai/tree/main/docs
+- **Measure accuracy on your own documents:** `hawser eval run` (included; see the
+  [evaluations guide](https://github.com/hawser-ai/hawser-ai/blob/main/docs/concepts/evals.md))
 - **Server and web app:** `pip install hawser-server` (see
   [hawser-server](https://pypi.org/project/hawser-server/))
 - **Changelog:** https://github.com/hawser-ai/hawser-ai/blob/main/CHANGELOG.md

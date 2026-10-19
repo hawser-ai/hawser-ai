@@ -9,8 +9,6 @@ resolution-markers = [
 [manifest]
 members = [
     "hawser-ai",
-    "hawser-evals",
-    "hawser-media",
     "hawser-monorepo",
     "hawser-server",
     "hawser-synth",
@@ -603,10 +601,13 @@ version = "0.1.0"
 source = { editable = "python/hawser" }
 dependencies = [
     { name = "anthropic" },
-    { name = "hawser-media" },
+    { name = "filetype" },
     { name = "httpx" },
     { name = "jsonschema" },
+    { name = "numpy" },
+    { name = "pillow" },
     { name = "pydantic" },
+    { name = "pypdfium2" },
     { name = "python-ulid" },
     { name = "pyyaml" },
     { name = "rapidfuzz" },
@@ -616,69 +617,25 @@ dependencies = [
 
 [package.optional-dependencies]
 ocr = [
-    { name = "hawser-media", extra = ["ocr"] },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "anthropic", specifier = ">=1.0" },
-    { name = "hawser-media", editable = "python/hawser_media" },
-    { name = "hawser-media", extras = ["ocr"], marker = "extra == 'ocr'", editable = "python/hawser_media" },
-    { name = "httpx", specifier = ">=0.27" },
-    { name = "jsonschema", specifier = ">=4.23" },
-    { name = "pydantic", specifier = ">=2.9,<3" },
-    { name = "python-ulid", specifier = ">=3.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "rapidfuzz", specifier = ">=3.9" },
-    { name = "rich", specifier = ">=13.7" },
-    { name = "typer", specifier = ">=0.12" },
-]
-provides-extras = ["ocr"]
-
-[[package]]
-name = "hawser-evals"
-version = "0.1.0"
-source = { editable = "python/hawser_evals" }
-dependencies = [
-    { name = "hawser-ai" },
-    { name = "pydantic" },
-    { name = "pyyaml" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "hawser-ai", editable = "python/hawser" },
-    { name = "pydantic", specifier = ">=2.9,<3" },
-    { name = "pyyaml", specifier = ">=6.0" },
-]
-
-[[package]]
-name = "hawser-media"
-version = "0.1.0"
-source = { editable = "python/hawser_media" }
-dependencies = [
-    { name = "filetype" },
-    { name = "httpx" },
-    { name = "numpy" },
-    { name = "pillow" },
-    { name = "pydantic" },
-    { name = "pypdfium2" },
-]
-
-[package.optional-dependencies]
-ocr = [
     { name = "rapidocr-onnxruntime" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "anthropic", specifier = ">=1.0" },
     { name = "filetype", specifier = ">=1.2" },
     { name = "httpx", specifier = ">=0.27" },
+    { name = "jsonschema", specifier = ">=4.23" },
     { name = "numpy", specifier = ">=1.26" },
     { name = "pillow", specifier = ">=10.4" },
     { name = "pydantic", specifier = ">=2.9,<3" },
     { name = "pypdfium2", specifier = ">=4.30" },
+    { name = "python-ulid", specifier = ">=3.0" },
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "rapidfuzz", specifier = ">=3.9" },
     { name = "rapidocr-onnxruntime", marker = "extra == 'ocr'", specifier = ">=1.4" },
+    { name = "rich", specifier = ">=13.7" },
+    { name = "typer", specifier = ">=0.12" },
 ]
 provides-extras = ["ocr"]
 
@@ -688,8 +645,6 @@ version = "0.0.0"
 source = { virtual = "." }
 dependencies = [
     { name = "hawser-ai" },
-    { name = "hawser-evals" },
-    { name = "hawser-media" },
     { name = "hawser-server" },
     { name = "hawser-synth" },
 ]
@@ -713,8 +668,6 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "hawser-ai", editable = "python/hawser" },
-    { name = "hawser-evals", editable = "python/hawser_evals" },
-    { name = "hawser-media", editable = "python/hawser_media" },
     { name = "hawser-server", editable = "python/hawser_server" },
     { name = "hawser-synth", editable = "python/hawser_synth" },
 ]

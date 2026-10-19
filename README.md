@@ -48,9 +48,7 @@ pip install "hawser-ai[ocr]"
 > **Before the first PyPI release**, install straight from GitHub instead:
 >
 > ```bash
-> pip install \
->   "hawser-media @ git+https://github.com/hawser-ai/hawser-ai#subdirectory=python/hawser_media" \
->   "hawser-ai[ocr] @ git+https://github.com/hawser-ai/hawser-ai#subdirectory=python/hawser"
+> pip install "hawser-ai[ocr] @ git+https://github.com/hawser-ai/hawser-ai#subdirectory=python/hawser"
 > ```
 
 Check it worked:

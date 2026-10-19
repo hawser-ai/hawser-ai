@@ -28,7 +28,7 @@ def recognize(ctx: RunContext, ref: str, engine: str = "auto") -> dict[str, Any]
     eng = ocr_mod.get_engine(engine if engine != "auto" else ctx.config.ocr_engine)
     if eng is None:
         raise ToolError(
-            f"no OCR engine available for {engine!r} (install hawser-media[ocr] or tesseract)",
+            f"no OCR engine available for {engine!r} (install hawser-ai[ocr] or tesseract)",
             code="ocr_unavailable",
             retryable=False,
         )

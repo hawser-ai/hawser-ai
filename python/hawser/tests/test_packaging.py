@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
-PACKAGES = ["hawser", "hawser_media", "hawser_server", "hawser_evals", "hawser_synth"]
+PACKAGES = ["hawser", "hawser_server"]  # the published distributions
 
 
 @pytest.mark.parametrize("package", PACKAGES)

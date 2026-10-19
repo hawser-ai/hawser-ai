@@ -21,7 +21,7 @@ what OCR engines do: dropped currency marks (`€61.12` ↔ `61.12`) and collaps
 
 | Engine | How | When |
 |---|---|---|
-| `rapidocr` (default) | PaddleOCR v4 models through ONNX Runtime; ships in the wheel (`hawser-media[ocr]`), no system packages | local, ~0.4 s per page after a 1.5 s warm-up |
+| `rapidocr` (default) | PaddleOCR v4 models through ONNX Runtime; ships in the wheel (`hawser-ai[ocr]`), no system packages | local, ~0.4 s per page after a 1.5 s warm-up |
 | `tesseract` | the `tesseract` binary when installed | local alternative; used by `reocr` as the second opinion |
 | `azure-document-intelligence` | `prebuilt-read` over REST (`AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` / `_KEY`) | hosted, `external_read`; the reference adapter for Google/Textract-style services |
 

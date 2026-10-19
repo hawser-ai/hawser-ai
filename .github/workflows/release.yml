@@ -1,14 +1,14 @@
 name: release
 
-# Runs only when a version tag (v0.1.0, v0.2.0rc1, ...) is pushed. Builds the web app, the five
-# Python packages and the Docker image; smoke-tests the wheels in a clean environment; then
-# publishes to PyPI (trusted publishing, no stored token) and GHCR, and drafts a GitHub release.
+# Runs only when a version tag (v0.1.0, v0.2.0rc1, ...) is pushed. Builds the web app, the two
+# published Python packages (hawser-ai, hawser-server) and the Docker image; smoke-tests the
+# wheels in a clean environment; then publishes to PyPI (trusted publishing, no stored token) and
+# GHCR, and drafts a GitHub release. hawser-synth stays in the repository and is never published.
 #
 # One-time setup before the first tag:
 #   - PyPI: add a (pending) trusted publisher for each project, pointing at this repository and
-#     workflow release.yml, with its own environment: hawser-ai -> pypi, hawser-media ->
-#     pypi-hawser-media, hawser-server -> pypi-hawser-server, hawser-evals -> pypi-hawser-evals,
-#     hawser-synth -> pypi-hawser-synth (see the pypi job's matrix).
+#     workflow release.yml, with its own environment: hawser-ai -> pypi,
+#     hawser-server -> pypi-hawser-server (see the pypi job's matrix).
 #   - GitHub creates those environments on first use; add required reviewers to them if wanted.
 
 on:
@@ -42,7 +42,9 @@ jobs:
       - name: Build the web app into hawser-server
         run: make web
       - name: Build wheels and sdists
-        run: uv build --all-packages -o dist
+        run: |
+          uv build --package hawser-ai -o dist
+          uv build --package hawser-server -o dist
       - name: Check metadata
         run: uvx twine check dist/*
       - name: Smoke test in a clean environment
@@ -51,7 +53,8 @@ jobs:
         run: |
           uv venv /tmp/smoke --python 3.12
           uv pip install --python /tmp/smoke/bin/python --find-links dist \
-            "hawser-ai[ocr]==${GITHUB_REF_NAME#v}" "hawser-server==${GITHUB_REF_NAME#v}" "hawser-evals==${GITHUB_REF_NAME#v}"
+            "hawser-ai[ocr]==${GITHUB_REF_NAME#v}" "hawser-server==${GITHUB_REF_NAME#v}"
+          /tmp/smoke/bin/python -c "import hawser, hawser_media, hawser_evals, hawser_server"
           mkdir /tmp/smoke-proj && cd /tmp/smoke-proj
           /tmp/smoke/bin/hawser init
           /tmp/smoke/bin/hawser quickstart --json > out.json
@@ -73,10 +76,7 @@ jobs:
       matrix:
         include:
           - { dist: hawser_ai, environment: pypi }
-          - { dist: hawser_media, environment: pypi-hawser-media }
           - { dist: hawser_server, environment: pypi-hawser-server }
-          - { dist: hawser_evals, environment: pypi-hawser-evals }
-          - { dist: hawser_synth, environment: pypi-hawser-synth }
     environment: ${{ matrix.environment }}
     permissions:
       id-token: write

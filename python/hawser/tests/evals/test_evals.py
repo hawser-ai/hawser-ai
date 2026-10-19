@@ -16,7 +16,7 @@ from hawser_synth.dataset import build
 from hawser_synth.invoice import Invoice
 from hawser_synth.purchase_order import PurchaseOrder, generate_pair
 
-REPO = Path(__file__).resolve().parents[3]
+REPO = Path(__file__).resolve().parents[4]
 
 
 class TruthAdapter(StaticAdapter):

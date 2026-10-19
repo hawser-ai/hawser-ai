@@ -21,7 +21,6 @@ classifiers = [
 dependencies = [
   "pydantic>=2.9,<3",
   "python-ulid>=3.0",
-  "hawser-media>=0.1.0,<0.2",
   "anthropic>=1.0",
   "rapidfuzz>=3.9",
   "jsonschema>=4.23",
@@ -29,16 +28,19 @@ dependencies = [
   "rich>=13.7",
   "pyyaml>=6.0",
   "httpx>=0.27",
+  # media (hawser_media): PDF text and rendering, images
+  "pypdfium2>=4.30",
+  "pillow>=10.4",
+  "filetype>=1.2",
+  "numpy>=1.26",
 ]
 
 [project.optional-dependencies]
-ocr = ["hawser-media[ocr]>=0.1.0,<0.2"]
+# Local OCR for scans and photos (RapidOCR). On Linux, OpenCV also needs the libgl1 package.
+ocr = ["rapidocr-onnxruntime>=1.4"]
 
 [project.scripts]
 hawser = "hawser.cli:app"
-
-[tool.uv.sources]
-hawser-media = { workspace = true }
 
 [project.urls]
 Homepage = "https://github.com/hawser-ai/hawser-ai"
@@ -52,4 +54,5 @@ requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/hawser"]
+# One distribution, three import packages: the SDK/runtime/CLI, media primitives and evaluations.
+packages = ["src/hawser", "src/hawser_media", "src/hawser_evals"]

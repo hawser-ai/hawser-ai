@@ -11,5 +11,8 @@
 | [0007](0007-pdf-engine.md) | PDF engine is pypdfium2, not PyMuPDF | accepted |
 | [0008](0008-recording-and-replay.md) | Every model and tool call is recordable; tests run from recordings | accepted |
 | [0009](0009-licence-and-contribution.md) | Apache-2.0 licence, DCO sign-off, name check | accepted |
+| [0010](0010-python-control-plane.md) | The control plane is Python (FastAPI), with a Postgres-leased worker | accepted |
+| [0011](0011-distribution-name-hawser-ai.md) | Publish the core package as `hawser-ai`; keep `import hawser` | accepted (partly superseded by 0012) |
+| [0012](0012-two-published-distributions.md) | Publish two distributions: `hawser-ai` and `hawser-server` | accepted |
 
 New ADRs copy [`0000-template.md`](0000-template.md). Number sequentially; never reuse a number.

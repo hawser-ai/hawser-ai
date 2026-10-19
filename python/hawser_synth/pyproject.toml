@@ -8,6 +8,8 @@ requires-python = ">=3.12"
 keywords = ["synthetic-data", "pdf", "invoices", "test-fixtures"]
 authors = [{ name = "Hawser contributors" }]
 classifiers = [
+  # Repository-only (tests, quickstart data, the benchmark); PyPI rejects uploads with this.
+  "Private :: Do Not Upload",
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: Apache Software License",

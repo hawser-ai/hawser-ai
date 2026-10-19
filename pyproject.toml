@@ -3,21 +3,18 @@ name = "hawser-monorepo"
 version = "0.0.0"
 description = "Workspace root for the Hawser monorepo (not published)."
 requires-python = ">=3.12"
-dependencies = ["hawser-ai", "hawser-media", "hawser-evals", "hawser-synth", "hawser-server"]
+dependencies = ["hawser-ai", "hawser-synth", "hawser-server"]
 
 [tool.uv]
 package = false
 
 [tool.uv.workspace]
 members = [
-  "python/hawser", "python/hawser_media", "python/hawser_evals", "python/hawser_synth",
-  "python/hawser_server",
+  "python/hawser", "python/hawser_synth", "python/hawser_server",
 ]
 
 [tool.uv.sources]
 hawser-ai = { workspace = true }
-hawser-media = { workspace = true }
-hawser-evals = { workspace = true }
 hawser-synth = { workspace = true }
 hawser-server = { workspace = true }
 
@@ -45,10 +42,7 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-src = [
-  "python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src",
-  "python/hawser_server/src",
-]
+src = ["python/hawser/src", "python/hawser_synth/src", "python/hawser_server/src"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "N", "RUF", "PL", "PT", "RET"]
@@ -75,9 +69,8 @@ known-first-party = ["hawser", "hawser_media", "hawser_evals", "hawser_synth", "
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
 include = [
-  "python/hawser/src", "python/hawser_media/src", "python/hawser_evals/src", "python/hawser_synth/src",
-  "python/hawser_server/src",
-  "python/hawser/tests", "python/hawser_media/tests", "python/hawser_server/tests",
+  "python/hawser/src", "python/hawser_synth/src", "python/hawser_server/src",
+  "python/hawser/tests", "python/hawser_server/tests",
 ]
 reportUnknownMemberType = false
 reportUnknownVariableType = false
@@ -91,10 +84,7 @@ reportMissingTypeStubs = false
 # Tests
 # ---------------------------------------------------------------------------
 [tool.pytest.ini_options]
-testpaths = [
-  "python/hawser/tests", "python/hawser_media/tests", "python/hawser_evals/tests",
-  "python/hawser_server/tests",
-]
+testpaths = ["python/hawser/tests", "python/hawser_server/tests"]
 markers = ["live: calls a real model provider; runs only in the nightly job"]
 addopts = "-q -ra --import-mode=importlib"
 filterwarnings = ["error::DeprecationWarning:hawser.*"]

@@ -32,7 +32,7 @@ The same variables the local runtime uses (`hawser.config.HawserConfig`): `HAWSE
 `HAWSER_DEFAULT_EFFORT`, `HAWSER_MAX_PAGES`, `HAWSER_MAX_PIXELS`, `HAWSER_MAX_BYTES`,
 `HAWSER_RENDER_DPI`, `HAWSER_CONTEXT_FRACTION`, `HAWSER_STORE_RAW`, `HAWSER_RECORD_MODE`,
 `HAWSER_CASSETTE_DIR`, `HAWSER_HOME` (plan cache, cassettes), `HAWSER_SKILL_PATHS`
-(path-separator or comma separated), `HAWSER_OCR_ENGINE` (`auto|rapidocr|tesseract|azure-document-intelligence|none`), `HAWSER_OCR_DPI` (300), `HAWSER_DESKEW` (true). The Docker image bundles RapidOCR; a bare-metal install needs `pip install 'hawser-media[ocr]'` or a `tesseract` binary, and `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`/`_KEY` for the hosted engine. `HAWSER_IMAGE_API_BASE`/`HAWSER_IMAGE_API_KEY` (or `OPENAI_API_KEY`) serve `image.generate|edit` when a policy enables generation. Provider credentials are the usual `ANTHROPIC_API_KEY`,
+(path-separator or comma separated), `HAWSER_OCR_ENGINE` (`auto|rapidocr|tesseract|azure-document-intelligence|none`), `HAWSER_OCR_DPI` (300), `HAWSER_DESKEW` (true). The Docker image bundles RapidOCR; a bare-metal install needs `pip install 'hawser-ai[ocr]'` or a `tesseract` binary, and `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`/`_KEY` for the hosted engine. `HAWSER_IMAGE_API_BASE`/`HAWSER_IMAGE_API_KEY` (or `OPENAI_API_KEY`) serve `image.generate|edit` when a policy enables generation. Provider credentials are the usual `ANTHROPIC_API_KEY`,
 `OPENROUTER_API_KEY`, `OPENAI_API_KEY`; they live only on worker processes.
 
 ## Secrets

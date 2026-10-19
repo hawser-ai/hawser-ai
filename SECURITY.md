@@ -17,8 +17,8 @@ backports to older 0.x releases.
 
 ## Scope
 
-In scope: the `hawser-ai`, `hawser-media`, `hawser-server`, `hawser-evals` and `hawser-synth`
-packages, the web app, the Docker image and the Compose stack in this repository.
+In scope: the `hawser-ai` and `hawser-server` packages, the `hawser-synth` workspace package,
+the web app, the Docker image and the Compose stack in this repository.
 
 Areas we particularly care about:
 
