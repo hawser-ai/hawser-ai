@@ -1,0 +1,39 @@
+name: Bug report
+description: Something does not work as documented.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: The smallest command, script or test that shows the problem. Synthetic inputs are best; never attach private documents.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: inspect
+    attributes:
+      label: Run details
+      description: Output of `hawser inspect <run_id> --json` or the relevant events (redact anything private).
+      render: json
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `hawser --version` (and `hawserd --version` if you use the server).
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options: [SDK / CLI, hawserd server, web app, Docker / Compose, evaluations, docs]
+    validations:
+      required: true

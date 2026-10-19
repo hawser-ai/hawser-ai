@@ -1,9 +1,23 @@
 [project]
 name = "hawser-media"
-version = "0.1.0a0"
+version = "0.1.0"
 description = "Document, image, audio and video primitives for Hawser."
+readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
+keywords = ["pdf", "ocr", "image", "document", "layout"]
+authors = [{ name = "Hawser contributors" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
 dependencies = [
   "pydantic>=2.9,<3",
   "pypdfium2>=4.30",
@@ -15,6 +29,13 @@ dependencies = [
 
 [project.optional-dependencies]
 ocr = ["rapidocr-onnxruntime>=1.4"]
+
+[project.urls]
+Homepage = "https://github.com/hawser-ai/hawser"
+Documentation = "https://github.com/hawser-ai/hawser/tree/main/docs"
+Source = "https://github.com/hawser-ai/hawser"
+Issues = "https://github.com/hawser-ai/hawser/issues"
+Changelog = "https://github.com/hawser-ai/hawser/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.25"]

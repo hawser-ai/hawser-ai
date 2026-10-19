@@ -19,6 +19,8 @@ from reportlab.lib.pagesizes import A4, LETTER
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
+from hawser_media.pdf import PDFIUM_LOCK
+
 
 class LineItem(BaseModel):
     sku: str | None = Field(default=None, description="Vendor stock-keeping unit, if printed")
@@ -259,12 +261,13 @@ def _render(  # noqa: PLR0915
 
 def rasterise(pdf: bytes, *, dpi: float, rotate: float) -> bytes:
     """Re-encode page 1 as an image-only PDF (simulates a scan)."""
-    doc = pdfium.PdfDocument(pdf)
-    page = doc[0]
-    width_pt, height_pt = page.get_size()
-    image = page.render(scale=dpi / 72.0).to_pil().convert("RGB")  # type: ignore[arg-type]
-    page.close()
-    doc.close()
+    with PDFIUM_LOCK:  # pdfium is not thread-safe; share the process-wide lock
+        doc = pdfium.PdfDocument(pdf)
+        page = doc[0]
+        width_pt, height_pt = page.get_size()
+        image = page.render(scale=dpi / 72.0).to_pil().convert("RGB")  # type: ignore[arg-type]
+        page.close()
+        doc.close()
     image = image.rotate(rotate, expand=False, fillcolor="white")
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=(width_pt, height_pt))

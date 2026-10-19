@@ -1,0 +1,20 @@
+name: Feature request
+description: Suggest a capability, adapter, tool or skill.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What you would like Hawser to do. Mention any contract, policy or state-machine changes.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

@@ -1,0 +1,123 @@
+name: release
+
+# Runs only when a version tag (v0.1.0, v0.2.0rc1, ...) is pushed. Builds the web app, the five
+# Python packages and the Docker image; smoke-tests the wheels in a clean environment; then
+# publishes to PyPI (trusted publishing, no stored token) and GHCR, and drafts a GitHub release.
+#
+# One-time setup before the first tag:
+#   - PyPI: add a "trusted publisher" for each project (hawser-ai, hawser-media, hawser-server,
+#     hawser-evals, hawser-synth) pointing at this repository, workflow release.yml, environment pypi.
+#   - GitHub: create an environment named "pypi" (optionally with required reviewers).
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: Tag matches package versions
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          for p in python/*/pyproject.toml; do
+            v=$(grep -m1 '^version = ' "$p" | cut -d'"' -f2)
+            [ "$v" = "$tag" ] || { echo "$p is $v, tag is $tag"; exit 1; }
+          done
+      - name: Build the web app into hawser-server
+        run: make web
+      - name: Build wheels and sdists
+        run: uv build --all-packages -o dist
+      - name: Check metadata
+        run: uvx twine check dist/*
+      - name: Smoke test in a clean environment
+        env:
+          HAWSER_RECORD_MODE: replay
+        run: |
+          uv venv /tmp/smoke --python 3.12
+          uv pip install --python /tmp/smoke/bin/python --find-links dist \
+            "hawser-ai[ocr]==${GITHUB_REF_NAME#v}" "hawser-server==${GITHUB_REF_NAME#v}" "hawser-evals==${GITHUB_REF_NAME#v}"
+          mkdir /tmp/smoke-proj && cd /tmp/smoke-proj
+          /tmp/smoke/bin/hawser init
+          /tmp/smoke/bin/hawser quickstart --json > out.json
+          grep -q '"status": *"accepted"' out.json || { cat out.json; exit 1; }
+          /tmp/smoke/bin/hawserd --version
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  image:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/hawserd
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  github-release:
+    needs: [pypi, image]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Release notes from CHANGELOG.md
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          awk -v v="$v" '$0 ~ "^## "v {f=1; next} /^## / && f {exit} f' CHANGELOG.md > notes.md
+          test -s notes.md || echo "See CHANGELOG.md" > notes.md
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --draft --title "$GITHUB_REF_NAME" --notes-file notes.md

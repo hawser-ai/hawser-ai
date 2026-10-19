@@ -1,19 +1,40 @@
 [project]
 name = "hawser-synth"
-version = "0.1.0a0"
+version = "0.1.0"
 description = "Synthetic document generators for Hawser examples, fixtures and evaluation datasets."
+readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
+keywords = ["synthetic-data", "pdf", "invoices", "test-fixtures"]
+authors = [{ name = "Hawser contributors" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
 dependencies = [
   "pydantic>=2.9,<3",
-  "hawser",
+  "hawser-ai>=0.1.0,<0.2",
   "reportlab>=4.2",
   "pypdfium2>=4.30",
   "pillow>=10.4",
 ]
 
 [tool.uv.sources]
-hawser = { workspace = true }
+hawser-ai = { workspace = true }
+
+[project.urls]
+Homepage = "https://github.com/hawser-ai/hawser"
+Documentation = "https://github.com/hawser-ai/hawser/tree/main/docs"
+Source = "https://github.com/hawser-ai/hawser"
+Issues = "https://github.com/hawser-ai/hawser/issues"
+Changelog = "https://github.com/hawser-ai/hawser/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.25"]

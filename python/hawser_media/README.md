@@ -1,5 +1,10 @@
 # hawser-media
 
-Document, image, audio and video primitives for Hawser.
+Media primitives for Hawser: PDF probing, text with per-glyph boxes and page rendering
+(pypdfium2), image probing with decompression-bomb limits, image operations that record their
+coordinate transforms, OCR engines behind one contract (RapidOCR with the `ocr` extra,
+Tesseract, Azure Document Intelligence), and heuristic layout analysis.
 
-Skeleton package; populated from Phase 1 (media) / Phase 2 (evals).
+```bash
+pip install "hawser-media[ocr]"
+```

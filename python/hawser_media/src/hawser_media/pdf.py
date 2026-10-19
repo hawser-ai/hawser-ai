@@ -6,8 +6,12 @@ Coordinates returned here are PDF points with the origin at the **top-left** of 
 
 from __future__ import annotations
 
+import functools
 import io
+import threading
+from collections.abc import Callable
 from dataclasses import dataclass, field
+from typing import Any
 
 import pypdfium2 as pdfium
 from pydantic import BaseModel, Field
@@ -109,6 +113,20 @@ class RenderedPage:
     scale: float = field(default=1.0)
 
 
+#: PDFium is not thread-safe: every call into it, from any thread, must hold this lock
+#: (pypdfium2 documents the same requirement). A server worker runs jobs in parallel threads.
+PDFIUM_LOCK = threading.RLock()
+
+
+def _serialised[F: Callable[..., Any]](fn: F) -> F:
+    @functools.wraps(fn)
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
+        with PDFIUM_LOCK:
+            return fn(*args, **kwargs)
+
+    return wrapper  # type: ignore[return-value]
+
+
 def _open(data: bytes) -> pdfium.PdfDocument:
     try:
         return pdfium.PdfDocument(data)
@@ -120,6 +138,7 @@ def _open(data: bytes) -> pdfium.PdfDocument:
         raise MediaError("pdf_corrupt", f"cannot open PDF: {exc}") from exc
 
 
+@_serialised
 def probe(data: bytes) -> PdfInfo:
     """Cheap inspection: page count, sizes, text-layer character counts, forms, encryption."""
     doc = _open(data)
@@ -146,6 +165,7 @@ def probe(data: bytes) -> PdfInfo:
         doc.close()
 
 
+@_serialised
 def extract_text(data: bytes, *, pages: list[int] | None = None) -> list[PageText]:
     """Extract text with per-character boxes for the given 1-based pages (default: all)."""
     doc = _open(data)
@@ -244,6 +264,7 @@ def _group_lines(pt: PageText) -> list[Line]:
     return lines
 
 
+@_serialised
 def render_page(data: bytes, page_no: int, *, dpi: float = 150.0) -> RenderedPage:
     """Render one 1-based page to PNG."""
     doc = _open(data)

@@ -3,7 +3,7 @@
   "inputs": [
     {
       "kind": "path",
-      "path": "/Users/chetanpatel/workspace/hawser-ai/python/hawser/src/hawser/_quickstart/invoice.pdf",
+      "path": "quickstart/invoice.pdf",
       "name": "invoice.pdf"
     }
   ],

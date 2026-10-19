@@ -220,3 +220,21 @@ def test_layout_on_native_invoice() -> None:
     assert "Invoice" in joined or "Total" in joined or len(out.key_values) >= 2
     assert [b.reading_order for b in out.blocks] == list(range(len(out.blocks)))
     assert json.loads(out.model_dump_json())["page"] == 1
+
+
+def test_pdfium_calls_are_thread_safe() -> None:
+    """PDFium segfaults on concurrent use; the media layer serialises it (a hawserd worker runs
+    jobs in parallel threads)."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    data = generate_invoice(4, layout=1).pdf
+
+    def work(_: int) -> int:
+        pdf.probe(data)
+        pages = pdf.extract_text(data)
+        pdf.render_page(data, 1, dpi=60)
+        return len(pages[0].text)
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        lengths = list(pool.map(work, range(48)))
+    assert len(set(lengths)) == 1 and lengths[0] > 100

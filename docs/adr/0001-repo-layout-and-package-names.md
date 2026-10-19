@@ -1,6 +1,6 @@
 # ADR-0001: Monorepo layout and Python package names
 
-- **Status:** accepted
+- **Status:** accepted; the core distribution name is superseded by ADR-0011 (`hawser-ai`)
 - **Date:** 2026-10-18
 - **Phase:** 0
 

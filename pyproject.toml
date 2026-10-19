@@ -3,7 +3,7 @@ name = "hawser-monorepo"
 version = "0.0.0"
 description = "Workspace root for the Hawser monorepo (not published)."
 requires-python = ">=3.12"
-dependencies = ["hawser", "hawser-media", "hawser-evals", "hawser-synth", "hawser-server"]
+dependencies = ["hawser-ai", "hawser-media", "hawser-evals", "hawser-synth", "hawser-server"]
 
 [tool.uv]
 package = false
@@ -15,7 +15,7 @@ members = [
 ]
 
 [tool.uv.sources]
-hawser = { workspace = true }
+hawser-ai = { workspace = true }
 hawser-media = { workspace = true }
 hawser-evals = { workspace = true }
 hawser-synth = { workspace = true }

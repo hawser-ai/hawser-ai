@@ -5,7 +5,7 @@ Ten minutes from install to a verified extraction with page-level evidence.
 ## 1. Install
 
 ```bash
-pip install hawser            # once published; today: `uv sync --all-packages` in the repo
+pip install "hawser-ai[ocr]"   # import name and command: hawser
 hawser --version
 ```
 

@@ -8,7 +8,7 @@ resolution-markers = [
 
 [manifest]
 members = [
-    "hawser",
+    "hawser-ai",
     "hawser-evals",
     "hawser-media",
     "hawser-monorepo",
@@ -598,8 +598,8 @@ wheels = [
 ]
 
 [[package]]
-name = "hawser"
-version = "0.1.0a0"
+name = "hawser-ai"
+version = "0.1.0"
 source = { editable = "python/hawser" }
 dependencies = [
     { name = "anthropic" },
@@ -614,10 +614,16 @@ dependencies = [
     { name = "typer" },
 ]
 
+[package.optional-dependencies]
+ocr = [
+    { name = "hawser-media", extra = ["ocr"] },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "anthropic", specifier = ">=1.0" },
     { name = "hawser-media", editable = "python/hawser_media" },
+    { name = "hawser-media", extras = ["ocr"], marker = "extra == 'ocr'", editable = "python/hawser_media" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "jsonschema", specifier = ">=4.23" },
     { name = "pydantic", specifier = ">=2.9,<3" },
@@ -627,27 +633,28 @@ requires-dist = [
     { name = "rich", specifier = ">=13.7" },
     { name = "typer", specifier = ">=0.12" },
 ]
+provides-extras = ["ocr"]
 
 [[package]]
 name = "hawser-evals"
-version = "0.1.0a0"
+version = "0.1.0"
 source = { editable = "python/hawser_evals" }
 dependencies = [
-    { name = "hawser" },
+    { name = "hawser-ai" },
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "hawser", editable = "python/hawser" },
+    { name = "hawser-ai", editable = "python/hawser" },
     { name = "pydantic", specifier = ">=2.9,<3" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]
 
 [[package]]
 name = "hawser-media"
-version = "0.1.0a0"
+version = "0.1.0"
 source = { editable = "python/hawser_media" }
 dependencies = [
     { name = "filetype" },
@@ -680,7 +687,7 @@ name = "hawser-monorepo"
 version = "0.0.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "hawser" },
+    { name = "hawser-ai" },
     { name = "hawser-evals" },
     { name = "hawser-media" },
     { name = "hawser-server" },
@@ -705,7 +712,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "hawser", editable = "python/hawser" },
+    { name = "hawser-ai", editable = "python/hawser" },
     { name = "hawser-evals", editable = "python/hawser_evals" },
     { name = "hawser-media", editable = "python/hawser_media" },
     { name = "hawser-server", editable = "python/hawser_server" },
@@ -730,13 +737,13 @@ dev = [
 
 [[package]]
 name = "hawser-server"
-version = "0.1.0a0"
+version = "0.1.0"
 source = { editable = "python/hawser_server" }
 dependencies = [
     { name = "argon2-cffi" },
     { name = "boto3" },
     { name = "fastapi" },
-    { name = "hawser" },
+    { name = "hawser-ai" },
     { name = "httpx" },
     { name = "pg8000" },
     { name = "python-multipart" },
@@ -749,7 +756,7 @@ requires-dist = [
     { name = "argon2-cffi", specifier = ">=23.1" },
     { name = "boto3", specifier = ">=1.35" },
     { name = "fastapi", specifier = ">=0.115" },
-    { name = "hawser", editable = "python/hawser" },
+    { name = "hawser-ai", editable = "python/hawser" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "pg8000", specifier = ">=1.31" },
     { name = "python-multipart", specifier = ">=0.0.9" },
@@ -759,10 +766,10 @@ requires-dist = [
 
 [[package]]
 name = "hawser-synth"
-version = "0.1.0a0"
+version = "0.1.0"
 source = { editable = "python/hawser_synth" }
 dependencies = [
-    { name = "hawser" },
+    { name = "hawser-ai" },
     { name = "pillow" },
     { name = "pydantic" },
     { name = "pypdfium2" },
@@ -771,7 +778,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "hawser", editable = "python/hawser" },
+    { name = "hawser-ai", editable = "python/hawser" },
     { name = "pillow", specifier = ">=10.4" },
     { name = "pydantic", specifier = ">=2.9,<3" },
     { name = "pypdfium2", specifier = ">=4.30" },

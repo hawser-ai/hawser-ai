@@ -1,0 +1,50 @@
+# Changelog
+
+All notable changes are recorded here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+[Semantic Versioning](https://semver.org/) (pre-1.0: minor versions may break APIs).
+
+## Unreleased
+
+## 0.1.0 — first public release
+
+Documents and images, end to end.
+
+### Runtime and SDK (`hawser-ai`)
+- `hawser.run()` / `hawser.Client` with direct, workflow and agent modes over one execution
+  engine; checkpointed, idempotent steps; the run state machine and event stream.
+- Admission for PDF, images, text, JSON and Office files (via LibreOffice) with size, page and
+  pixel limits.
+- Evidence anchoring with page and bounding-box regions, calculation evidence, and coordinate
+  transform chains that map evidence on derived images back to the original.
+- Validation: schema, envelope, unknown-field, evidence and declarative expression rules;
+  deterministic acceptance; bounded repair (ask-field, re-extraction, re-OCR).
+- Model gateway: Anthropic and OpenAI-compatible providers (OpenRouter, OpenAI, Ollama, vLLM),
+  capability- and policy-aware selection, fallback, pre-call budgets, recording and replay.
+- Tool broker with permissions, schema validation, approvals for side effects and wall-time
+  limits; document, compute, search, OCR, layout and image tools.
+- Skills as versioned bundles with a lockfile; the invoice ↔ purchase-order reconciliation
+  reference skill.
+- Human review with immutable machine revisions and optimistic concurrency.
+- CLI: `init`, `quickstart`, `run`, `inspect`, `runs`, `review`, `approve`, `eval`, `compare`,
+  `models`, `skill`; `--server` to drive a remote `hawserd`.
+
+### Media (`hawser-media`)
+- PDF text with per-glyph boxes and rendering; image probing; OCR engines (RapidOCR via the
+  `ocr` extra, Tesseract, Azure Document Intelligence); deskew and other recorded image
+  operations; layout analysis (blocks, tables, key-value pairs).
+
+### Server (`hawser-server`)
+- `hawserd`: REST API (generated OpenAPI), API keys and tenant isolation, Postgres or SQLite,
+  local or S3-compatible artifacts, a leased durable worker with crash recovery, SSE event
+  streams, signed webhooks with retries, and the web app at `/app`.
+- Docker image and a Compose stack (Postgres, RustFS, hawserd, worker).
+
+### Web app
+- Playground, runs, run inspector (result, plan, trace, validation, artifacts, revisions),
+  evidence viewer, review workspace, evaluations with comparison, registry, usage, policy,
+  webhooks.
+
+### Evaluations (`hawser-evals`, `hawser-synth`)
+- Datasets, field-level scoring, metrics, failure clusters, reports, comparison and CI gates;
+  a 60-pair synthetic invoice/PO benchmark with recorded responses.

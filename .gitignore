@@ -19,8 +19,6 @@ hawser.lock.tmp
 node_modules/
 web/dist/
 
-# Go
-control/bin/
 
 # Editors / OS
 .DS_Store

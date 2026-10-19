@@ -1,12 +1,25 @@
 [project]
 name = "hawser-server"
-version = "0.1.0a0"
+version = "0.1.0"
 description = "Hawser control plane: hawserd (API, durable worker, migrations)."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
+keywords = ["ai", "workflow", "server", "fastapi", "durable-execution"]
+authors = [{ name = "Hawser contributors" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
 dependencies = [
-  "hawser",
+  "hawser-ai>=0.1.0,<0.2",
   "fastapi>=0.115",
   "uvicorn[standard]>=0.30",
   "python-multipart>=0.0.9",
@@ -21,7 +34,14 @@ dependencies = [
 hawserd = "hawser_server.cli:app"
 
 [tool.uv.sources]
-hawser = { workspace = true }
+hawser-ai = { workspace = true }
+
+[project.urls]
+Homepage = "https://github.com/hawser-ai/hawser"
+Documentation = "https://github.com/hawser-ai/hawser/tree/main/docs"
+Source = "https://github.com/hawser-ai/hawser"
+Issues = "https://github.com/hawser-ai/hawser/issues"
+Changelog = "https://github.com/hawser-ai/hawser/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.25"]
@@ -29,3 +49,5 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hawser_server"]
+# The built web app is gitignored in the source tree; `make web` puts it here before a build.
+artifacts = ["src/hawser_server/static/**"]

@@ -1,7 +1,6 @@
 name: nightly
 
-# Live-model evaluations and smoke tests. Budget-capped; never runs on PRs.
-# Phase 1 adds the recorded quickstart live run; Phase 2 adds the reference eval.
+# Live-model smoke test and evaluation. Budget-capped; never runs on PRs or forks.
 
 on:
   schedule:
@@ -20,5 +19,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-packages
-      - name: Live tests (placeholder until Phase 1)
-        run: uv run pytest -m live || echo "no live tests yet"
+      - name: Live quickstart (real model call)
+        run: |
+          mkdir /tmp/nightly && cd /tmp/nightly
+          uv run --project "$GITHUB_WORKSPACE" hawser init
+          uv run --project "$GITHUB_WORKSPACE" hawser quickstart --live --json > out.json
+          grep -q '"status": *"accepted"' out.json || { cat out.json; exit 1; }
