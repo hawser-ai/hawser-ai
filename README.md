@@ -42,14 +42,15 @@ You need **Python 3.12 or newer**. The first two steps need no API key and cost 
 ### Step 1: Install
 
 ```bash
+python3 --version              # must say 3.12 or newer
+python3 -m venv .venv && source .venv/bin/activate
 pip install "hawser-ai[ocr]"
 ```
 
-> **Before the first PyPI release**, install straight from GitHub instead:
->
-> ```bash
-> pip install "hawser-ai[ocr] @ git+https://github.com/hawser-ai/hawser-ai#subdirectory=python/hawser"
-> ```
+> **"No matching distribution found for hawser-ai"?** Your Python is older than 3.12 (macOS
+> ships 3.9 as `python3`). Install a newer one, for example with
+> [uv](https://docs.astral.sh/uv/) (`uv venv --python 3.12`, then `uv pip install
+> "hawser-ai[ocr]"`) or Homebrew (`brew install python@3.12`, then use `python3.12`).
 
 Check it worked:
 
