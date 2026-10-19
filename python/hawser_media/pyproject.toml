@@ -1,7 +1,7 @@
 [project]
 name = "hawser-media"
 version = "0.1.0"
-description = "Document, image, audio and video primitives for Hawser."
+description = "Document and image primitives for Hawser: PDF text with boxes, rendering, OCR, image operations and layout."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
