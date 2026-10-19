@@ -5,9 +5,11 @@ name: release
 # publishes to PyPI (trusted publishing, no stored token) and GHCR, and drafts a GitHub release.
 #
 # One-time setup before the first tag:
-#   - PyPI: add a "trusted publisher" for each project (hawser-ai, hawser-media, hawser-server,
-#     hawser-evals, hawser-synth) pointing at this repository, workflow release.yml, environment pypi.
-#   - GitHub: create an environment named "pypi" (optionally with required reviewers).
+#   - PyPI: add a (pending) trusted publisher for each project, pointing at this repository and
+#     workflow release.yml, with its own environment: hawser-ai -> pypi, hawser-media ->
+#     pypi-hawser-media, hawser-server -> pypi-hawser-server, hawser-evals -> pypi-hawser-evals,
+#     hawser-synth -> pypi-hawser-synth (see the pypi job's matrix).
+#   - GitHub creates those environments on first use; add required reviewers to them if wanted.
 
 on:
   push:
@@ -60,10 +62,22 @@ jobs:
           name: dist
           path: dist/
 
+  # One upload job per package. PyPI only lets one *pending* trusted publisher (repository,
+  # workflow, environment) create one new project, so each package has its own environment.
   pypi:
+    name: pypi (${{ matrix.dist }})
     needs: build
     runs-on: ubuntu-latest
-    environment: pypi
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { dist: hawser_ai, environment: pypi }
+          - { dist: hawser_media, environment: pypi-hawser-media }
+          - { dist: hawser_server, environment: pypi-hawser-server }
+          - { dist: hawser_evals, environment: pypi-hawser-evals }
+          - { dist: hawser_synth, environment: pypi-hawser-synth }
+    environment: ${{ matrix.environment }}
     permissions:
       id-token: write
     steps:
@@ -71,7 +85,15 @@ jobs:
         with:
           name: dist
           path: dist/
+      - name: Select this package's files
+        run: |
+          mkdir upload
+          mv dist/${{ matrix.dist }}-* upload/
+          ls upload
+          test "$(find upload -type f | wc -l)" -eq 2   # one wheel and one sdist
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: upload/
 
   image:
     needs: build
