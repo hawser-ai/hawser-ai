@@ -29,7 +29,7 @@ from hawser.runtime.context import (
 from hawser.runtime.extract import Extraction, extract_structured
 from hawser.runtime.indexing import index_documents
 from hawser.runtime.repair import repair_loop, validate_extraction
-from hawser.runtime.state import can_transition, transition
+from hawser.runtime.state import OUTCOME_STATUSES, can_transition, transition
 from hawser.structured import inline_refs
 from hawser.validation import core_validators, decide
 
@@ -104,6 +104,9 @@ def set_status(ctx: RunContext, new: RunStatus) -> None:
         return  # a resumed run replays its pipeline; states already passed are not re-entered
     ctx.run.status = transition(old, new, run_id=ctx.run_id)
     ctx.run.updated_at = now()
+    if new in OUTCOME_STATUSES:
+        ctx.pending_transitions.append((old, new))  # published with the result by the engine
+        return
     ctx.meta.put_run(ctx.run)
     ctx.emitter.emit(EventType.run_status_changed, {"from": old.value, "to": new.value})
 

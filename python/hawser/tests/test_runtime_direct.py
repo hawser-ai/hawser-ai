@@ -9,6 +9,7 @@ import pytest
 from hawser.client import Client
 from hawser.models import EventType, FieldStatus, Policy, RunStatus, StepKind, StepStatus, Usage
 from hawser.models.common import JsonSchema
+from hawser.models.run import PAUSED_STATUSES, RESTING_STATUSES, TERMINAL_STATUSES
 from hawser.runtime.local import LocalRuntime
 from hawser.runtime.steps import StepExecutor, StepHandle
 from hawser.testing import StaticAdapter, build_envelope
@@ -267,3 +268,42 @@ def test_step_checkpoint_skips_completed_work(
     types = [e.type for e in rt.events(run.id)]
     assert types.count(EventType.step_started) == 1
     assert types.count(EventType.step_skipped) == 1
+
+
+def test_outcome_status_is_written_after_the_result(
+    runtime_factory: RuntimeFactory,
+    invoice_pdf: Path,
+    tmp_path: Path,
+    truth_envelope: Any,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A reader that sees a run at rest (accepted, needs_review, failed...) can fetch its result.
+
+    Writing the status first let API clients observe ``accepted`` with no result yet.
+    """
+    at_rest = TERMINAL_STATUSES | RESTING_STATUSES | PAUSED_STATUSES
+    cases = [
+        (StaticAdapter(truth_envelope), [invoice_pdf], RunStatus.accepted),
+        (StaticAdapter({}), [invoice_pdf], RunStatus.needs_review),
+        (StaticAdapter({}), [tmp_path / "missing.pdf"], RunStatus.failed),
+    ]
+    for adapter, inputs, expected in cases:
+        rt = runtime_factory(adapter)
+        writes: list[tuple[RunStatus, bool]] = []
+        put_run = rt.meta.put_run
+
+        def recording_put_run(
+            run: Any, *, _put: Any = put_run, _rt: Any = rt, _writes: Any = writes
+        ) -> None:
+            _writes.append((run.status, _rt.meta.get_result(run.id) is not None))
+            _put(run)
+
+        monkeypatch.setattr(rt.meta, "put_run", recording_put_run)
+        result = Client(rt).run("Extract the invoice.", inputs=inputs, output_schema=Invoice)
+
+        assert result.status == expected
+        outcome_writes = [has_result for status, has_result in writes if status in at_rest]
+        assert outcome_writes and all(outcome_writes), writes
+        types = [e.type for e in rt.events(result.run_id)]
+        last_status = max(i for i, t in enumerate(types) if t == EventType.run_status_changed)
+        assert types[last_status + 1] == EventType.result_assembled  # announced with the result

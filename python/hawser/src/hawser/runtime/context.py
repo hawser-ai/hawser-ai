@@ -23,6 +23,7 @@ from hawser.models import (
     MediaClass,
     ModelSpec,
     RunRequest,
+    RunStatus,
     RunWarning,
     Usage,
 )
@@ -61,6 +62,8 @@ class RunContext:
     resuming: bool = False
     #: Resolves object-storage inputs (``s3://bucket/key``) when the deployment allows them.
     object_reader: Callable[[str], bytes] | None = None
+    #: Outcome transitions (see ``OUTCOME_STATUSES``) held back until the result is stored.
+    pending_transitions: list[tuple[RunStatus, RunStatus]] = field(default_factory=list)
 
     @property
     def run_id(self) -> str:

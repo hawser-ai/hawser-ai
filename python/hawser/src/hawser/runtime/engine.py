@@ -35,7 +35,7 @@ from hawser.runtime.context import RunContext
 from hawser.runtime.direct import set_status
 from hawser.runtime.dispatch import execute
 from hawser.runtime.events import EventEmitter
-from hawser.runtime.state import status_for_error, status_path, transition
+from hawser.runtime.state import OUTCOME_STATUSES, status_for_error, status_path, transition
 from hawser.runtime.steps import ExecutionAborted, StepExecutor
 from hawser.skills.registry import SkillRegistry
 from hawser.storage import ArtifactStore, MetadataStore, RunRecord
@@ -174,12 +174,22 @@ class Engine:
             }
             result = self._finish_with_error(ctx, RunStatus.failed, error)
         result.usage.totals.wall_time_ms = monotonic_ms() - started
-        return self._persist(run, result, emitter)
+        return self._persist(run, result, emitter, ctx.pending_transitions)
 
-    def _persist(self, run: RunRecord, result: RunResult, emitter: EventEmitter) -> RunResult:
+    def _persist(
+        self,
+        run: RunRecord,
+        result: RunResult,
+        emitter: EventEmitter,
+        pending: list[tuple[RunStatus, RunStatus]],
+    ) -> RunResult:
+        """Store the revision and result, then publish the run's outcome status and events.
+
+        The run record (and so the status every reader sees) is written last: a reader that
+        sees ``accepted`` or ``needs_review`` can always fetch the result.
+        """
         run.completed_at = result.completed_at
         run.updated_at = now()
-        self.meta.put_run(run)
         machine = Revision(
             id=new_id("rev"),
             run_id=run.id,
@@ -193,6 +203,9 @@ class Engine:
         self.meta.put_revision(machine)
         result.revision_id = machine.id
         self.meta.put_result(result)
+        self.meta.put_run(run)
+        for old, new in pending:
+            emitter.emit(EventType.run_status_changed, {"from": old.value, "to": new.value})
         emitter.emit(
             EventType.result_assembled,
             {"status": result.status.value, "cost_usd": result.usage.totals.cost_usd},
@@ -223,9 +236,14 @@ class Engine:
     ) -> RunResult:
         """Finish a run that is not executing (cancel before start, exhausted worker attempts)."""
         emitter = EventEmitter(self.meta, run_id=run.id, tenant_id=run.tenant_id)
+        pending: list[tuple[RunStatus, RunStatus]] = []
         if run.status != status:
             for inter in status_path(run.status, status):
-                self._move(run, inter, emitter)
+                if inter in OUTCOME_STATUSES:
+                    old, run.status = run.status, transition(run.status, inter, run_id=run.id)
+                    pending.append((old, inter))
+                else:
+                    self._move(run, inter, emitter)
         run.error = error
         existing = self.meta.get_result(run.id)
         result = RunResult(
@@ -241,7 +259,7 @@ class Engine:
             created_at=run.created_at,
             completed_at=now(),
         )
-        return self._persist(run, result, emitter)
+        return self._persist(run, result, emitter, pending)
 
     def _move(self, run: RunRecord, new: RunStatus, emitter: EventEmitter) -> None:
         old = run.status

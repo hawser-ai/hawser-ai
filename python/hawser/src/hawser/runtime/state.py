@@ -32,7 +32,12 @@ from hawser.errors import (
     SandboxDenied,
     ToolError,
 )
-from hawser.models.run import TERMINAL_STATUSES, RunStatus
+from hawser.models.run import (
+    PAUSED_STATUSES,
+    RESTING_STATUSES,
+    TERMINAL_STATUSES,
+    RunStatus,
+)
 
 S = RunStatus
 
@@ -101,6 +106,12 @@ def is_terminal(status: RunStatus) -> bool:
     return status in TERMINAL_STATUSES
 
 
+#: Statuses a run comes to rest on: terminal, needs_review and awaiting_approval. They are
+#: stored and announced only together with the run's result (``Engine._persist``), so no reader
+#: ever sees a finished run whose result is not stored yet.
+OUTCOME_STATUSES: frozenset[RunStatus] = TERMINAL_STATUSES | RESTING_STATUSES | PAUSED_STATUSES
+
+
 def status_path(current: RunStatus, target: RunStatus) -> list[RunStatus]:
     """The shortest legal sequence of statuses from ``current`` to ``target`` (inclusive of
     ``target``, exclusive of ``current``). Raises :class:`InvalidTransition` if none exists."""
@@ -133,6 +144,7 @@ def status_path(current: RunStatus, target: RunStatus) -> list[RunStatus]:
 
 __all__ = [
     "ALLOWED_TRANSITIONS",
+    "OUTCOME_STATUSES",
     "can_transition",
     "is_terminal",
     "status_for_error",
