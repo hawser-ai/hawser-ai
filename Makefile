@@ -47,7 +47,7 @@ check: lint typecheck schemas-check openapi-check test ## Everything CI runs
 
 COMPOSE := docker compose -f deploy/compose/docker-compose.yaml
 
-up: ## Build and start Postgres, MinIO, hawserd and a worker (docker compose)
+up: ## Build and start Postgres, RustFS (S3), hawserd and a worker (docker compose)
 	$(COMPOSE) up -d --build
 	@echo "hawserd: http://localhost:8080  (API key: $${HAWSER_DEV_API_KEY:-hk_live_compose-dev-key-change-me-0000000000})"
 	@echo "next:    hawser init --server http://localhost:8080 && export HAWSER_API_KEY=<key>"

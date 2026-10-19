@@ -59,14 +59,14 @@ reference skill is published in the benchmark page.
 
 **Phase 5 — Control plane and durable execution.** `hawserd` (the `hawser-server` package):
 a REST API generated into `api/openapi/openapi.json`, API keys and tenancy, Postgres and
-S3/MinIO storage behind the same store protocols, a leased durable worker that resumes crashed
+S3-compatible storage behind the same store protocols, a leased durable worker that resumes crashed
 runs from step checkpoints, SSE event streams, signed webhooks with retries and a dead-letter
 list, Docker Compose, and an SDK/CLI HTTP backend. A conformance suite runs the same scenarios
 against the local runtime and the server. Python end to end — see ADR-0010 for why Go and
 Temporal were dropped.
 
 ```bash
-make up                                            # postgres + minio + hawserd + worker
+make up                                            # postgres + rustfs (s3) + hawserd + worker
 hawser init --server http://localhost:8080 && export HAWSER_API_KEY=<printed key>
 hawser run -i "Extract the invoice." -f invoice.pdf --schema quickstart/invoice.schema.json
 hawserd serve --dev                                # or: SQLite + in-process worker, no Docker

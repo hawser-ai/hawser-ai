@@ -3,14 +3,17 @@
 ## Docker Compose (reference)
 
 ```bash
-make up            # builds deploy/docker/Dockerfile, starts postgres, minio, hawserd, worker
+make up            # builds deploy/docker/Dockerfile, starts postgres, s3 (RustFS), hawserd, worker
 make logs
 make down          # keeps the volumes
 ```
 
 `deploy/compose/docker-compose.yaml` wires `HAWSERD_*` for you. Put real values in a `.env`
 file next to it before exposing the stack: `HAWSER_DEV_API_KEY` (or unset it and create keys
-with the admin commands), `POSTGRES_PASSWORD`, `MINIO_ROOT_PASSWORD`, and your provider keys.
+with the admin commands), `POSTGRES_PASSWORD`, `S3_ACCESS_KEY`/`S3_SECRET_KEY`, and your provider
+keys. The object store is [RustFS](https://github.com/rustfs/rustfs) (Apache-2.0, S3-compatible,
+MinIO-style configuration; MinIO's public images are no longer pullable). Any S3-compatible
+service works: point `HAWSERD_S3_*` at it.
 Scale workers with `docker compose up -d --scale worker=4`.
 
 The image is a multi-stage `uv` build on `python:3.12-slim`, non-root, with a `/healthz`

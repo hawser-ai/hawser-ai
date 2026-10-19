@@ -89,7 +89,7 @@ class HawserConfig(BaseModel):
             values.setdefault("home", str(cwd / ".hawser"))
         for name in cls.model_fields:
             env = os.environ.get(f"HAWSER_{name.upper()}")
-            if env is not None:
+            if env:  # empty means unset (compose passes blanks through)
                 values[name] = env
         values.update({k: v for k, v in overrides.items() if v is not None})
         return cls.model_validate(values)

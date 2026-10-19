@@ -1,9 +1,9 @@
-# Hawser self-hosted stack (Phase 5): Postgres, MinIO, hawserd API, durable worker.
+# Hawser self-hosted stack (Phase 5): Postgres, RustFS (S3-compatible), hawserd API, durable worker.
 #   make up           # from the repository root
 #   hawser init --server http://localhost:8080 && export HAWSER_API_KEY=<printed key>
 #
 # Secrets below are development defaults. Override them with a .env file next to this
-# compose file (HAWSER_DEV_API_KEY, POSTGRES_PASSWORD, MINIO_ROOT_PASSWORD) before exposing
+# compose file (HAWSER_DEV_API_KEY, POSTGRES_PASSWORD, S3_SECRET_KEY) before exposing
 # the stack beyond localhost.
 
 name: hawser
@@ -11,13 +11,13 @@ name: hawser
 x-hawserd-env: &hawserd-env
   HAWSERD_DATABASE_URL: postgresql://hawser:${POSTGRES_PASSWORD:-hawser}@postgres:5432/hawser
   HAWSERD_S3_BUCKET: hawser
-  HAWSERD_S3_ENDPOINT_URL: http://minio:9000
+  HAWSERD_S3_ENDPOINT_URL: http://s3:9000
   HAWSERD_S3_REGION: us-east-1
-  HAWSERD_S3_ACCESS_KEY: ${MINIO_ROOT_USER:-hawser}
-  HAWSERD_S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-hawser-minio-dev}
+  HAWSERD_S3_ACCESS_KEY: ${S3_ACCESS_KEY:-hawser}
+  HAWSERD_S3_SECRET_KEY: ${S3_SECRET_KEY:-hawser-s3-dev-secret}
   HAWSERD_PUBLIC_URL: ${HAWSER_PUBLIC_URL:-http://localhost:8080}
   HAWSERD_DEV_API_KEY: ${HAWSER_DEV_API_KEY:-hk_live_compose-dev-key-change-me-0000000000}
-  HAWSERD_LEASE_SECONDS: "60"
+  HAWSERD_LEASE_SECONDS: ${HAWSERD_LEASE_SECONDS:-60}
   HAWSERD_WORKER_CONCURRENCY: "2"
   # Model providers: pass through from the host environment.
   ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
@@ -25,6 +25,9 @@ x-hawserd-env: &hawserd-env
   OPENAI_API_KEY: ${OPENAI_API_KEY:-}
   HAWSER_DEFAULT_MODEL: ${HAWSER_DEFAULT_MODEL:-anthropic/claude-opus-5-5}
   HAWSER_RECORD_MODE: ${HAWSER_RECORD_MODE:-live}
+  # Replay a recording instead of calling a provider (demos, conformance): e.g.
+  # HAWSER_RECORD_MODE=replay HAWSER_CASSETTE_DIR=/app/python/hawser/src/hawser/_quickstart/cassette
+  HAWSER_CASSETTE_DIR: ${HAWSER_CASSETTE_DIR:-}
 
 services:
   postgres:
@@ -41,18 +44,19 @@ services:
       timeout: 3s
       retries: 20
 
-  minio:
-    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
-    command: server /data --console-address ":9001"
+  s3:
+    # RustFS: Apache-2.0, S3-compatible, MinIO-style configuration. Console on :9001.
+    image: rustfs/rustfs:latest
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-hawser}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-hawser-minio-dev}
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:-hawser}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:-hawser-s3-dev-secret}
+      RUSTFS_VOLUMES: /data
     ports:
       - "9001:9001"
     volumes:
-      - minio-data:/data
+      - s3-data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:9000/health || curl -sf http://127.0.0.1:9000/ >/dev/null"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -70,7 +74,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      minio:
+      s3:
         condition: service_healthy
     volumes:
       - ../../skills:/app/skills:ro
@@ -90,4 +94,4 @@ services:
 
 volumes:
   postgres-data:
-  minio-data:
+  s3-data:

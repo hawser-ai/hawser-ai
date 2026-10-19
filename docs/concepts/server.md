@@ -5,7 +5,7 @@ and admin commands, in Python, over Postgres and S3-compatible storage. It runs 
 engine as the local runtime; what changes is durability and who can reach it.
 
 ```bash
-make up                                    # Postgres + MinIO + hawserd + worker (docker compose)
+make up                                    # Postgres + RustFS (S3) + hawserd + worker (docker compose)
 hawser init --server http://localhost:8080
 export HAWSER_API_KEY=hk_live_...          # printed by `make up`, or `hawserd admin create-key`
 hawser run -i "Extract the invoice." -f invoice.pdf --schema invoice.schema.json

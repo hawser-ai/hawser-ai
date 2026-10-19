@@ -48,7 +48,8 @@ dependencies. Four phases later the facts are:
 ## Consequences
 
 - Phase 5 shrinks: no codegen pipeline, no Temporal server, no deterministic-workflow sandbox.
-  Compose runs four services (Postgres, MinIO, `hawserd`, worker) instead of seven.
+  Compose runs four services (Postgres, an S3-compatible store, `hawserd`, worker) instead of
+  seven.
 - We own the lease/heartbeat/retry logic. It is small (one job kind, one table) but it is ours
   to test: crash recovery, poison runs, lost heartbeats, concurrent cancel.
 - A second `MetadataStore` (Postgres) and `ArtifactStore` (S3) implementation; the conformance

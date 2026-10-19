@@ -644,7 +644,7 @@ webhooks, with Postgres metadata and S3-compatible artifacts, deployable with Do
 
 ### Scope
 **In:** `hawser-server` package (`hawserd serve | worker | migrate | admin | openapi`), Postgres
-metadata store + forward-only migrations, S3 artifact store + signed URLs (MinIO in Compose),
+metadata store + forward-only migrations, S3 artifact store + signed URLs (RustFS in Compose),
 leased durable worker with heartbeats and crash recovery, API keys + tenancy columns
 (single-tenant semantics), SSE with resume, signed webhooks with retries and a dead-letter list,
 Compose, SDK HTTP backend (`hawser.Client(base_url=..., api_key=...)`), `hawser --server`,
@@ -687,7 +687,7 @@ conformance suite run against both backends, operator docs.
   (embedded Postgres in tests via `pgserver`; a service container in CI).
 
 #### WP5.4 — Artifact service [B§19]
-- `S3ArtifactStore` (boto3; MinIO in Compose) with the local key scheme; presigned GET URLs
+- `S3ArtifactStore` (boto3; RustFS in Compose) with the local key scheme; presigned GET URLs
   (TTL ≤ 15 min default) or proxied streaming (`GET /v1/artifacts/{id}/content`).
 - Uploads: `POST /v1/assets` (multipart, size-limited by config) admits immediately and returns
   the `Asset`; runs reference assets by id. Presigned multipart upload for very large inputs is
@@ -718,7 +718,7 @@ conformance suite run against both backends, operator docs.
   dead letters.
 
 #### WP5.7 — Deployment [B§26]
-- `deploy/compose/docker-compose.yaml`: `postgres`, `minio`, `hawserd`, `hawser-worker`.
+- `deploy/compose/docker-compose.yaml`: `postgres`, `s3` (RustFS), `hawserd`, `worker`.
   `make up` brings it up and prints the dev API key; `hawser init --server http://localhost:8080`
   configures the CLI.
 - `deploy/docker/Dockerfile`: multi-stage `uv` build, non-root, pinned base image.
@@ -768,8 +768,13 @@ notes:
   rather than `docker kill`; the semantics are the same and it runs in every CI job.
 - Reviewed overlays downgrade the machine's error-severity issues to `info` (marked
   `resolved_by`) so an accepted-after-review result still satisfies the result contract.
-- Compose has four services (Postgres, MinIO, `hawserd`, worker). The image was not built in
-  this environment (no Docker available); the Dockerfile and compose file are untested.
+- Compose has four services (Postgres, RustFS as the S3-compatible store — MinIO's public
+  images were no longer pullable — `hawserd`, worker). Verified on 2026-10-19 with Docker
+  Desktop: image build, `make up`, CLI run with SSE progress, conformance 8/8 over HTTP against
+  Postgres + RustFS, webhooks delivered to a host listener with valid signatures through
+  needs_review → approve, and the kill test for real: `docker kill` on the worker during the
+  model step, worker restarted, the run finished on attempt 2 with admit/index replayed from
+  checkpoints and exactly one billed model call.
 - Tests: 48 server tests (store contract on both backends via embedded Postgres, queue
   concurrency, auth, API end to end, SSE, webhooks, worker takeover, SDK + CLI against a live
   uvicorn, S3 via moto, OpenAPI drift) plus the conformance suite on both backends.

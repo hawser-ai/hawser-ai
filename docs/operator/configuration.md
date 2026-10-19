@@ -9,7 +9,7 @@ files except an optional `.env` next to the compose file.
 |---|---|---|
 | `HAWSERD_DATABASE_URL` | `sqlite:///./.hawserd/hawserd.db` | `postgresql://user:pass@host:5432/db` in production. SQLite is single-node only. |
 | `HAWSERD_ARTIFACTS_DIR` | `./.hawserd/store` | Local artifact directory; ignored when `HAWSERD_S3_BUCKET` is set. |
-| `HAWSERD_S3_BUCKET` / `_S3_ENDPOINT_URL` / `_S3_REGION` / `_S3_ACCESS_KEY` / `_S3_SECRET_KEY` | unset | S3-compatible artifact store (MinIO in Compose). The bucket is created at start-up if missing. |
+| `HAWSERD_S3_BUCKET` / `_S3_ENDPOINT_URL` / `_S3_REGION` / `_S3_ACCESS_KEY` / `_S3_SECRET_KEY` | unset | S3-compatible artifact store (RustFS in Compose; any S3 endpoint works). The bucket is created at start-up if missing. |
 | `HAWSERD_S3_PRESIGN_TTL_S` | `900` | Lifetime of presigned URLs (max 7 days). |
 | `HAWSERD_ARTIFACTS_PROXY` | `true` | Serve artifact bytes through the API. `false` returns presigned URLs from `/v1/artifacts/{id}/url`. |
 | `HAWSERD_HOST` / `HAWSERD_PORT` | `127.0.0.1` / `8080` | Bind address. |
