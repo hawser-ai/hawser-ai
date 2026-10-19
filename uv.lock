@@ -597,7 +597,7 @@ wheels = [
 
 [[package]]
 name = "hawser-ai"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "python/hawser" }
 dependencies = [
     { name = "anthropic" },
@@ -690,7 +690,7 @@ dev = [
 
 [[package]]
 name = "hawser-server"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "python/hawser_server" }
 dependencies = [
     { name = "argon2-cffi" },
@@ -719,7 +719,7 @@ requires-dist = [
 
 [[package]]
 name = "hawser-synth"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "python/hawser_synth" }
 dependencies = [
     { name = "hawser-ai" },

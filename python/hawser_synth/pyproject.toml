@@ -1,6 +1,6 @@
 [project]
 name = "hawser-synth"
-version = "0.1.0"
+version = "0.1.1"
 description = "Synthetic document generators for Hawser examples, fixtures and evaluation datasets."
 readme = "README.md"
 license = "Apache-2.0"
@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
   "pydantic>=2.9,<3",
-  "hawser-ai>=0.1.0,<0.2",
+  "hawser-ai>=0.1.1,<0.2",
   "reportlab>=4.2",
   "pypdfium2>=4.30",
   "pillow>=10.4",

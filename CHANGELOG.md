@@ -6,6 +6,18 @@ All notable changes are recorded here. The format follows
 
 ## Unreleased
 
+## 0.1.1
+
+### Fixed
+- A run's final status (`accepted`, `needs_review`, `failed`, `awaiting_approval`, ...) is now
+  stored and announced only after its result. Before, a client polling `hawserd` could see
+  `accepted` and then get "result not ready" or an empty result from the next call.
+  `hawser-server` 0.1.1 requires `hawser-ai` 0.1.1, where the fix lives.
+
+### Changed
+- The bundled quickstart invoice, the benchmark dataset and their recorded model responses use
+  a fictional customer name ("Larkspur Software Ltd").
+
 ## 0.1.0 — first public release
 
 Documents and images, end to end.

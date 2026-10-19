@@ -1,6 +1,6 @@
 [project]
 name = "hawser-server"
-version = "0.1.0"
+version = "0.1.1"
 description = "Hawser control plane: hawserd (API, durable worker, migrations)."
 readme = "README.md"
 license = "Apache-2.0"
@@ -19,7 +19,7 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "hawser-ai>=0.1.0,<0.2",
+  "hawser-ai>=0.1.1,<0.2",
   "fastapi>=0.115",
   "uvicorn[standard]>=0.30",
   "python-multipart>=0.0.9",
