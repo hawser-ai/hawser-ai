@@ -12,7 +12,7 @@ RUN pnpm build
 
 FROM python:3.12-slim-bookworm AS build
 COPY --from=ghcr.io/astral-sh/uv:0.5.21 /uv /bin/uv
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never UV_HTTP_TIMEOUT=300
 WORKDIR /app
 COPY pyproject.toml uv.lock README.md LICENSE ./
 COPY python ./python
@@ -20,6 +20,9 @@ COPY --from=web /web/dist ./python/hawser_server/src/hawser_server/static
 RUN uv sync --frozen --no-dev --all-packages --all-extras
 
 FROM python:3.12-slim-bookworm AS runtime
+# OpenCV (used by the bundled OCR engine) needs these shared libraries at runtime.
+RUN apt-get update && apt-get install -y --no-install-recommends libxcb1 libgl1 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system hawser && useradd --system --gid hawser --home /app --shell /usr/sbin/nologin hawser
 WORKDIR /app
 COPY --from=build --chown=hawser:hawser /app/.venv /app/.venv
