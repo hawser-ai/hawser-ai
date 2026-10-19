@@ -13,6 +13,10 @@ All notable changes are recorded here. The format follows
   product name. Pages in normal order are unchanged (`PageText.reading_order` says which).
 - `hawser run --schema module:Model` now finds a model file in the current directory, and an
   unknown module is reported as an error message instead of a traceback.
+- Images sent to a model are kept within provider limits (at most 2000 px on the long side and
+  5 MB once base64-encoded, Anthropic's limit). A scanned page on an oversized sheet (a 22×27-inch
+  photo page rendered at 150 dpi, 27 MB) failed with HTTP 400 before. Images already within the
+  limits are sent unchanged, and stored page images keep their full resolution.
 
 ## 0.1.1
 

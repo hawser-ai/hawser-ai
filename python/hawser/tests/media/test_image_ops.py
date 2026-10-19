@@ -238,3 +238,41 @@ def test_pdfium_calls_are_thread_safe() -> None:
     with ThreadPoolExecutor(max_workers=8) as pool:
         lengths = list(pool.map(work, range(48)))
     assert len(set(lengths)) == 1 and lengths[0] > 100
+
+
+def _noise_png(width: int, height: int) -> bytes:
+    """Random pixels: the worst case for compression."""
+    import numpy as np
+    from PIL import Image as PILImage
+
+    rng = np.random.default_rng(7)
+    arr = rng.integers(0, 256, size=(height, width, 3), dtype=np.uint8)
+    out = io.BytesIO()
+    PILImage.fromarray(arr).save(out, format="PNG")
+    return out.getvalue()
+
+
+def test_fit_for_model_leaves_small_images_untouched() -> None:
+    from hawser_media.image import fit_for_model
+
+    data = _noise_png(300, 200)
+    assert fit_for_model(data, "image/png") == (data, "image/png")  # byte for byte
+
+
+def test_fit_for_model_shrinks_oversized_images_below_provider_limits() -> None:
+    import base64
+
+    from hawser.gateway.anthropic import AnthropicAdapter
+    from hawser.gateway.base import ImagePart
+    from hawser_media.image import MODEL_IMAGE_MAX_SIDE, fit_for_model, probe
+
+    big = _noise_png(3300, 4100)  # a 22x27-inch page rendered at 150 dpi, as the photo demo
+    assert len(big) > 5 * 1024 * 1024
+    data, media_type = fit_for_model(big, "image/png")
+    info = probe(data)
+    assert max(info.width, info.height) <= MODEL_IMAGE_MAX_SIDE
+    assert len(base64.standard_b64encode(data)) <= 5 * 1024 * 1024  # Anthropic's limit
+    assert media_type in ("image/png", "image/jpeg")
+
+    (block,) = AnthropicAdapter._content([ImagePart(media_type="image/png", data=big)])  # pyright: ignore[reportPrivateUsage]
+    assert len(block["source"]["data"]) <= 5 * 1024 * 1024

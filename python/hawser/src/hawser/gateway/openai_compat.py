@@ -18,6 +18,7 @@ from hawser.clock import monotonic_ms
 from hawser.errors import ProviderError
 from hawser.gateway.base import DocumentPart, ImagePart, ModelRequest, ModelResponse, TextPart
 from hawser.models import ModelCallUsage, ModelSpec
+from hawser_media.image import fit_for_model
 
 _RETRYABLE_STATUS = {408, 409, 429}
 
@@ -91,11 +92,12 @@ class OpenAICompatibleAdapter:
             if isinstance(p, TextPart):
                 blocks.append({"type": "text", "text": p.text})
             elif isinstance(p, ImagePart):
-                data = base64.standard_b64encode(p.data).decode("ascii")
+                raw, media_type = fit_for_model(p.data, p.media_type)
+                data = base64.standard_b64encode(raw).decode("ascii")
                 blocks.append(
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:{p.media_type};base64,{data}"},
+                        "image_url": {"url": f"data:{media_type};base64,{data}"},
                     }
                 )
             else:
