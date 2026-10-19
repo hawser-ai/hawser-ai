@@ -31,11 +31,11 @@ dependencies = [
 ocr = ["rapidocr-onnxruntime>=1.4"]
 
 [project.urls]
-Homepage = "https://github.com/hawser-ai/hawser"
-Documentation = "https://github.com/hawser-ai/hawser/tree/main/docs"
-Source = "https://github.com/hawser-ai/hawser"
-Issues = "https://github.com/hawser-ai/hawser/issues"
-Changelog = "https://github.com/hawser-ai/hawser/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/hawser-ai/hawser-ai"
+Documentation = "https://github.com/hawser-ai/hawser-ai/tree/main/docs"
+Source = "https://github.com/hawser-ai/hawser-ai"
+Issues = "https://github.com/hawser-ai/hawser-ai/issues"
+Changelog = "https://github.com/hawser-ai/hawser-ai/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.25"]

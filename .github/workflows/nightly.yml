@@ -10,7 +10,7 @@ on:
 jobs:
   live:
     runs-on: ubuntu-latest
-    if: github.repository == 'hawser-ai/hawser'
+    if: github.repository == 'hawser-ai/hawser-ai'
     env:
       HAWSER_RECORD_MODE: live
       HAWSER_LIVE_BUDGET_USD: "2.00"

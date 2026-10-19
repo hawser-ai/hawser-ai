@@ -24,11 +24,11 @@ dependencies = ["hawser-ai>=0.1.0,<0.2", "pyyaml>=6.0", "pydantic>=2.9,<3"]
 hawser-ai = { workspace = true }
 
 [project.urls]
-Homepage = "https://github.com/hawser-ai/hawser"
-Documentation = "https://github.com/hawser-ai/hawser/tree/main/docs"
-Source = "https://github.com/hawser-ai/hawser"
-Issues = "https://github.com/hawser-ai/hawser/issues"
-Changelog = "https://github.com/hawser-ai/hawser/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/hawser-ai/hawser-ai"
+Documentation = "https://github.com/hawser-ai/hawser-ai/tree/main/docs"
+Source = "https://github.com/hawser-ai/hawser-ai"
+Issues = "https://github.com/hawser-ai/hawser-ai/issues"
+Changelog = "https://github.com/hawser-ai/hawser-ai/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.25"]

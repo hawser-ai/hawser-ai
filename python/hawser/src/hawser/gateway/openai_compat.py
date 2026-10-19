@@ -60,7 +60,7 @@ class OpenAICompatibleAdapter:
             reasoning_param="openrouter",
             supports_files=True,
             extra_headers={
-                "HTTP-Referer": "https://github.com/hawser-ai/hawser",
+                "HTTP-Referer": "https://github.com/hawser-ai/hawser-ai",
                 "X-Title": "Hawser",
             },
             extra_body={"usage": {"include": True}},
