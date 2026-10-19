@@ -46,6 +46,19 @@ SERVER_MIGRATIONS: tuple[Migration, ...] = (
             " ON webhook_deliveries (webhook_id, created_at)",
         ),
     ),
+    Migration(
+        "1004_evals_settings",
+        (
+            """CREATE TABLE IF NOT EXISTS eval_reports (
+  id TEXT PRIMARY KEY, tenant_id TEXT NOT NULL, name TEXT NOT NULL, dataset TEXT NOT NULL,
+  skill TEXT, model TEXT NOT NULL, mode TEXT, cases INTEGER NOT NULL, metrics TEXT NOT NULL,
+  artifact_id TEXT NOT NULL, created_at TEXT NOT NULL)""",
+            "CREATE INDEX IF NOT EXISTS eval_reports_tenant"
+            " ON eval_reports (tenant_id, created_at)",
+            """CREATE TABLE IF NOT EXISTS tenant_settings (
+  tenant_id TEXT PRIMARY KEY, data TEXT NOT NULL, updated_at TEXT NOT NULL)""",
+        ),
+    ),
 )
 
 ALL_MIGRATIONS: tuple[Migration, ...] = CORE_MIGRATIONS + SERVER_MIGRATIONS

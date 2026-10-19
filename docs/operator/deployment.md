@@ -16,9 +16,10 @@ MinIO-style configuration; MinIO's public images are no longer pullable). Any S3
 service works: point `HAWSERD_S3_*` at it.
 Scale workers with `docker compose up -d --scale worker=4`.
 
-The image is a multi-stage `uv` build on `python:3.12-slim`, non-root, with a `/healthz`
-health check. It contains `hawserd` and the `hawser` CLI; it does not contain LibreOffice, so
-Office inputs are rejected unless you add it to the image.
+The image is a multi-stage build (Node 20 for the web app, `uv` for Python) on
+`python:3.12-slim`, non-root, with a `/healthz` health check. It contains `hawserd`, the
+`hawser` CLI and the web app at `/app`; it does not contain LibreOffice, so Office inputs are
+rejected unless you add it to the image.
 
 ## Bare metal / your own orchestrator
 

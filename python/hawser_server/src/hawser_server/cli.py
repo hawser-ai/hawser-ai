@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import secrets
 import tempfile
 from pathlib import Path
@@ -42,6 +43,9 @@ def _main(
 
 
 def _dev_key() -> str:
+    explicit = os.environ.get("HAWSERD_DEV_API_KEY")
+    if explicit:
+        return explicit
     DEV_DIR.mkdir(exist_ok=True)
     path = DEV_DIR / "dev.key"
     if path.exists():
@@ -59,7 +63,7 @@ def _config(*, dev: bool, **overrides: Any) -> ServerConfig:
 
 
 @app.command()
-def serve(
+def serve(  # noqa: PLR0917 - CLI options
     host: Annotated[str | None, typer.Option("--host")] = None,
     port: Annotated[int | None, typer.Option("--port")] = None,
     dev: Annotated[
@@ -71,14 +75,17 @@ def serve(
     migrate: Annotated[
         bool, typer.Option("--migrate", help="Apply pending migrations before serving.")
     ] = False,
+    web_dir: Annotated[
+        Path | None, typer.Option("--web-dir", help="Built web app to serve at /app.")
+    ] = None,
 ) -> None:
-    """Serve the HTTP API."""
+    """Serve the HTTP API (and the web app at /app when a build is available)."""
     import uvicorn  # noqa: PLC0415 - heavy import only when serving
 
     from hawser_server.app import create_app  # noqa: PLC0415
     from hawser_server.worker import Worker  # noqa: PLC0415
 
-    cfg = _config(dev=dev, host=host, port=port)
+    cfg = _config(dev=dev, host=host, port=port, web_dir=web_dir)
     svc = Services(cfg, migrate=True if (migrate or dev) else None)
     who = svc.bootstrap()
     if dev and who is not None:

@@ -157,3 +157,24 @@ def compare_cmd(
 
 
 __all__ = ["compare_cmd", "eval_app"]
+
+
+@eval_app.command("publish")
+def eval_publish(
+    report: Annotated[Path, typer.Argument(help="report.json or its directory.")],
+    name: Annotated[str | None, typer.Option("--name", help="Display name on the server.")] = None,
+) -> None:
+    """Publish a report to the configured server (``--server`` / HAWSER_SERVER_URL)."""
+    import json as _json  # noqa: PLC0415
+
+    from hawser.cli.common import runtime as _runtime  # noqa: PLC0415
+    from hawser.runtime.remote import RemoteRuntime  # noqa: PLC0415
+
+    rt = _runtime()
+    if not isinstance(rt, RemoteRuntime):
+        err.print("[red]no server configured; pass --server or set HAWSER_SERVER_URL[/]")
+        raise typer.Exit(2)
+    path = report / "report.json" if report.is_dir() else report
+    data = _json.loads(path.read_text(encoding="utf-8"))
+    out = rt.post_json("/v1/evals", {"report": data, "name": name})
+    console.print(f"published [bold]{out['id']}[/] ({out['name']}, {out['cases']} cases)")

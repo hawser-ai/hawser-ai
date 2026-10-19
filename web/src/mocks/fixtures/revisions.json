@@ -1,0 +1,437 @@
+[
+  {
+    "id": "rev_01M595E3MZC0B91JW33XC11E1Y",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "kind": "machine",
+    "result": {
+      "invoice_number": "INV-2026-00042",
+      "invoice_date": "2026-05-21",
+      "due_date": "2026-06-04",
+      "vendor_name": "Northwind Components Ltd",
+      "customer_name": "Aurochs Software Pvt Ltd",
+      "purchase_order_number": "PO-23434",
+      "currency": "USD",
+      "line_items": [
+        {
+          "sku": "WS-2210",
+          "description": "Flat washer M8 stainless, pack of 200",
+          "quantity": 50.0,
+          "unit_price": 108.96,
+          "line_total": 5448.0
+        },
+        {
+          "sku": "GK-9004",
+          "description": "Gasket kit, nitrile, assorted",
+          "quantity": 50.0,
+          "unit_price": 36.99,
+          "line_total": 1849.5
+        },
+        {
+          "sku": "HX-1042",
+          "description": "Hex bolt M8 x 40 zinc plated, box of 100",
+          "quantity": 50.0,
+          "unit_price": 76.38,
+          "line_total": 3819.0
+        },
+        {
+          "sku": "TM-1180",
+          "description": "Thermal paste 10 g tube",
+          "quantity": 24.0,
+          "unit_price": 106.68,
+          "line_total": 2560.32
+        },
+        {
+          "sku": "LB-4420",
+          "description": "Lithium grease 400 g cartridge",
+          "quantity": 1.0,
+          "unit_price": 136.95,
+          "line_total": 136.95
+        },
+        {
+          "sku": "SC-6007",
+          "description": "Self-tapping screw 4.2 x 16, box of 500",
+          "quantity": 3.0,
+          "unit_price": 126.12,
+          "line_total": 378.36
+        },
+        {
+          "sku": "BR-7781",
+          "description": "Ball bearing 6204-2RS",
+          "quantity": 10.0,
+          "unit_price": 51.1,
+          "line_total": 511.0
+        }
+      ],
+      "subtotal": 14703.13,
+      "tax": 735.16,
+      "total": 15438.29
+    },
+    "field_meta": {
+      "/invoice_number": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KQZRXXK4ESAWB3P2D2"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/invoice_date": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KRCNV9T9GPHDV9XV3S"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/due_date": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KRCNV9T9GPHDV9XV3T"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/vendor_name": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KQZRXXK4ESAWB3P2D0"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/customer_name": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KQZRXXK4ESAWB3P2D1"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/purchase_order_number": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KSD99GGP0HKZHCJ2RX"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/currency": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KTYK3QVD569KDNFY0K"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/0/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KV2VD78CWM1XB27ZCM"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/0/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KTYK3QVD569KDNFY0M"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/0/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KW1E8365S5YS06ZFQ0"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/0/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KV2VD78CWM1XB27ZCN"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/0/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KTYK3QVD569KDNFY0N"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/1/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KX9AE1HWTQ3QARZQJ1"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/1/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KW1E8365S5YS06ZFQ1"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/1/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KX9AE1HWTQ3QARZQJ3"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/1/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KX9AE1HWTQ3QARZQJ2"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/1/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KW1E8365S5YS06ZFQ2"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/2/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KYKS6RBKMZBCRD6B2V"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/2/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KYKS6RBKMZBCRD6B2S"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/2/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KZPX9XVBD8R9WDTG14"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/2/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KZPX9XVBD8R9WDTG13"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/2/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KYKS6RBKMZBCRD6B2T"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/3/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M0W6ZAAYB618P3772F"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/3/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KZPX9XVBD8R9WDTG15"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/3/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M12GDZ5VVHJX2K3F4A"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/3/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M0W6ZAAYB618P3772G"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/3/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M0W6ZAAYB618P3772E"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/4/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M12GDZ5VVHJX2K3F4C"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/4/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M12GDZ5VVHJX2K3F4B"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/4/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M12GDZ5VVHJX2K3F4F"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/4/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M12GDZ5VVHJX2K3F4D"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/4/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M12GDZ5VVHJX2K3F4E"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/5/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW86Y"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/5/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW86X"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/5/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW871"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/5/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW86Z"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/5/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW870"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/6/sku": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW873"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/6/description": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW872"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/6/quantity": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M3C8DKR699PC4G3ZP4"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/6/unit_price": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M3C8DKR699PC4G3ZP3"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/line_items/6/line_total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3M2T3W835BW664GW874"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/subtotal": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KRCNV9T9GPHDV9XV3V"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/tax": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KSD99GGP0HKZHCJ2RY"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      },
+      "/total": {
+        "status": "found",
+        "evidence": [
+          "ev_01M595E3KSD99GGP0HKZHCJ2RW"
+        ],
+        "issues": [],
+        "anchor_confidence": 1.0
+      }
+    },
+    "parent_revision_id": null,
+    "author": "system",
+    "comment": null,
+    "created_at": "2026-10-19T04:06:39.519197Z"
+  }
+]

@@ -41,6 +41,42 @@ jobs:
       - name: Tests
         run: uv run pytest -n auto
 
+  web:
+    name: web (typecheck, unit, build, e2e)
+    runs-on: ubuntu-latest
+    env:
+      HAWSER_RECORD_MODE: replay
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: Install
+        run: |
+          uv sync --all-packages
+          cd web && pnpm install --frozen-lockfile
+      - name: Generated API types are current
+        run: cd web && pnpm gen:api && git diff --exit-code -- src/api/types.ts
+      - name: Typecheck, lint, unit tests
+        run: cd web && pnpm typecheck && pnpm lint && pnpm test
+      - name: Build
+        run: cd web && pnpm build
+      - name: End to end (hawserd --dev, replayed quickstart)
+        run: cd web && pnpm exec playwright install --with-deps chromium && pnpm e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: web/test-results
+
   secrets:
     name: secret scan
     runs-on: ubuntu-latest

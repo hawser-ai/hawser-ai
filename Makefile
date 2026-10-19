@@ -4,7 +4,7 @@ SHELL := /bin/bash
 PY_DIRS := python
 SCHEMA_DIR := api/schemas
 
-.PHONY: help setup lint format typecheck test test-live schemas schemas-check openapi openapi-check check clean up down logs
+.PHONY: help setup lint format typecheck test test-live schemas schemas-check openapi openapi-check check clean up down logs web web-check web-e2e
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
@@ -44,6 +44,19 @@ openapi-check: ## Fail if api/openapi/openapi.json is stale
 	uv run hawserd openapi --out api/openapi/openapi.json --check
 
 check: lint typecheck schemas-check openapi-check test ## Everything CI runs
+
+WEB_STATIC := python/hawser_server/src/hawser_server/static
+
+web: ## Build the web app and bundle it into hawser-server (served at /app)
+	cd web && pnpm install --frozen-lockfile && pnpm build
+	rm -rf $(WEB_STATIC)/assets $(WEB_STATIC)/index.html
+	cp -R web/dist/. $(WEB_STATIC)/
+
+web-check: ## Typecheck, lint and unit-test the web app
+	cd web && pnpm install --frozen-lockfile && pnpm gen:api && git diff --quiet -- src/api/types.ts && pnpm typecheck && pnpm lint && pnpm test
+
+web-e2e: ## Playwright end to end against hawserd --dev (needs Node 20 and `pnpm build`)
+	cd web && pnpm build && pnpm exec playwright install chromium && pnpm e2e
 
 COMPOSE := docker compose -f deploy/compose/docker-compose.yaml
 

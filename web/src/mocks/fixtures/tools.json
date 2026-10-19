@@ -1,0 +1,484 @@
+[
+  {
+    "name": "compute.align_line_items",
+    "version": "1.0.0",
+    "description": "Align two line-item lists by SKU, then description, then quantity+price.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "left": {
+          "type": "array"
+        },
+        "right": {
+          "type": "array"
+        },
+        "key": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "price": {
+          "type": "string"
+        },
+        "fuzzy_threshold": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "left",
+        "right"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "compute.check_arithmetic",
+    "version": "1.0.0",
+    "description": "Recompute line totals, subtotal and total and compare with printed values.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array"
+        },
+        "subtotal": {},
+        "tax": {},
+        "total": {},
+        "tolerance": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "items"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "compute.reconcile",
+    "version": "1.0.0",
+    "description": "Reconcile an invoice against a purchase order using an alignment.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "invoice": {
+          "type": "object"
+        },
+        "po": {
+          "type": "object"
+        },
+        "alignment": {
+          "type": "object"
+        },
+        "tolerance": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "invoice",
+        "po",
+        "alignment"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "convert.office_to_pdf",
+    "version": "1.0.0",
+    "description": "Convert an Office document (docx/xlsx/pptx/doc/xls/ppt) to PDF with LibreOffice.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "media_type": {
+          "type": "string"
+        },
+        "timeout_s": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "data",
+        "media_type"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [
+      "document"
+    ],
+    "permissions": [],
+    "side_effect": "local_artifact",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "document.extract",
+    "version": "1.0.0",
+    "description": "Schema-guided extraction from documents with page/region evidence.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [
+      "document",
+      "image",
+      "text"
+    ],
+    "permissions": [],
+    "side_effect": "external_read",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": true
+  },
+  {
+    "name": "document.extract_text",
+    "version": "1.0.0",
+    "description": "Native text with character boxes for every page of a PDF asset.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [
+      "document"
+    ],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": true
+  },
+  {
+    "name": "document.inspect",
+    "version": "1.0.0",
+    "description": "Probe a document asset: pages, text layer, sizes, execution classes.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [
+      "document"
+    ],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "document.render_page",
+    "version": "1.0.0",
+    "description": "Render one page of a PDF asset to a PNG artifact.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "dpi": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "asset_id",
+        "page"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [
+      "document"
+    ],
+    "permissions": [],
+    "side_effect": "local_artifact",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "http.post",
+    "version": "1.0.0",
+    "description": "POST a JSON body to a URL. External write: requires approval unless pre-approved.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "json": {},
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "url",
+        "json"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "action_id": {
+          "type": "string"
+        },
+        "body": {}
+      },
+      "required": [
+        "status",
+        "action_id"
+      ],
+      "additionalProperties": false
+    },
+    "modalities": [],
+    "permissions": [
+      "network.egress"
+    ],
+    "side_effect": "external_write",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": 60.0,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "idempotent_with_key",
+    "idempotency": "keyed",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "review.request",
+    "version": "1.0.0",
+    "description": "Ask for human review of this run with a reason. Routes the run to needs_review.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "requested": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "modalities": [],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  },
+  {
+    "name": "search.text_index",
+    "version": "1.0.0",
+    "description": "BM25 search over the run's document indexes; best pages with snippets.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "asset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "top_k": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "query"
+      ]
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "modalities": [
+      "document"
+    ],
+    "permissions": [],
+    "side_effect": "none",
+    "limits": {
+      "cpu_s": null,
+      "memory_mb": null,
+      "wall_s": null,
+      "max_input_bytes": null,
+      "max_output_bytes": null
+    },
+    "cost_estimate": null,
+    "retry": "safe",
+    "idempotency": "pure",
+    "location": "inprocess",
+    "produces_evidence": false
+  }
+]

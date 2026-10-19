@@ -1,0 +1,380 @@
+[
+  {
+    "id": "evt_01M595E2RQ169PK8G6QKZTV945",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 1,
+    "type": "run.created",
+    "at": "2026-10-19T04:06:38.615197Z",
+    "step_id": null,
+    "payload": {
+      "mode": null
+    }
+  },
+  {
+    "id": "evt_01M595E2RQ169PK8G6QKZTV946",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 2,
+    "type": "run.status_changed",
+    "at": "2026-10-19T04:06:38.615765Z",
+    "step_id": null,
+    "payload": {
+      "from": "queued",
+      "to": "admitting"
+    }
+  },
+  {
+    "id": "evt_01M595E2RR4AV715C3TC0K6S6D",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 3,
+    "type": "step.started",
+    "at": "2026-10-19T04:06:38.616371Z",
+    "step_id": "step_01M595E2RR4AV715C3TC0K6S6C",
+    "payload": {
+      "key": "admit",
+      "name": "Admit inputs",
+      "kind": "admit"
+    }
+  },
+  {
+    "id": "evt_01M595E3JGT2D65R1VWBX7AMVH",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 4,
+    "type": "asset.admitted",
+    "at": "2026-10-19T04:06:39.440557Z",
+    "step_id": null,
+    "payload": {
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "name": "invoice.pdf",
+      "media_type": "application/pdf",
+      "size_bytes": 2654,
+      "execution_classes": [
+        "document.native_text"
+      ]
+    }
+  },
+  {
+    "id": "evt_01M595E3JK421H8W7DN2W40H5H",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 5,
+    "type": "step.completed",
+    "at": "2026-10-19T04:06:39.443812Z",
+    "step_id": "step_01M595E2RR4AV715C3TC0K6S6C",
+    "payload": {
+      "key": "admit",
+      "usage": {
+        "cost_usd": 0.0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "pages_processed": 0,
+        "pixels_decoded": 0,
+        "media_duration_ms": 0,
+        "sampled_frames": 0,
+        "repair_attempts": 0,
+        "sandbox_runs": 0,
+        "wall_time_ms": 0
+      }
+    }
+  },
+  {
+    "id": "evt_01M595E3JMQQN5AGX8FWTHE8CN",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 6,
+    "type": "run.status_changed",
+    "at": "2026-10-19T04:06:39.444277Z",
+    "step_id": null,
+    "payload": {
+      "from": "admitting",
+      "to": "planning"
+    }
+  },
+  {
+    "id": "evt_01M595E3JMQQN5AGX8FWTHE8CQ",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 7,
+    "type": "step.started",
+    "at": "2026-10-19T04:06:39.444861Z",
+    "step_id": "step_01M595E3JMQQN5AGX8FWTHE8CP",
+    "payload": {
+      "key": "index:asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "name": "Index invoice.pdf",
+      "kind": "tool"
+    }
+  },
+  {
+    "id": "evt_01M595E3K8JJT8X04TYQ7QHJE5",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 8,
+    "type": "step.completed",
+    "at": "2026-10-19T04:06:39.464986Z",
+    "step_id": "step_01M595E3JMQQN5AGX8FWTHE8CP",
+    "payload": {
+      "key": "index:asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "usage": {
+        "cost_usd": 0.0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "pages_processed": 0,
+        "pixels_decoded": 0,
+        "media_duration_ms": 0,
+        "sampled_frames": 0,
+        "repair_attempts": 0,
+        "sandbox_runs": 0,
+        "wall_time_ms": 0
+      }
+    }
+  },
+  {
+    "id": "evt_01M595E3K9HCFW2YC80WM9DR03",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 9,
+    "type": "plan.created",
+    "at": "2026-10-19T04:06:39.465392Z",
+    "step_id": null,
+    "payload": {
+      "mode": "direct",
+      "candidates": [
+        "anthropic/claude-opus-5-5",
+        "openrouter/google/gemini-2.5-flash",
+        "anthropic/claude-haiku-5-5",
+        "openrouter/anthropic/claude-haiku-5.5",
+        "openrouter/openai/gpt-4.1-mini",
+        "anthropic/claude-sonnet-5-5",
+        "openrouter/anthropic/claude-sonnet-5.5",
+        "ollama/llama3.1",
+        "openrouter/anthropic/claude-opus-5.5"
+      ],
+      "strategy": "balanced",
+      "excluded": {},
+      "requirements": {
+        "modalities": [
+          "text"
+        ],
+        "structured_output": true,
+        "tool_calling": false,
+        "min_context": 6252
+      },
+      "source": "direct"
+    }
+  },
+  {
+    "id": "evt_01M595E3K9HCFW2YC80WM9DR04",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 10,
+    "type": "run.status_changed",
+    "at": "2026-10-19T04:06:39.465810Z",
+    "step_id": null,
+    "payload": {
+      "from": "planning",
+      "to": "running"
+    }
+  },
+  {
+    "id": "evt_01M595E3KA7T98GVMV8N45BDGF",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 11,
+    "type": "context.selected",
+    "at": "2026-10-19T04:06:39.466240Z",
+    "step_id": null,
+    "payload": {
+      "prefix": "extract",
+      "estimated_tokens": 225,
+      "budget_tokens": 592365,
+      "included": [
+        {
+          "asset": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+          "page": 1,
+          "kind": "text",
+          "tokens": 225
+        }
+      ],
+      "dropped": []
+    }
+  },
+  {
+    "id": "evt_01M595E3KE68PGM798Y5BK48HC",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 12,
+    "type": "step.started",
+    "at": "2026-10-19T04:06:39.470043Z",
+    "step_id": "step_01M595E3KDT8W43166ZRN72A2F",
+    "payload": {
+      "key": "extract:model",
+      "name": "extract: model call",
+      "kind": "model"
+    }
+  },
+  {
+    "id": "evt_01M595E3KGASQXDTNX1B24E9ZJ",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 13,
+    "type": "model.called",
+    "at": "2026-10-19T04:06:39.472472Z",
+    "step_id": "step_01M595E3KDT8W43166ZRN72A2F",
+    "payload": {
+      "prefix": "extract",
+      "model": "anthropic/claude-opus-5-5",
+      "replayed": true,
+      "input_tokens": 667,
+      "output_tokens": 939,
+      "cost_usd": 0.0,
+      "latency_ms": 1,
+      "stop_reason": "end_turn",
+      "structured_fallback": false
+    }
+  },
+  {
+    "id": "evt_01M595E3KN0NDWVYCBZDW8GDK2",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 14,
+    "type": "step.completed",
+    "at": "2026-10-19T04:06:39.477567Z",
+    "step_id": "step_01M595E3KDT8W43166ZRN72A2F",
+    "payload": {
+      "key": "extract:model",
+      "usage": {
+        "cost_usd": 0.0,
+        "model_calls": 1,
+        "tool_calls": 0,
+        "input_tokens": 667,
+        "output_tokens": 939,
+        "pages_processed": 0,
+        "pixels_decoded": 0,
+        "media_duration_ms": 0,
+        "sampled_frames": 0,
+        "repair_attempts": 0,
+        "sandbox_runs": 0,
+        "wall_time_ms": 0
+      }
+    }
+  },
+  {
+    "id": "evt_01M595E3KPA7QBZ0X40S7CR7NN",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 15,
+    "type": "step.started",
+    "at": "2026-10-19T04:06:39.478656Z",
+    "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+    "payload": {
+      "key": "extract:anchor",
+      "name": "extract: anchor evidence",
+      "kind": "tool"
+    }
+  },
+  {
+    "id": "evt_01M595E3MVABV9MYXH0H64HCG1",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 16,
+    "type": "step.completed",
+    "at": "2026-10-19T04:06:39.515021Z",
+    "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+    "payload": {
+      "key": "extract:anchor",
+      "usage": {
+        "cost_usd": 0.0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "pages_processed": 0,
+        "pixels_decoded": 0,
+        "media_duration_ms": 0,
+        "sampled_frames": 0,
+        "repair_attempts": 0,
+        "sandbox_runs": 0,
+        "wall_time_ms": 0
+      }
+    }
+  },
+  {
+    "id": "evt_01M595E3MVABV9MYXH0H64HCG2",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 17,
+    "type": "evidence.anchored",
+    "at": "2026-10-19T04:06:39.515911Z",
+    "step_id": null,
+    "payload": {
+      "prefix": "extract",
+      "anchored": 45,
+      "unanchored": []
+    }
+  },
+  {
+    "id": "evt_01M595E3MWQM2N3XXA4RKR1WW5",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 18,
+    "type": "run.status_changed",
+    "at": "2026-10-19T04:06:39.516562Z",
+    "step_id": null,
+    "payload": {
+      "from": "running",
+      "to": "validating"
+    }
+  },
+  {
+    "id": "evt_01M595E3MYB5QJYF9N5F8EWF7S",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 19,
+    "type": "validation.completed",
+    "at": "2026-10-19T04:06:39.518139Z",
+    "step_id": null,
+    "payload": {
+      "errors": 0,
+      "warnings": 0,
+      "rules": [
+        "core.schema",
+        "core.unknown_required",
+        "core.evidence_missing",
+        "core.evidence_consistent"
+      ]
+    }
+  },
+  {
+    "id": "evt_01M595E3MYB5QJYF9N5F8EWF7T",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 20,
+    "type": "run.status_changed",
+    "at": "2026-10-19T04:06:39.518515Z",
+    "step_id": null,
+    "payload": {
+      "from": "validating",
+      "to": "accepted"
+    }
+  },
+  {
+    "id": "evt_01M595E3MZC0B91JW33XC11E1Z",
+    "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+    "tenant_id": "ten_00000000000000000000000000",
+    "seq": 21,
+    "type": "result.assembled",
+    "at": "2026-10-19T04:06:39.519837Z",
+    "step_id": null,
+    "payload": {
+      "status": "accepted",
+      "cost_usd": 0.0
+    }
+  }
+]

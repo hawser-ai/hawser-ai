@@ -1,0 +1,55 @@
+{
+  "mode": null,
+  "planning": {
+    "max_replans": 2,
+    "cache": true,
+    "context_tokens": null
+  },
+  "limits": {
+    "max_cost_usd": null,
+    "max_model_calls": null,
+    "max_tool_calls": null,
+    "max_input_tokens": null,
+    "max_output_tokens": null,
+    "max_pages": null,
+    "max_pixels": null,
+    "max_media_duration_ms": null,
+    "max_sampled_frames": null,
+    "max_plan_steps": null,
+    "max_loop_iterations": null,
+    "max_parallel": null,
+    "max_sandbox_runs": null,
+    "max_wall_time_s": null
+  },
+  "repair": {
+    "attempts": 1,
+    "max_cost_usd": null,
+    "max_seconds": null
+  },
+  "review_on_failure": true,
+  "allowed_models": null,
+  "allowed_providers": null,
+  "allowed_tools": null,
+  "privacy": {
+    "no_hosted": false,
+    "allowed_regions": null,
+    "no_data_retention": false
+  },
+  "fallback": {
+    "enabled": true,
+    "candidates": null
+  },
+  "validation": {
+    "escalate": {},
+    "downgrade": {},
+    "allow_model_judges": false,
+    "max_unknown_fraction": null
+  },
+  "approvals": {
+    "require_for_external_write": true,
+    "pre_approved": []
+  },
+  "code_mode": "disabled",
+  "generation": "disabled",
+  "allow_public_urls": false
+}

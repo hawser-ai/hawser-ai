@@ -820,6 +820,22 @@ Upload invoice + PO in the playground, watch steps complete, click `total` and s
 
 ### Estimate: 6 weeks.
 
+### Status (2026-10-19): implemented
+`web/` (Vite 5, React 18, TypeScript strict, react-router, TanStack Query, Zustand, Tailwind,
+CodeMirror, React Flow, Recharts; types generated from `api/openapi/openapi.json`; Vitest +
+Testing Library + MSW on fixtures exported from real runs; Playwright end to end against
+`hawserd serve --dev` replaying the quickstart, including an axe scan and keyboard navigation).
+Served by `hawserd` at `/app` (bundled by `make web` and in the Docker image). Server additions
+for the UI: CORS, page rendering (`GET /v1/assets/{id}/pages/{n}`), run request, run filters,
+usage breakdown, published evaluation reports (`hawser eval publish`), tenant default policy,
+contract schemas, the one-click quickstart example. Deviations:
+- No Storybook; component tests use the same fixtures.
+- Plan graphs show the ordered node list; branch/loop edges are not reconstructed.
+- Skill "permission diff between versions" is shown as the current permissions only (one
+  version is installed at a time in this phase).
+- The `frontend-design` / `dataviz` / accessibility skills named in the plan were not available
+  in the build environment; the accessibility pass is the axe scan plus keyboard tests.
+
 ---
 
 ## Phase 7 — Image intelligence (4 weeks)

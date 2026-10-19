@@ -1,0 +1,48 @@
+{
+  "id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+  "tenant_id": "ten_00000000000000000000000000",
+  "name": "invoice.pdf",
+  "media_class": "pdf",
+  "media_type": "application/pdf",
+  "size_bytes": 2654,
+  "content_hash": "sha256:f01fa8050098c48bdcb87cb21042f1bb81ddb889b562c73aeb31e34166f612cd",
+  "scoped_hash": "sha256:aefa9d12dc6e70450dca76408fc0617941cb8bbda1a109f01781b2951f5f005e",
+  "original_artifact_id": "art_01M595E3JFFE2MVCDFSVZXBDRZ",
+  "manifest": {
+    "media_class": "pdf",
+    "media_type": "application/pdf",
+    "declared_media_type": null,
+    "size_bytes": 2654,
+    "pdf": {
+      "page_count": 1,
+      "encrypted": false,
+      "has_forms": false,
+      "chars_per_page": [
+        694
+      ],
+      "page_sizes_pt": [
+        [
+          612.0,
+          792.0
+        ]
+      ],
+      "estimated_render_pixels": 0
+    },
+    "image": null,
+    "audio": null,
+    "video": null,
+    "text": null,
+    "limits": {
+      "max_bytes": 52428800,
+      "max_pages": 200,
+      "max_pixels": 40000000,
+      "max_duration_ms": null
+    },
+    "execution_classes": [
+      "document.native_text"
+    ],
+    "estimated_cost_usd": null,
+    "warnings": []
+  },
+  "created_at": "2026-10-19T04:06:39.439969Z"
+}

@@ -1,0 +1,1642 @@
+{
+  "run_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+  "status": "accepted",
+  "mode": "direct",
+  "result": {
+    "invoice_number": "INV-2026-00042",
+    "invoice_date": "2026-05-21",
+    "due_date": "2026-06-04",
+    "vendor_name": "Northwind Components Ltd",
+    "customer_name": "Aurochs Software Pvt Ltd",
+    "purchase_order_number": "PO-23434",
+    "currency": "USD",
+    "line_items": [
+      {
+        "sku": "WS-2210",
+        "description": "Flat washer M8 stainless, pack of 200",
+        "quantity": 50.0,
+        "unit_price": 108.96,
+        "line_total": 5448.0
+      },
+      {
+        "sku": "GK-9004",
+        "description": "Gasket kit, nitrile, assorted",
+        "quantity": 50.0,
+        "unit_price": 36.99,
+        "line_total": 1849.5
+      },
+      {
+        "sku": "HX-1042",
+        "description": "Hex bolt M8 x 40 zinc plated, box of 100",
+        "quantity": 50.0,
+        "unit_price": 76.38,
+        "line_total": 3819.0
+      },
+      {
+        "sku": "TM-1180",
+        "description": "Thermal paste 10 g tube",
+        "quantity": 24.0,
+        "unit_price": 106.68,
+        "line_total": 2560.32
+      },
+      {
+        "sku": "LB-4420",
+        "description": "Lithium grease 400 g cartridge",
+        "quantity": 1.0,
+        "unit_price": 136.95,
+        "line_total": 136.95
+      },
+      {
+        "sku": "SC-6007",
+        "description": "Self-tapping screw 4.2 x 16, box of 500",
+        "quantity": 3.0,
+        "unit_price": 126.12,
+        "line_total": 378.36
+      },
+      {
+        "sku": "BR-7781",
+        "description": "Ball bearing 6204-2RS",
+        "quantity": 10.0,
+        "unit_price": 51.1,
+        "line_total": 511.0
+      }
+    ],
+    "subtotal": 14703.13,
+    "tax": 735.16,
+    "total": 15438.29
+  },
+  "field_meta": {
+    "/invoice_number": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KQZRXXK4ESAWB3P2D2"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/invoice_date": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KRCNV9T9GPHDV9XV3S"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/due_date": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KRCNV9T9GPHDV9XV3T"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/vendor_name": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KQZRXXK4ESAWB3P2D0"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/customer_name": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KQZRXXK4ESAWB3P2D1"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/purchase_order_number": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KSD99GGP0HKZHCJ2RX"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/currency": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KTYK3QVD569KDNFY0K"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/0/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KV2VD78CWM1XB27ZCM"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/0/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KTYK3QVD569KDNFY0M"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/0/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KW1E8365S5YS06ZFQ0"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/0/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KV2VD78CWM1XB27ZCN"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/0/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KTYK3QVD569KDNFY0N"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/1/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KX9AE1HWTQ3QARZQJ1"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/1/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KW1E8365S5YS06ZFQ1"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/1/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KX9AE1HWTQ3QARZQJ3"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/1/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KX9AE1HWTQ3QARZQJ2"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/1/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KW1E8365S5YS06ZFQ2"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/2/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KYKS6RBKMZBCRD6B2V"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/2/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KYKS6RBKMZBCRD6B2S"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/2/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KZPX9XVBD8R9WDTG14"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/2/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KZPX9XVBD8R9WDTG13"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/2/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KYKS6RBKMZBCRD6B2T"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/3/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M0W6ZAAYB618P3772F"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/3/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KZPX9XVBD8R9WDTG15"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/3/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M12GDZ5VVHJX2K3F4A"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/3/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M0W6ZAAYB618P3772G"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/3/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M0W6ZAAYB618P3772E"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/4/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M12GDZ5VVHJX2K3F4C"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/4/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M12GDZ5VVHJX2K3F4B"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/4/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M12GDZ5VVHJX2K3F4F"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/4/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M12GDZ5VVHJX2K3F4D"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/4/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M12GDZ5VVHJX2K3F4E"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/5/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW86Y"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/5/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW86X"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/5/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW871"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/5/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW86Z"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/5/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW870"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/6/sku": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW873"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/6/description": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW872"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/6/quantity": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M3C8DKR699PC4G3ZP4"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/6/unit_price": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M3C8DKR699PC4G3ZP3"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/line_items/6/line_total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3M2T3W835BW664GW874"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/subtotal": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KRCNV9T9GPHDV9XV3V"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/tax": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KSD99GGP0HKZHCJ2RY"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    },
+    "/total": {
+      "status": "found",
+      "evidence": [
+        "ev_01M595E3KSD99GGP0HKZHCJ2RW"
+      ],
+      "issues": [],
+      "anchor_confidence": 1.0
+    }
+  },
+  "evidence": [
+    {
+      "id": "ev_01M595E3KQZRXXK4ESAWB3P2D0",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 437.6,
+        "y0": 46.72,
+        "x1": 557.28,
+        "y1": 55.98
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Northwind Components Ltd",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KQZRXXK4ESAWB3P2D1",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 306.0,
+        "y0": 110.72,
+        "x1": 418.11,
+        "y1": 118.11
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Aurochs Software Pvt Ltd",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KQZRXXK4ESAWB3P2D2",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 107.73,
+        "y0": 96.81,
+        "x1": 179.64,
+        "y1": 104.11
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "INV-2026-00042",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KRCNV9T9GPHDV9XV3S",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 115.43,
+        "y0": 110.81,
+        "x1": 164.45,
+        "y1": 118.11
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "2026-05-21",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KRCNV9T9GPHDV9XV3T",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 102.09,
+        "y0": 124.81,
+        "x1": 152.46,
+        "y1": 132.11
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "2026-06-04",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KRCNV9T9GPHDV9XV3V",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 508.32,
+        "y0": 314.18,
+        "x1": 557.55,
+        "y1": 323.41
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$14,703.13",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KSD99GGP0HKZHCJ2RW",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 503.33,
+        "y0": 343.5,
+        "x1": 557.49,
+        "y1": 353.75
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$15,438.29",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KSD99GGP0HKZHCJ2RX",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 113.12,
+        "y0": 138.71,
+        "x1": 157.45,
+        "y1": 146.12
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "PO-23434",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KSD99GGP0HKZHCJ2RY",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 522.22,
+        "y0": 328.18,
+        "x1": 557.54,
+        "y1": 337.02
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$735.16",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KTYK3QVD569KDNFY0K",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 352.91,
+        "y0": 124.72,
+        "x1": 372.7,
+        "y1": 132.11
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "USD",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KTYK3QVD569KDNFY0M",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.74,
+        "y0": 195.45,
+        "x1": 274.13,
+        "y1": 203.78
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Flat washer M8 stainless, pack of 200",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KTYK3QVD569KDNFY0N",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 518.29,
+        "y0": 194.96,
+        "x1": 557.57,
+        "y1": 203.27
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$5,448.00",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KV2VD78CWM1XB27ZCM",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.11,
+        "y0": 195.45,
+        "x1": 91.08,
+        "y1": 202.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "WS-2210",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KV2VD78CWM1XB27ZCN",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 405.8,
+        "y0": 194.96,
+        "x1": 437.59,
+        "y1": 202.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$108.96",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KW1E8365S5YS06ZFQ0",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 348.37,
+        "y0": 195.53,
+        "x1": 357.57,
+        "y1": 202.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "50",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KW1E8365S5YS06ZFQ1",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.48,
+        "y0": 209.45,
+        "x1": 229.39,
+        "y1": 217.27
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Gasket kit, nitrile, assorted",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KW1E8365S5YS06ZFQ2",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 518.29,
+        "y0": 208.96,
+        "x1": 557.57,
+        "y1": 217.27
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$1,849.50",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KX9AE1HWTQ3QARZQJ1",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.48,
+        "y0": 209.45,
+        "x1": 89.59,
+        "y1": 216.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "GK-9004",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KX9AE1HWTQ3QARZQJ2",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 410.8,
+        "y0": 208.96,
+        "x1": 437.6,
+        "y1": 216.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$36.99",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KX9AE1HWTQ3QARZQJ3",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 348.37,
+        "y0": 209.53,
+        "x1": 357.57,
+        "y1": 216.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "50",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KYKS6RBKMZBCRD6B2S",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.72,
+        "y0": 223.45,
+        "x1": 283.65,
+        "y1": 231.78
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Hex bolt M8 x 40 zinc plated, box of 100",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KYKS6RBKMZBCRD6B2T",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 518.29,
+        "y0": 222.96,
+        "x1": 557.57,
+        "y1": 231.27
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$3,819.00",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KYKS6RBKMZBCRD6B2V",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.72,
+        "y0": 223.53,
+        "x1": 89.04,
+        "y1": 230.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "HX-1042",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KZPX9XVBD8R9WDTG13",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 410.8,
+        "y0": 222.96,
+        "x1": 437.6,
+        "y1": 230.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$76.38",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KZPX9XVBD8R9WDTG14",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 348.37,
+        "y0": 223.53,
+        "x1": 357.57,
+        "y1": 230.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "50",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3KZPX9XVBD8R9WDTG15",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.21,
+        "y0": 237.53,
+        "x1": 221.18,
+        "y1": 245.88
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Thermal paste 10 g tube",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M0W6ZAAYB618P3772E",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 518.29,
+        "y0": 236.96,
+        "x1": 557.52,
+        "y1": 245.27
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$2,560.32",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M0W6ZAAYB618P3772F",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.21,
+        "y0": 237.53,
+        "x1": 89.58,
+        "y1": 244.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "TM-1180",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M0W6ZAAYB618P3772G",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 405.8,
+        "y0": 236.96,
+        "x1": 437.6,
+        "y1": 244.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$106.68",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M12GDZ5VVHJX2K3F4A",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 348.25,
+        "y0": 237.53,
+        "x1": 357.57,
+        "y1": 244.0
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "24",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M12GDZ5VVHJX2K3F4B",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.66,
+        "y0": 251.53,
+        "x1": 245.18,
+        "y1": 259.88
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Lithium grease 400 g cartridge",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M12GDZ5VVHJX2K3F4C",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.66,
+        "y0": 251.53,
+        "x1": 87.59,
+        "y1": 258.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "LB-4420",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M12GDZ5VVHJX2K3F4D",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 405.8,
+        "y0": 250.96,
+        "x1": 437.64,
+        "y1": 258.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$136.95",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M12GDZ5VVHJX2K3F4E",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 405.8,
+        "y0": 250.96,
+        "x1": 437.64,
+        "y1": 258.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$136.95",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M12GDZ5VVHJX2K3F4F",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 353.98,
+        "y0": 251.53,
+        "x1": 356.35,
+        "y1": 258.0
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "1",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW86X",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.4,
+        "y0": 265.45,
+        "x1": 279.15,
+        "y1": 273.88
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Self-tapping screw 4.2 x 16, box of 500",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW86Y",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.4,
+        "y0": 265.45,
+        "x1": 89.11,
+        "y1": 272.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "SC-6007",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW86Z",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 405.8,
+        "y0": 264.96,
+        "x1": 437.52,
+        "y1": 272.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$126.12",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW870",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 525.8,
+        "y0": 264.96,
+        "x1": 557.59,
+        "y1": 272.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$378.36",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW871",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 353.37,
+        "y0": 265.53,
+        "x1": 357.6,
+        "y1": 272.11
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "3",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW872",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 124.66,
+        "y0": 279.45,
+        "x1": 214.07,
+        "y1": 287.88
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "Ball bearing 6204-2RS",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW873",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 54.66,
+        "y0": 279.53,
+        "x1": 87.87,
+        "y1": 286.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "BR-7781",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M2T3W835BW664GW874",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 525.8,
+        "y0": 278.96,
+        "x1": 557.57,
+        "y1": 286.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$511.00",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M3C8DKR699PC4G3ZP3",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 410.8,
+        "y0": 278.96,
+        "x1": 437.57,
+        "y1": 286.92
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "$51.10",
+      "anchor_confidence": 1.0
+    },
+    {
+      "id": "ev_01M595E3M3C8DKR699PC4G3ZP4",
+      "asset_id": "asset_01M595E3JFFE2MVCDFSVZXBDS0",
+      "artifact_id": null,
+      "step_id": "step_01M595E3KPA7QBZ0X40S7CR7NM",
+      "producer": {
+        "kind": "tool",
+        "name": "evidence.anchor",
+        "version": "1",
+        "config_hash": null
+      },
+      "confidence": 1.0,
+      "transform_chain": [],
+      "kind": "document_region",
+      "page": 1,
+      "bbox": {
+        "x0": 348.97,
+        "y0": 279.53,
+        "x1": 357.57,
+        "y1": 286.1
+      },
+      "coordinate_system": "pdf_points_tl",
+      "text": "10",
+      "anchor_confidence": 1.0
+    }
+  ],
+  "validation": {
+    "issues": [],
+    "rules_run": [
+      {
+        "rule_id": "core.schema",
+        "version": "1",
+        "duration_ms": 0,
+        "issues": 0
+      },
+      {
+        "rule_id": "core.unknown_required",
+        "version": "1",
+        "duration_ms": 0,
+        "issues": 0
+      },
+      {
+        "rule_id": "core.evidence_missing",
+        "version": "1",
+        "duration_ms": 0,
+        "issues": 0
+      },
+      {
+        "rule_id": "core.evidence_consistent",
+        "version": "1",
+        "duration_ms": 1,
+        "issues": 0
+      }
+    ],
+    "duration_ms": 1
+  },
+  "artifacts": [
+    {
+      "artifact_id": "art_01M595E3JFFE2MVCDFSVZXBDRZ",
+      "media_type": "application/pdf"
+    },
+    {
+      "artifact_id": "art_01M595E3K71NV8AGDAV8J36B5A",
+      "media_type": "application/json"
+    }
+  ],
+  "usage": {
+    "model_calls": [
+      {
+        "step_id": "step_01M595E3KDT8W43166ZRN72A2F",
+        "provider": "anthropic",
+        "model": "claude-opus-5-5",
+        "input_tokens": 667,
+        "output_tokens": 939,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0,
+        "cost_usd": 0.0,
+        "pricing_version": "2026-10-06",
+        "latency_ms": 1,
+        "attempts": 1,
+        "replayed": true,
+        "provider_request_id": null
+      }
+    ],
+    "tool_calls": [],
+    "totals": {
+      "cost_usd": 0.0,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "input_tokens": 667,
+      "output_tokens": 939,
+      "pages_processed": 1,
+      "pixels_decoded": 0,
+      "media_duration_ms": 0,
+      "sampled_frames": 0,
+      "repair_attempts": 0,
+      "sandbox_runs": 0,
+      "wall_time_ms": 904
+    },
+    "models_used": [
+      "anthropic/claude-opus-5-5"
+    ],
+    "registry_version": null
+  },
+  "trace_id": "run_01M595E2RPG244BJTG2V7CY4VB",
+  "revision_id": "rev_01M595E3MZC0B91JW33XC11E1Y",
+  "plan_id": null,
+  "error": null,
+  "warnings": [],
+  "created_at": "2026-10-19T04:06:38.614662Z",
+  "completed_at": "2026-10-19T04:06:39.518920Z"
+}

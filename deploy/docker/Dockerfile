@@ -1,12 +1,22 @@
 # hawserd: API server and durable worker in one image (ADR-0010).
 # Build from the repository root:  docker build -f deploy/docker/Dockerfile -t hawser/hawserd .
 
+FROM node:20-alpine AS web
+WORKDIR /web
+RUN corepack enable && corepack prepare pnpm@10 --activate
+COPY web/package.json web/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY api/openapi/openapi.json /api/openapi/openapi.json
+COPY web ./
+RUN pnpm build
+
 FROM python:3.12-slim-bookworm AS build
 COPY --from=ghcr.io/astral-sh/uv:0.5.21 /uv /bin/uv
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never
 WORKDIR /app
 COPY pyproject.toml uv.lock README.md LICENSE ./
 COPY python ./python
+COPY --from=web /web/dist ./python/hawser_server/src/hawser_server/static
 RUN uv sync --frozen --no-dev --all-packages
 
 FROM python:3.12-slim-bookworm AS runtime

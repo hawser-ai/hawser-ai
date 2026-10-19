@@ -72,12 +72,24 @@ hawser run -i "Extract the invoice." -f invoice.pdf --schema quickstart/invoice.
 hawserd serve --dev                                # or: SQLite + in-process worker, no Docker
 ```
 
+**Phase 6 — Web application.** Served by `hawserd` at `/app`: playground with drag-drop
+admission and live SSE progress, runs list, run inspector (annotated result, plan graph, trace,
+validation, artifacts, revisions), evidence viewer with highlighted regions and keyboard
+navigation, review workspace with conflict handling, evaluation dashboard and comparison,
+registry, usage, policy editor, webhooks. React + TypeScript (`web/`), types generated from the
+OpenAPI document, Playwright end to end against a real `hawserd`.
+
+```bash
+make web && hawserd serve --dev            # then open http://127.0.0.1:8080/app
+```
+
 Docs: [quickstart](docs/quickstart.md) · [skills](docs/concepts/skills.md) ·
 [validation](docs/concepts/validation.md) · [review](docs/concepts/review.md) ·
 [evals](docs/concepts/evals.md) · [models](docs/concepts/models.md) ·
 [tools](docs/concepts/tools.md) · [agent](docs/concepts/agent.md) ·
-[server](docs/concepts/server.md) · [operator guide](docs/operator/). Not yet: the web UI
-(Phase 6), OCR for scanned pages (Phase 7), audio/video (Phases 8–9).
+[server](docs/concepts/server.md) · [web app](docs/concepts/web.md) ·
+[operator guide](docs/operator/). Not yet: OCR for scanned pages (Phase 7), audio/video
+(Phases 8–9), the generated-code sandbox (Phase 10).
 
 ## Repository layout
 
@@ -93,7 +105,7 @@ python/hawser_synth/    synthetic documents and datasets for tests and evals
 sandbox/                generated-code sandbox broker and adapters (Phase 10)
 skills/                 versioned skill bundles (Phase 2)
 mcp/                    MCP server and client adapters (Phase 11)
-web/                    playground, inspector and review UI (Phase 6)
+web/                    the web app: playground, inspector, evidence, review, evals (Phase 6)
 deploy/                 docker image, compose (Phase 5); helm (Phase 11)
 examples/               reference workflows and the quickstart
 docs/                   ADRs, architecture, security, operator guides
@@ -108,6 +120,8 @@ make setup      # venv, all packages, pre-commit hooks
 make check      # lint + typecheck + schema/OpenAPI drift + tests (what CI runs)
 make schemas    # regenerate api/schemas after changing hawser.models
 make openapi    # regenerate api/openapi/openapi.json after changing hawserd routes
+make web-check  # typecheck + lint + unit tests for web/ (Node 20, pnpm)
+make web        # build web/ and bundle it into hawser-server
 ```
 
 Tests never call a model provider; everything runs from recorded cassettes

@@ -1,0 +1,58 @@
+{
+  "run_id": "run_01M595E3PW46CM8E297ZKSFSKN",
+  "status": "needs_review",
+  "mode": null,
+  "result": null,
+  "field_meta": {},
+  "evidence": [],
+  "validation": {
+    "issues": [],
+    "rules_run": [],
+    "duration_ms": 0
+  },
+  "artifacts": [
+    {
+      "artifact_id": "art_01M595E3R0SX9HVVQ3QFQZTYRP",
+      "media_type": "application/json"
+    }
+  ],
+  "usage": {
+    "model_calls": [],
+    "tool_calls": [],
+    "totals": {
+      "cost_usd": 0.0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "pages_processed": 0,
+      "pixels_decoded": 0,
+      "media_duration_ms": 0,
+      "sampled_frames": 0,
+      "repair_attempts": 0,
+      "sandbox_runs": 0,
+      "wall_time_ms": 44
+    },
+    "models_used": [],
+    "registry_version": null
+  },
+  "trace_id": "run_01M595E3PW46CM8E297ZKSFSKN",
+  "revision_id": "rev_01M595E3R87NH2BJS6DQC1K3NW",
+  "plan_id": null,
+  "error": {
+    "type": "BudgetExceeded",
+    "code": "max_cost_usd",
+    "message": "estimated cost $0.0896 exceeds $0.0000",
+    "details": {
+      "spent_usd": 0,
+      "estimate_usd": 0.0896,
+      "limit_usd": 1e-06
+    },
+    "retryable": false,
+    "run_id": "run_01M595E3PW46CM8E297ZKSFSKN",
+    "step_id": "step_01M595E3R7K05W5588AADX6APA"
+  },
+  "warnings": [],
+  "created_at": "2026-10-19T04:06:39.580634Z",
+  "completed_at": "2026-10-19T04:06:39.624761Z"
+}

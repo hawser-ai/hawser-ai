@@ -22,6 +22,9 @@ files except an optional `.env` next to the compose file.
 | `HAWSERD_MAX_UPLOAD_BYTES` | `52428800` | `POST /v1/assets` size limit. |
 | `HAWSERD_WEBHOOK_TIMEOUT_S` / `_WEBHOOK_MAX_AGE_S` | `10` / `86400` | Delivery timeout; retry window before dead-lettering. |
 | `HAWSERD_SSE_KEEPALIVE_S` | `15` | Comment keep-alive interval on event streams. |
+| `HAWSERD_CORS_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` | Browser origins allowed to call the API (the web dev server). The bundled app at `/app` is same-origin and needs none. |
+| `HAWSERD_WEB_DIR` | bundled | Directory with a built web app to serve at `/app` (overrides the bundle). |
+| `HAWSERD_PAGE_CACHE_ENTRIES` | `64` | Rendered pages kept in memory per process for the evidence viewer. |
 
 ## Engine (`HAWSER_*`)
 

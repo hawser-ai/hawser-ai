@@ -79,6 +79,11 @@ class ScenarioResult:
 # -- fixtures --------------------------------------------------------------------------------
 
 
+def quickstart_dir() -> Path:
+    """The bundled quickstart directory (invoice, schema, policy, cassette)."""
+    return _quickstart()
+
+
 def _quickstart() -> Path:
     base = resources.files("hawser._quickstart")
     with resources.as_file(base) as path:
@@ -259,6 +264,7 @@ __all__ = [
     "Target",
     "local_target",
     "quickstart_cassette_dir",
+    "quickstart_dir",
     "quickstart_request",
     "run_all",
 ]

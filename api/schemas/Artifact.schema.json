@@ -16,6 +16,7 @@
         "generated",
         "sandbox_output",
         "step_output",
+        "eval_report",
         "other"
       ],
       "title": "ArtifactKind",

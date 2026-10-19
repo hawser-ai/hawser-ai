@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import threading
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -21,6 +23,29 @@ from hawser_server.jobs import JobQueue
 from hawser_server.migrations import ALL_MIGRATIONS
 from hawser_server.storage import S3ArtifactStore, s3_store_from_config
 from hawser_server.webhooks import WebhookService
+
+
+class PageCache:
+    """A small LRU of rendered pages keyed by (asset, page, dpi)."""
+
+    def __init__(self, entries: int) -> None:
+        self.entries = entries
+        self._data: OrderedDict[tuple[str, int, float], bytes] = OrderedDict()
+        self._lock = threading.Lock()
+
+    def get(self, key: tuple[str, int, float]) -> bytes | None:
+        with self._lock:
+            if key not in self._data:
+                return None
+            self._data.move_to_end(key)
+            return self._data[key]
+
+    def put(self, key: tuple[str, int, float], value: bytes) -> None:
+        with self._lock:
+            self._data[key] = value
+            self._data.move_to_end(key)
+            while len(self._data) > self.entries:
+                self._data.popitem(last=False)
 
 
 class Services:
@@ -58,6 +83,7 @@ class Services:
         self.skills = SkillRegistry(list(config.runtime.skill_paths))
         self.gateway = gateway or build_gateway(config.runtime)
         self.tools = tools or default_registry
+        self.page_cache = PageCache(config.page_cache_entries)
         self.engine = Engine(
             config.runtime,
             meta=self.meta,

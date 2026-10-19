@@ -9,7 +9,10 @@
 .hypothesis
 datasets
 docs
-web
+web/node_modules
+web/dist
+web/test-results
+web/playwright-report
 examples
 *.log
 .env

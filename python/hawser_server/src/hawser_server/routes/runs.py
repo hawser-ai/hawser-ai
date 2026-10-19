@@ -18,7 +18,14 @@ from hawser.models import (
 )
 from hawser_server.deps import PrincipalDep, ServicesDep, owned_run
 from hawser_server.errors import BadRequest, Conflict, NotFound
-from hawser_server.schemas import CancelResponse, RunPage, UsageReport
+from hawser_server.schemas import (
+    CancelResponse,
+    RunPage,
+    UsageBreakdown,
+    UsageBucket,
+    UsageReport,
+    UsageRun,
+)
 from hawser_server.sse import stream_run_events
 from hawser_server.util import decode_cursor, encode_cursor, ts
 
@@ -56,19 +63,41 @@ def create_run(
 
 
 @router.get("/runs", response_model=RunPage)
-def list_runs(
+def list_runs(  # noqa: PLR0917 - FastAPI injects each parameter
     svc: ServicesDep,
     who: PrincipalDep,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     cursor: str | None = None,
     status: RunStatus | None = None,
+    skill: str | None = None,
+    mode: str | None = None,
+    q: str | None = None,
 ) -> RunPage:
+    """Newest first. ``skill``, ``mode`` and ``q`` (matches run id and metadata values)
+    filter within the page window."""
     before = decode_cursor(cursor) if cursor else None
     if cursor and before is None:
         raise BadRequest("malformed cursor", code="bad_cursor")
+    filtered = bool(skill or mode or q)
     runs = svc.meta.list_runs(
-        who.tenant_id, limit=limit + 1, before=before, status=status.value if status else None
+        who.tenant_id,
+        limit=(limit * 10 if filtered else limit) + 1,
+        before=before,
+        status=status.value if status else None,
     )
+    if filtered:
+        needle = (q or "").lower()
+        runs = [
+            r
+            for r in runs
+            if (not skill or (r.request.skill and r.request.skill.name == skill))
+            and (not mode or (r.request.mode and r.request.mode.value == mode))
+            and (
+                not needle
+                or needle in r.id.lower()
+                or any(needle in str(v).lower() for v in r.request.metadata.values())
+            )
+        ]
     page = runs[:limit]
     nxt = encode_cursor(page[-1].created_at.isoformat(), page[-1].id) if len(runs) > limit else None
     return RunPage(items=[svc.engine.summary(r) for r in page], next=nxt)
@@ -77,6 +106,12 @@ def list_runs(
 @router.get("/runs/{run_id}", response_model=RunSummary)
 def get_run(svc: ServicesDep, who: PrincipalDep, run_id: str) -> RunSummary:
     return svc.engine.summary(owned_run(svc, who, run_id))
+
+
+@router.get("/runs/{run_id}/request", response_model=RunRequest)
+def get_request(svc: ServicesDep, who: PrincipalDep, run_id: str) -> RunRequest:
+    """What was submitted: instruction, inputs, schema, skill, policy snapshot."""
+    return owned_run(svc, who, run_id).request
 
 
 @router.get("/runs/{run_id}/result", response_model=RunResult)
@@ -170,6 +205,57 @@ def resume_run(svc: ServicesDep, who: PrincipalDep, run_id: str) -> RunSummary:
     run = svc.engine.begin_resume(run.id)
     svc.queue.enqueue(run.id, run.tenant_id, resume=True)
     return svc.engine.summary(run)
+
+
+@router.get("/usage/breakdown", response_model=UsageBreakdown, tags=["usage"])
+def usage_breakdown(
+    svc: ServicesDep, who: PrincipalDep, since: str | None = None, limit: int = 2000
+) -> UsageBreakdown:
+    """Cost and tokens by day, skill, model and status over recent runs."""
+    out = UsageBreakdown(tenant_id=who.tenant_id, since=since)
+    by: dict[str, dict[str, UsageBucket]] = {"day": {}, "skill": {}, "model": {}, "status": {}}
+
+    def add(  # noqa: PLR0917 - local helper
+        dim: str, key: str, cost: float, tokens_in: int, tokens_out: int, calls: int
+    ) -> None:
+        b = by[dim].setdefault(key, UsageBucket(key=key))
+        b.runs += 1
+        b.cost_usd += cost
+        b.input_tokens += tokens_in
+        b.output_tokens += tokens_out
+        b.model_calls += calls
+
+    for r in svc.meta.list_runs(who.tenant_id, limit=limit):
+        day = ts(r.created_at)[:10]
+        if since and day < since[:10]:
+            continue
+        result = svc.meta.get_result(r.id)
+        t = result.usage.totals if result else None
+        cost = t.cost_usd if t else 0.0
+        tin = t.input_tokens if t else 0
+        tout = t.output_tokens if t else 0
+        calls = t.model_calls if t else 0
+        add("day", day, cost, tin, tout, calls)
+        add("skill", r.request.skill.name if r.request.skill else "(none)", cost, tin, tout, calls)
+        models = sorted({c.model for c in result.usage.model_calls}) if result else []
+        add("model", ", ".join(models) if models else "(none)", cost, tin, tout, calls)
+        add("status", r.status.value, cost, tin, tout, calls)
+        out.runs.append(
+            UsageRun(
+                id=r.id,
+                status=r.status.value,
+                skill=r.request.skill.name if r.request.skill else None,
+                created_at=ts(r.created_at),
+                cost_usd=cost,
+                max_cost_usd=r.request.policy.limits.max_cost_usd,
+                model_calls=calls,
+            )
+        )
+    out.by_day = sorted(by["day"].values(), key=lambda b: b.key)
+    out.by_skill = sorted(by["skill"].values(), key=lambda b: -b.cost_usd)
+    out.by_model = sorted(by["model"].values(), key=lambda b: -b.cost_usd)
+    out.by_status = sorted(by["status"].values(), key=lambda b: -b.runs)
+    return out
 
 
 @router.get("/usage", response_model=UsageReport, tags=["usage"])

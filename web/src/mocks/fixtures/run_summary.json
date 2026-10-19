@@ -1,0 +1,13 @@
+{
+  "id": "run_01M595E2RPG244BJTG2V7CY4VB",
+  "tenant_id": "ten_00000000000000000000000000",
+  "status": "accepted",
+  "mode": "direct",
+  "skill": null,
+  "cost_usd": 0.0,
+  "created_at": "2026-10-19T04:06:38.614662Z",
+  "completed_at": "2026-10-19T04:06:39.518920Z",
+  "metadata": {},
+  "artifact_count": 2,
+  "output_artifact_ids": []
+}

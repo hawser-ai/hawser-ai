@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from hawser.config import HawserConfig
 
@@ -53,8 +53,22 @@ class ServerConfig(BaseModel):
 
     sse_keepalive_s: float = 15.0
 
+    #: Browser origins allowed to call the API (the Vite dev server by default).
+    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    #: Directory with the built web app (``web/dist``); default: the bundled ``static`` folder.
+    web_dir: Path | None = None
+    #: Rendered-page cache entries kept in memory per process.
+    page_cache_entries: int = 64
+
     #: Engine configuration (``HAWSER_*``).
     runtime: HawserConfig = Field(default_factory=HawserConfig.load)
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def _split_origins(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return [o.strip() for o in value.split(",") if o.strip()]
+        return value
 
     @classmethod
     def load(cls, **overrides: Any) -> ServerConfig:

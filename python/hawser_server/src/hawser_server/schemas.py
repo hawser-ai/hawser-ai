@@ -102,6 +102,35 @@ class UsageReport(BaseModel):
     cost_usd: float
 
 
+class UsageBucket(BaseModel):
+    key: str
+    runs: int = 0
+    cost_usd: float = 0.0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    model_calls: int = 0
+
+
+class UsageRun(BaseModel):
+    id: str
+    status: str
+    skill: str | None
+    created_at: str
+    cost_usd: float
+    max_cost_usd: float | None
+    model_calls: int
+
+
+class UsageBreakdown(BaseModel):
+    tenant_id: str
+    since: str | None
+    by_day: list[UsageBucket] = []
+    by_skill: list[UsageBucket] = []
+    by_model: list[UsageBucket] = []
+    by_status: list[UsageBucket] = []
+    runs: list[UsageRun] = []
+
+
 class Health(BaseModel):
     status: str
     version: str
@@ -128,7 +157,10 @@ __all__ = [
     "ReviewOpenRequest",
     "RunPage",
     "TenantOut",
+    "UsageBreakdown",
+    "UsageBucket",
     "UsageReport",
+    "UsageRun",
     "WebhookCreate",
     "WebhookCreated",
     "WebhookOut",

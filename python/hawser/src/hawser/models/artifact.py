@@ -27,6 +27,7 @@ class ArtifactKind(StrEnum):
     generated = "generated"
     sandbox_output = "sandbox_output"
     step_output = "step_output"  # checkpointed step result (JSON)
+    eval_report = "eval_report"  # a published evaluation report (JSON)
     other = "other"
 
 

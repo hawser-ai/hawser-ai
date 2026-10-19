@@ -11,6 +11,9 @@ export HAWSER_API_KEY=hk_live_...          # printed by `make up`, or `hawserd a
 hawser run -i "Extract the invoice." -f invoice.pdf --schema invoice.schema.json
 ```
 
+The web app (`docs/concepts/web.md`) is served at `/app` when a build is bundled
+(`make web`) or passed with `--web-dir`.
+
 Without Docker: `hawserd serve --dev` runs on SQLite and local files with an in-process worker
 and a development API key (printed at start-up, kept in `.hawserd/dev.key`). That mode is for
 evaluation on one machine; production is Postgres + one or more `hawserd worker` processes.
