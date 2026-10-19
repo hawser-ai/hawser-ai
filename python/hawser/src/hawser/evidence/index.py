@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any, Literal
+
 from pydantic import BaseModel, Field
 
 from hawser_media.pdf import NEEDS_OCR_CHAR_THRESHOLD, PageText
@@ -20,6 +22,17 @@ class PageIndex(BaseModel):
     #: Artifact id of a rendered page image, if one was produced.
     render_artifact_id: str | None = None
     render_dpi: float | None = None
+    #: Where the text came from (index v2): the PDF text layer, or an OCR engine.
+    source: Literal["native", "ocr"] = "native"
+    ocr_engine: str | None = None
+    #: Per-character OCR confidence (parallel to ``text``); ``None`` for native text.
+    confidences: list[float | None] | None = None
+    #: Coordinate system of ``boxes``: PDF points (top-left origin) or pixels of ``artifact_id``.
+    coordinate_system: Literal["pdf_points_tl", "pixels"] = "pdf_points_tl"
+    #: The derived image the boxes refer to (deskewed photo, rendered page), when not the asset.
+    artifact_id: str | None = None
+    #: Transforms from the original asset to ``artifact_id``, as ``Transform`` dicts.
+    transform_chain: list[dict[str, Any]] = Field(default_factory=list)
 
     def bbox_for_range(self, start: int, end: int) -> Box | None:
         xs0: list[float] = []
@@ -57,23 +70,47 @@ class DocumentIndex(BaseModel):
         return None
 
 
+def page_from_text(
+    pt: PageText,
+    *,
+    source: Literal["native", "ocr"] = "native",
+    ocr_engine: str | None = None,
+    coordinate_system: Literal["pdf_points_tl", "pixels"] = "pdf_points_tl",
+) -> PageIndex:
+    """A ``PageIndex`` from a ``PageText`` (native text layer or an OCR result)."""
+    boxes: list[Box | None] = []
+    for c in pt.chars:
+        if c.has_box:
+            boxes.append((round(c.x0, 2), round(c.y0, 2), round(c.x1, 2), round(c.y1, 2)))  # type: ignore[arg-type]
+        else:
+            boxes.append(None)
+    confidences: list[float | None] | None = None
+    if source == "ocr":
+        conf: list[float | None] = [None] * len(pt.text)
+        for ln in pt.lines:
+            for w in ln.words:
+                for i in range(w.start, min(w.end, len(conf))):
+                    conf[i] = w.confidence
+        confidences = conf
+    pi = PageIndex(
+        page=pt.page,
+        width_pt=pt.width_pt,
+        height_pt=pt.height_pt,
+        text=pt.text,
+        boxes=boxes,
+        source=source,
+        ocr_engine=ocr_engine,
+        confidences=confidences,
+        coordinate_system=coordinate_system,
+    )
+    pi.needs_ocr = source == "ocr" or pi.visible_chars < NEEDS_OCR_CHAR_THRESHOLD
+    return pi
+
+
 def build_document_index(
     asset_id: str, pages: list[PageText], *, name: str | None = None
 ) -> DocumentIndex:
-    out: list[PageIndex] = []
-    for pt in pages:
-        boxes: list[Box | None] = []
-        for c in pt.chars:
-            if c.has_box:
-                boxes.append((round(c.x0, 2), round(c.y0, 2), round(c.x1, 2), round(c.y1, 2)))  # type: ignore[arg-type]
-            else:
-                boxes.append(None)
-        pi = PageIndex(
-            page=pt.page, width_pt=pt.width_pt, height_pt=pt.height_pt, text=pt.text, boxes=boxes
-        )
-        pi.needs_ocr = pi.visible_chars < NEEDS_OCR_CHAR_THRESHOLD
-        out.append(pi)
-    return DocumentIndex(asset_id=asset_id, name=name, pages=out)
+    return DocumentIndex(asset_id=asset_id, name=name, pages=[page_from_text(pt) for pt in pages])
 
 
-__all__ = ["Box", "DocumentIndex", "PageIndex", "build_document_index"]
+__all__ = ["Box", "DocumentIndex", "PageIndex", "build_document_index", "page_from_text"]

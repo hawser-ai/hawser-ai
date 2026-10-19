@@ -35,8 +35,8 @@ def expected_for(pair_invoice: dict[str, object], pair_po: dict[str, object]) ->
 def expected_status(expected: dict[str, object], *, scanned: bool) -> str:
     """What the skill should decide. Scanned pairs need review until OCR lands (Phase 7):
     the skill requires evidence on totals and a page without a text layer cannot anchor it."""
-    if scanned:
-        return "needs_review"
+    # Phase 7: scanned pages are OCR'd and carry box evidence, so they are judged like native.
+    _ = scanned
     rec = expected.get("reconciliation")
     summary = rec.get("summary_status") if isinstance(rec, dict) else None
     return "accepted" if summary == "match" else "needs_review"

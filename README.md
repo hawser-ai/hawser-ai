@@ -83,13 +83,20 @@ OpenAPI document, Playwright end to end against a real `hawserd`.
 make web && hawserd serve --dev            # then open http://127.0.0.1:8080/app
 ```
 
+**Phase 7 — Image intelligence.** OCR for pages without a text layer and for photos (RapidOCR
+bundled, Tesseract and Azure Document Intelligence adapters), deskew and EXIF normalisation
+with recorded transform chains so evidence always maps back to the original pixels, a
+`reocr` repair, layout analysis (blocks, tables, key-values), and vision tools (caption, VQA,
+detect, ground, classify, tag, UI parse, segment, embed, redact, annotate, policy-gated
+generate/edit). The scanned subset of the reference dataset now scores like the native pairs.
+
 Docs: [quickstart](docs/quickstart.md) · [skills](docs/concepts/skills.md) ·
 [validation](docs/concepts/validation.md) · [review](docs/concepts/review.md) ·
 [evals](docs/concepts/evals.md) · [models](docs/concepts/models.md) ·
 [tools](docs/concepts/tools.md) · [agent](docs/concepts/agent.md) ·
 [server](docs/concepts/server.md) · [web app](docs/concepts/web.md) ·
-[operator guide](docs/operator/). Not yet: OCR for scanned pages (Phase 7), audio/video
-(Phases 8–9), the generated-code sandbox (Phase 10).
+[images & OCR](docs/concepts/images.md) · [operator guide](docs/operator/). Not yet:
+audio/video (Phases 8–9), the generated-code sandbox (Phase 10).
 
 ## Repository layout
 

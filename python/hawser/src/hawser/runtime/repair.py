@@ -17,11 +17,22 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 
 from hawser.clock import monotonic_ms
-from hawser.models import EventType, ModelSpec, RepairKind, RunStatus, Severity, ValidationReport
+from hawser.evidence import AnchorResult, anchor_all
+from hawser.models import (
+    EventType,
+    FieldMeta,
+    ModelSpec,
+    RepairKind,
+    RunStatus,
+    Severity,
+    StepKind,
+    ValidationReport,
+)
 from hawser.models.common import JsonSchema
 from hawser.recording import canonical_json
 from hawser.runtime.context import DocumentContext, RunContext
 from hawser.runtime.extract import Extraction, extract_structured
+from hawser.runtime.indexing import reocr_documents
 from hawser.structured.subset import merge_values, subschema, top_level_only
 from hawser.validation import ValidationContext, Validator, decide, run_validators
 
@@ -77,7 +88,7 @@ def validate_extraction(
     return report
 
 
-def repair_loop(
+def repair_loop(  # noqa: PLR0912, PLR0915 - the strategies are enumerated here
     ctx: RunContext,
     docs: list[DocumentContext],
     *,
@@ -117,13 +128,23 @@ def repair_loop(
         out.attempts += 1
         fields = sorted({i.field for i in errors if i.field})
         corrections = [f"{i.field or '(document)'}: {i.message} [{i.rule_id}]" for i in errors]
-        strategy = (
-            "ask_field"
-            if fields
-            and top_level_only(fields)
-            and all(i.repair == RepairKind.ask_field for i in errors)
-            else "re_extract"
+        ocr_pages = any(
+            p.source == "ocr" for d in docs if d.index is not None for p in d.index.pages
         )
+        if (
+            ocr_pages
+            and out.attempts <= 1
+            and all(i.rule_id == "core.evidence_missing" for i in errors)
+        ):
+            strategy = "reocr"
+        else:
+            strategy = (
+                "ask_field"
+                if fields
+                and top_level_only(fields)
+                and all(i.repair == RepairKind.ask_field for i in errors)
+                else "re_extract"
+            )
         ctx.emitter.emit(
             EventType.repair_started,
             {
@@ -134,6 +155,48 @@ def repair_loop(
             },
         )
         step_prefix = f"{prefix}:repair{out.attempts}"
+        if strategy == "reocr":
+            # No model call: OCR again (higher dpi, other engine if any) and re-anchor the
+            # values the model already quoted.
+            new_docs = reocr_documents(ctx, docs, attempt=out.attempts)
+            if new_docs is None:
+                out.attempts -= 1
+                out.stopped_reason = "not_repairable"
+                break
+            docs = new_docs
+            indexes = [d.index for d in docs if d.index is not None]
+            anchoring = ctx.steps.run(
+                f"{step_prefix}:anchor",
+                f"{step_prefix}: re-anchor evidence",
+                StepKind.tool,
+                lambda h, idx=indexes: anchor_all(idx, out.extraction.anchors, step_id=h.step_id),
+                output_type=AnchorResult,
+            )
+            field_meta = {
+                ptr: meta.model_copy(
+                    update={"evidence": [], "issues": [], "anchor_confidence": None}
+                )
+                for ptr, meta in out.extraction.field_meta.items()
+            }
+            for ptr, ev_id in anchoring.by_pointer.items():
+                meta = field_meta.setdefault(ptr, FieldMeta())
+                meta.evidence = [ev_id]
+                meta.anchor_confidence = anchoring.confidence.get(ptr)
+            candidate = out.extraction.model_copy(
+                update={"field_meta": field_meta, "evidence": list(anchoring.evidence)}
+            )
+            report = validate_extraction(ctx, candidate, schema, validators)
+            out.history.append(
+                {"attempt": out.attempts, "strategy": strategy, "errors": report.count_errors()}
+            )
+            fp = fingerprint(report, candidate.result)
+            out.extraction, out.report = candidate, report
+            if fp in seen:
+                ctx.emitter.emit(EventType.repair_no_progress, {"attempt": out.attempts})
+                out.stopped_reason = "no_progress"
+                break
+            seen.add(fp)
+            continue
         if strategy == "ask_field":
             partial = extract_structured(
                 ctx,

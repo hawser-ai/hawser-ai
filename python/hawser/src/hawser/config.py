@@ -43,6 +43,12 @@ class HawserConfig(BaseModel):
     max_output_tokens: int = 16_000
 
     render_dpi: int = 150
+    #: OCR engine for pages without a text layer and for images: auto | rapidocr | tesseract |
+    #: azure-document-intelligence | none.
+    ocr_engine: str = "auto"
+    ocr_dpi: int = 300
+    #: Straighten skewed photos/scans before OCR (the chain keeps evidence on the original).
+    deskew: bool = True
     max_bytes: int = 50 * 1024 * 1024
     max_pages: int = 200
     max_pixels: int = 40_000_000

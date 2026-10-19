@@ -8,17 +8,21 @@ from __future__ import annotations
 import unicodedata
 from dataclasses import dataclass
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, TypeAdapter
 from rapidfuzz import fuzz
 
 from hawser.evidence.index import DocumentIndex, PageIndex
 from hawser.ids import new_id
-from hawser.models import BBox, DocumentRegionEvidence, ProducerRef
+from hawser.models import BBox, CoordinateSystem, DocumentRegionEvidence, ProducerRef
+from hawser.models.common import Transform
 from hawser.structured.unwrap import Anchor
+
+_TRANSFORM: TypeAdapter[Transform] = TypeAdapter(Transform)
 
 FUZZY_THRESHOLD = 88.0
 ANCHOR_VERSION = "1"
 
+_CURRENCY = frozenset("€$£¥₹")
 _REPLACEMENTS = str.maketrans(
     {
         "‘": "'",
@@ -28,6 +32,12 @@ _REPLACEMENTS = str.maketrans(
         "–": "-",
         "—": "-",
         "−": "-",
+        # Currency marks: OCR engines drop or misread them; the amount is the evidence.
+        "€": None,
+        "$": None,
+        "£": None,
+        "¥": None,
+        "₹": None,
         " ": " ",
     }
 )
@@ -76,9 +86,14 @@ def locate_all(page: PageIndex, query: str) -> list[Match]:  # noqa: PLR0911
         return []
     exact: list[Match] = []
     loose: list[Match] = []
+    lead = query.lstrip()[:1] if query.lstrip()[:1] in _CURRENCY else ""
     idx = pn.find(qn)
     while idx >= 0:
-        m = Match(start=pmap[idx], end=pmap[idx + len(qn) - 1] + 1, score=1.0)
+        start = pmap[idx]
+        # Currency marks are ignored for matching; keep the one the quote started with.
+        if lead and start > 0 and page.text[start - 1] == lead:
+            start -= 1
+        m = Match(start=start, end=pmap[idx + len(qn) - 1] + 1, score=1.0)
         (exact if _bounded(pn, idx, idx + len(qn)) else loose).append(m)
         idx = pn.find(qn, idx + 1)
     if exact:
@@ -87,6 +102,15 @@ def locate_all(page: PageIndex, query: str) -> list[Match]:  # noqa: PLR0911
         return loose
     if len(qn) < 3:
         return []
+    # OCR often collapses the spaces inside a line ("Lithiumgrease400g"): compare without them.
+    q_ns = qn.replace(" ", "")
+    if " " in qn and len(q_ns) >= 4:
+        ns_map = [j for j, ch in enumerate(pn) if ch != " "]
+        p_joined = "".join(pn[j] for j in ns_map)
+        j = p_joined.find(q_ns)
+        if j >= 0:
+            s_idx, e_idx = ns_map[j], ns_map[j + len(q_ns) - 1]
+            return [Match(start=pmap[s_idx], end=pmap[e_idx] + 1, score=0.96)]
     aligned = fuzz.partial_ratio_alignment(qn, pn)
     if aligned is None or aligned.score < FUZZY_THRESHOLD:
         return []
@@ -159,10 +183,13 @@ def anchor_all(
         ev = DocumentRegionEvidence(
             id=new_id("ev"),
             asset_id=doc.asset_id,
+            artifact_id=page.artifact_id,
             step_id=step_id,
             producer=producer,
             page=page.page,
             bbox=BBox(x0=box[0], y0=box[1], x1=box[2], y1=box[3]) if box else None,
+            coordinate_system=CoordinateSystem(page.coordinate_system),
+            transform_chain=[_TRANSFORM.validate_python(t) for t in page.transform_chain],
             text=page.text[m.start : m.end],
             anchor_confidence=round(m.score, 4),
             confidence=round(m.score, 4),

@@ -912,7 +912,7 @@ export interface components {
          * ArtifactKind
          * @enum {string}
          */
-        ArtifactKind: "original" | "rendered_page" | "crop" | "mask" | "annotation" | "transcript" | "index" | "table" | "report" | "redacted" | "clip" | "generated" | "sandbox_output" | "step_output" | "eval_report" | "other";
+        ArtifactKind: "original" | "rendered_page" | "crop" | "mask" | "annotation" | "transcript" | "index" | "table" | "report" | "redacted" | "clip" | "generated" | "sandbox_output" | "step_output" | "eval_report" | "normalised" | "ocr" | "layout" | "embedding" | "other";
         /** ArtifactMeta */
         ArtifactMeta: {
             /** Content Hash */
@@ -1374,8 +1374,13 @@ export interface components {
          * @enum {string}
          */
         ExecutionMode: "direct" | "workflow" | "agent";
-        /** ExifOrientTransform */
+        /**
+         * ExifOrientTransform
+         * @description The EXIF orientation applied to make a ``width`` x ``height`` image upright.
+         */
         ExifOrientTransform: {
+            /** Height */
+            height?: number | null;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1383,6 +1388,8 @@ export interface components {
             kind: "exif_orient";
             /** Orientation */
             orientation: number;
+            /** Width */
+            width?: number | null;
         };
         /** FallbackPolicy */
         FallbackPolicy: {

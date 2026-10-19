@@ -163,10 +163,18 @@ def test_scanned_pdf_sends_an_image(
     assert any(i["kind"] == "image" for i in sel.payload["included"])
     kinds = {rt.artifacts.get(a.artifact_id).meta.kind.value for a in result.artifacts}
     assert "rendered_page" in kinds
-    # nothing can be anchored on a page without a text layer -> evidence_missing warnings
     assert result.status == RunStatus.accepted
-    assert all(not m.evidence for m in result.field_meta.values())
-    assert any(i.rule_id == "core.evidence_missing" for i in result.validation.issues)
+    # Phase 7: the page without a text layer is OCR'd, so values are anchored to OCR boxes
+    found = [m for m in result.field_meta.values() if m.status.value == "found"]
+    anchored = [m for m in found if m.evidence]
+    assert len(anchored) / len(found) >= 0.9
+    ocr_calls = [
+        e
+        for e in rt.events(result.run_id)
+        if e.type == EventType.tool_called and str(e.payload.get("tool", "")).startswith("ocr.")
+    ]
+    assert ocr_calls and ocr_calls[0].payload["page"] == 1
+    assert "ocr" in kinds  # the OCR result is stored as an artifact
 
 
 def test_admission_failures(runtime_factory: RuntimeFactory, tmp_path: Path) -> None:

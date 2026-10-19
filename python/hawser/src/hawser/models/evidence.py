@@ -24,7 +24,9 @@ class _EvidenceBase(HawserModel):
     step_id: StepId | None = None
     producer: ProducerRef
     confidence: float | None = Field(default=None, ge=0, le=1)
-    #: Transforms from ``artifact_id``'s space back to the original asset. Empty = identity.
+    #: The transforms that produced ``artifact_id`` from the original asset, in order. The
+    #: runtime inverts them when it assembles the result, so ``bbox``/``point`` are always in
+    #: the original asset's coordinate system; the chain stays for provenance.
     transform_chain: list[Transform] = []
 
 

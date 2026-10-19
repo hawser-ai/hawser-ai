@@ -102,7 +102,7 @@ def _tag(name: str, page: int, total: int, *, rendered: bool = False) -> str:
     return f'<document name="{name}" page="{page}" of="{total}"{suffix}'
 
 
-def build_context(  # noqa: PLR0915
+def build_context(  # noqa: PLR0912, PLR0915
     ctx: RunContext,
     docs: list[DocumentContext],
     spec: ModelSpec,
@@ -156,6 +156,18 @@ def build_context(  # noqa: PLR0915
                             tokens,
                         )
                     )
+                    if page.text.strip():
+                        ocr_text = (
+                            f'<document name="{name}" page="{page.page}" of="{total}" '
+                            f'source="ocr">\n{page.text}\n</document>'
+                        )
+                        candidates.append(
+                            (
+                                {"asset": asset.id, "page": page.page, "kind": "ocr_text"},
+                                TextPart(text=ocr_text),
+                                estimate_text_tokens(ocr_text),
+                            )
+                        )
                 else:
                     text = f"{_tag(name, page.page, total)}\n{page.text}\n</document>"
                     candidates.append(
@@ -166,9 +178,17 @@ def build_context(  # noqa: PLR0915
                         )
                     )
         elif asset.media_class == MediaClass.image:
-            data = ctx.artifacts.get_bytes(asset.original_artifact_id)
-            w = asset.manifest.image.width if asset.manifest.image else 1000
-            h = asset.manifest.image.height if asset.manifest.image else 1000
+            page0 = doc.index.pages[0] if doc.index is not None and doc.index.pages else None
+            if page0 is not None and page0.artifact_id:
+                # the normalised/deskewed image the index refers to
+                data = ctx.artifacts.get_bytes(page0.artifact_id)
+                media_type = "image/png"
+                w, h = int(page0.width_pt), int(page0.height_pt)
+            else:
+                data = ctx.artifacts.get_bytes(asset.original_artifact_id)
+                media_type = asset.media_type
+                w = asset.manifest.image.width if asset.manifest.image else 1000
+                h = asset.manifest.image.height if asset.manifest.image else 1000
             candidates.append(
                 (
                     {"asset": asset.id, "kind": "image"},
@@ -179,10 +199,22 @@ def build_context(  # noqa: PLR0915
             candidates.append(
                 (
                     {"asset": asset.id, "kind": "image"},
-                    ImagePart(media_type=asset.media_type, data=data, label=name),
+                    ImagePart(media_type=media_type, data=data, label=name),
                     estimate_image_tokens(w, h),
                 )
             )
+            if page0 is not None and page0.text.strip():
+                ocr_text = (
+                    f'<document name="{name}" page="1" of="1" source="ocr">\n'
+                    f"{page0.text}\n</document>"
+                )
+                candidates.append(
+                    (
+                        {"asset": asset.id, "kind": "ocr_text"},
+                        TextPart(text=ocr_text),
+                        estimate_text_tokens(ocr_text),
+                    )
+                )
         elif asset.media_class in (MediaClass.text, MediaClass.json):
             data = ctx.artifacts.get_bytes(asset.original_artifact_id)
             body = data.decode("utf-8", errors="replace")

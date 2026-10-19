@@ -28,6 +28,10 @@ class ArtifactKind(StrEnum):
     sandbox_output = "sandbox_output"
     step_output = "step_output"  # checkpointed step result (JSON)
     eval_report = "eval_report"  # a published evaluation report (JSON)
+    normalised = "normalised"  # an image after exif/deskew/resize (transform recorded)
+    ocr = "ocr"  # an OCR result (JSON)
+    layout = "layout"  # a layout analysis (JSON)
+    embedding = "embedding"  # an image embedding (JSON)
     other = "other"
 
 

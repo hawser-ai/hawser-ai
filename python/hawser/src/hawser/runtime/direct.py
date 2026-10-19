@@ -4,11 +4,9 @@ from __future__ import annotations
 
 from hawser.clock import now
 from hawser.errors import PlanInvalid
-from hawser.evidence import DocumentIndex, build_document_index
+from hawser.evidence.resolve import resolve_to_source
 from hawser.gateway.select import Requirements, Selection, candidates
 from hawser.models import (
-    ArtifactKind,
-    Asset,
     EventType,
     ExecutionMode,
     MediaClass,
@@ -29,12 +27,11 @@ from hawser.runtime.context import (
     estimate_text_tokens,
 )
 from hawser.runtime.extract import Extraction, extract_structured
+from hawser.runtime.indexing import index_documents
 from hawser.runtime.repair import repair_loop, validate_extraction
 from hawser.runtime.state import can_transition, transition
-from hawser.runtime.steps import StepHandle
 from hawser.structured import inline_refs
 from hawser.validation import core_validators, decide
-from hawser_media import pdf as pdf_mod
 
 
 def requirements_for(docs: list[DocumentContext], schema: JsonSchema | None) -> Requirements:
@@ -122,38 +119,6 @@ def admit(ctx: RunContext) -> AssetList:
     )
 
 
-def index_documents(ctx: RunContext, assets: list[Asset]) -> list[DocumentContext]:
-    """Build (checkpointed) text indexes for PDF assets; other assets pass through."""
-    docs: list[DocumentContext] = []
-    for asset in assets:
-        if asset.media_class.value != "pdf":
-            docs.append(DocumentContext(asset=asset))
-            continue
-
-        def _index(h: StepHandle, a: Asset = asset) -> DocumentIndex:
-            data = ctx.artifacts.get_bytes(a.original_artifact_id)
-            index = build_document_index(a.id, pdf_mod.extract_text(data), name=a.name)
-            art = ctx.artifacts.put_json(
-                index,
-                kind=ArtifactKind.document_index,
-                parents=[a.original_artifact_id],
-                run_id=ctx.run_id,
-                step_id=h.step_id,
-            )
-            ctx.artifact_refs.append(art.ref())
-            return index
-
-        index = ctx.steps.run(
-            f"index:{asset.id}",
-            f"Index {asset.name or asset.id}",
-            StepKind.tool,
-            _index,
-            output_type=DocumentIndex,
-        )
-        docs.append(DocumentContext(asset=asset, index=index))
-    return docs
-
-
 def inline_schema(schema: JsonSchema | None) -> JsonSchema | None:
     if schema is None:
         return None
@@ -183,7 +148,7 @@ def finalize(
         mode=mode,
         result=extraction.result,
         field_meta=extraction.field_meta,
-        evidence=list(extraction.evidence),
+        evidence=resolve_to_source(extraction.evidence),
         validation=report,
         artifacts=list(ctx.artifact_refs),
         usage=ctx.usage,

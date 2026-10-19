@@ -84,8 +84,12 @@ class RotateTransform(HawserModel):
 
 
 class ExifOrientTransform(HawserModel):
+    """The EXIF orientation applied to make a ``width`` x ``height`` image upright."""
+
     kind: Literal["exif_orient"] = "exif_orient"
     orientation: int = Field(ge=1, le=8)
+    width: float | None = Field(default=None, gt=0)
+    height: float | None = Field(default=None, gt=0)
 
 
 class PadTransform(HawserModel):

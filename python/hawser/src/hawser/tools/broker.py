@@ -20,7 +20,7 @@ import jsonschema
 from pydantic import BaseModel, Field
 
 from hawser.clock import monotonic_ms
-from hawser.errors import ApprovalRequired, PolicyViolation, ToolError
+from hawser.errors import ApprovalRequired, HawserError, PolicyViolation, ToolError
 from hawser.models import (
     ApprovalStatus,
     ArtifactRef,
@@ -195,7 +195,7 @@ class Broker:
         if wall_s is None:
             try:
                 return tool.fn(**kwargs)
-            except ToolError:
+            except HawserError:
                 raise
             except Exception as exc:
                 raise ToolError(
@@ -213,7 +213,7 @@ class Broker:
                 code="tool_timeout",
                 retryable=False,
             ) from exc
-        except ToolError:
+        except HawserError:
             raise
         except Exception as exc:
             raise ToolError(

@@ -872,6 +872,37 @@ Scanned invoice → OCR + layout → extraction with bbox evidence; a photo of a
 
 ### Estimate: 4 weeks.
 
+### Status (2026-10-19): implemented
+- WP7.1: `hawser.evidence.transforms` (affine chains: crop, scale, rotate about a point,
+  exif_orient with source size, pad, dpi; compose/invert/apply; Pillow-exact rotate+expand) and
+  `hawser.evidence.resolve` which maps evidence found on derived artifacts back to the original
+  asset when the result is assembled. Hypothesis round-trip tests within 0.5 px.
+- WP7.2: `hawser_media.ocr` (RapidOCR local default, Tesseract when installed, Azure Document
+  Intelligence as the reference hosted adapter; one `OcrResult` contract; `page_text_from_ocr`
+  with per-glyph boxes and confidences); index v2 (`source`, `confidences`,
+  `coordinate_system`, `artifact_id`, `transform_chain` per page); `runtime/indexing.py` OCRs
+  pages without a text layer at 300 dpi and normalises/deskews/OCRs images; the context sends
+  OCR text alongside the page image; the `reocr` repair re-OCRs at higher DPI with another
+  engine and re-anchors without a model call; `document.layout` (heuristic blocks, tables with
+  left/right-aligned column anchors, key-values). Anchoring tolerates dropped currency marks
+  and collapsed spaces.
+- WP7.3: `tools/image.py` — ops (normalise, deskew, rotate, crop, resize, redact, annotate)
+  with recorded chains; VLM tools (caption, vqa, detect, ground, classify, tag, ui_parse) with
+  strict schemas, 0-1000 grid validation and `image_region` evidence carrying the chain;
+  `segment` (box masks + RLE), `embed`/`similarity` (perceptual), `generate`/`edit`
+  (OpenAI-compatible images API, policy-gated, no evidence claims). `ocr.recognize`,
+  `ocr.engines`.
+- Results: the scanned subset of `invoice-po/v1` (12 pairs) re-recorded with Haiku 5.5:
+  100% field accuracy, 100% status accuracy, 97.2% evidence coverage — the same as the native
+  pairs (97.2%), well within the 3-point target. RapidOCR word recall on a 300-dpi rasterised
+  synthetic page ≥ 0.98 (ASCII words; currency marks are dropped by the engine and tolerated
+  by anchoring).
+- Deviations: local detectors (OWLv2/Grounding DINO), SAM and CLIP/SigLIP are not bundled
+  (they need PyTorch); the tool contracts and evidence shapes are in place, with VLM-native
+  detection, box masks and a perceptual embedding as the bundled defaults. Google Document AI
+  and Textract adapters are not written; Azure is the reference and the engine protocol is one
+  class. Layout is heuristic rather than a learned detector.
+
 ---
 
 ## Phase 8 — Audio intelligence (3 weeks)

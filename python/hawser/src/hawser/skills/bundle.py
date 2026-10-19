@@ -17,6 +17,7 @@ import hashlib
 import importlib.util
 import json
 import sys
+import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -72,8 +73,19 @@ def bundle_hash(path: Path) -> str:
     return "sha256:" + h.hexdigest()
 
 
+#: Bundle imports juggle ``sys.modules``; the API thread and the worker thread must not overlap.
+_IMPORT_LOCK = threading.RLock()
+
+
 def _import(path: Path, qualname: str, siblings: dict[str, ModuleType] | None = None) -> ModuleType:
     """Import a bundle file; ``siblings`` lets ``from schemas import X`` find bundle modules."""
+    with _IMPORT_LOCK:
+        return _import_locked(path, qualname, siblings)
+
+
+def _import_locked(
+    path: Path, qualname: str, siblings: dict[str, ModuleType] | None = None
+) -> ModuleType:
     spec = importlib.util.spec_from_file_location(qualname, path)
     if spec is None or spec.loader is None:
         raise PlanInvalid(f"cannot import {path}", code="skill_module_invalid")

@@ -26,6 +26,7 @@ from hawser.runtime.context import (
 )
 from hawser.runtime.steps import StepHandle
 from hawser.structured import envelope_schema, unwrap
+from hawser.structured.unwrap import Anchor
 
 
 class Extraction(BaseModel):
@@ -38,6 +39,8 @@ class Extraction(BaseModel):
     truncated: bool = False
     structured_fallback: bool = False
     model: str | None = None
+    #: The quoted source texts per field, kept so evidence can be re-anchored (``reocr``).
+    anchors: list[Anchor] = Field(default_factory=list)
 
     def evidence_map(self) -> dict[str, Evidence]:
         return {e.id: e for e in self.evidence}
@@ -185,6 +188,7 @@ def extract_structured(
         truncated=response.truncated,
         structured_fallback=response.structured_fallback,
         model=spec.id,
+        anchors=list(unwrapped.anchors),
     )
 
 

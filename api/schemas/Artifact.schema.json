@@ -17,6 +17,10 @@
         "sandbox_output",
         "step_output",
         "eval_report",
+        "normalised",
+        "ocr",
+        "layout",
+        "embedding",
         "other"
       ],
       "title": "ArtifactKind",
@@ -209,7 +213,21 @@
     },
     "ExifOrientTransform": {
       "additionalProperties": false,
+      "description": "The EXIF orientation applied to make a ``width`` x ``height`` image upright.",
       "properties": {
+        "height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
         "kind": {
           "const": "exif_orient",
           "default": "exif_orient",
@@ -221,6 +239,19 @@
           "minimum": 1,
           "title": "Orientation",
           "type": "integer"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
         }
       },
       "required": [

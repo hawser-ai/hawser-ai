@@ -52,6 +52,8 @@ class Word(BaseModel):
     y0: float
     x1: float
     y1: float
+    #: OCR confidence (None for the native text layer).
+    confidence: float | None = None
 
 
 class Line(BaseModel):

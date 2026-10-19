@@ -11,10 +11,10 @@ response is in `datasets/invoice-po/v1/cassettes/` so these runs replay for free
 | Field accuracy | **100.0%** (7,463 fields)¹ | **100.0%** (1,017 fields) |
 | Document pass rate | 100.0% | 100.0% |
 | Status accuracy (accepted vs needs_review) | 100.0% | 100.0% |
-| Review rate | 63.3% (= cases with discrepancies or scans) | 50.0% |
+| Review rate | 48.3% (= cases with discrepancies; scans no longer need review) | 50.0% |
 | Unknown precision / recall | 1.00 / 1.00 | 1.00 / 1.00 |
 | Evidence coverage — native PDFs | 97.2% | 97%+ |
-| Evidence coverage — scanned pages | 7.8% (calculation evidence only) | — |
+| Evidence coverage — scanned pages | **97.2%** with OCR (Phase 7; was 7.8% before) | — |
 | Model calls per pair | 2 | 2 |
 | Repair attempts per pair | 0 | 0 |
 | Cost per pair (mean / p95) | $0.0023 / $0.0028 | $0.0816 / $0.093 |
@@ -70,10 +70,12 @@ from signatures and checked before any plan runs.
 ## Reading the numbers
 
 - **Why review rate is "high":** it equals the share of cases that *should* be reviewed — every
-  injected discrepancy was detected (`rules.expressions.no_discrepancies`), and every scan was
-  held because the skill requires anchored evidence on totals and a page without a text layer
-  cannot provide it until OCR lands (Phase 7). No case with a clean match on native PDFs was
-  sent to review, and no discrepant case was accepted.
+  injected discrepancy was detected (`rules.expressions.no_discrepancies`). Since Phase 7 the 12
+  scanned pairs are OCR'd (RapidOCR, 300 dpi) and judged exactly like native pairs: on the
+  2026-10-19 re-recording they score 100% field accuracy, 100% status accuracy and 97.2%
+  evidence coverage, the same as the 48 native pairs, at $0.0026 per pair. Review rate fell from
+  63.3% to 48.3% (= the discrepancy rate). No clean pair was sent to review, and no discrepant
+  pair was accepted.
 - **Evidence coverage** counts found fields with a page-anchored region (or a calculation
   trace). On native PDFs the few unanchored fields are values the model quoted with a label
   that spans two lines.

@@ -17,7 +17,7 @@ WORKDIR /app
 COPY pyproject.toml uv.lock README.md LICENSE ./
 COPY python ./python
 COPY --from=web /web/dist ./python/hawser_server/src/hawser_server/static
-RUN uv sync --frozen --no-dev --all-packages
+RUN uv sync --frozen --no-dev --all-packages --all-extras
 
 FROM python:3.12-slim-bookworm AS runtime
 RUN groupadd --system hawser && useradd --system --gid hawser --home /app --shell /usr/sbin/nologin hawser
