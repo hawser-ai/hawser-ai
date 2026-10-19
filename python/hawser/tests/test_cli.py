@@ -116,3 +116,19 @@ def test_quickstart_replays_live_openrouter_recording(project: Path) -> None:
     assert len(data["result"]["line_items"]) == len(truth["line_items"])
     found = [p for p, m in data["field_meta"].items() if m["status"] == "found"]
     assert all(data["field_meta"][p]["evidence"] for p in found)
+
+
+def test_schema_module_in_the_current_directory(project: Path) -> None:
+    """`--schema module:Model` finds a model file sitting next to the documents."""
+    from hawser.cli.app import _load_schema  # pyright: ignore[reportPrivateUsage]
+
+    (project / "statement_schema.py").write_text(
+        "from pydantic import BaseModel\n\n\nclass Statement(BaseModel):\n    total: float\n",
+        encoding="utf-8",
+    )
+    model = _load_schema("statement_schema:Statement")
+    assert isinstance(model, type) and model.__name__ == "Statement"
+
+    res = runner.invoke(app, ["run", "-i", "x", "--schema", "no_such_module:Thing"])
+    assert res.exit_code != 0
+    assert "cannot import 'no_such_module'" in res.output

@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 import json
 import shutil
+import sys
 from importlib import resources
 from pathlib import Path
 from typing import Annotated, Any
@@ -124,7 +125,16 @@ def _progress(event: Event) -> None:
 def _load_schema(spec: str) -> dict[str, Any] | type[BaseModel]:
     if ":" in spec and not Path(spec).exists():
         module_name, _, attr = spec.partition(":")
-        obj = getattr(importlib.import_module(module_name), attr)
+        # Like `python -m`, look in the current directory first: the model usually sits next to
+        # the documents, and a console script does not put the working directory on sys.path.
+        cwd = str(Path.cwd())
+        if cwd not in sys.path:
+            sys.path.insert(0, cwd)
+        try:
+            module = importlib.import_module(module_name)
+        except ImportError as exc:
+            raise typer.BadParameter(f"cannot import {module_name!r} for --schema: {exc}") from exc
+        obj = getattr(module, attr, None)
         if isinstance(obj, type) and issubclass(obj, BaseModel):
             return obj
         raise typer.BadParameter(f"{spec} is not a Pydantic model")

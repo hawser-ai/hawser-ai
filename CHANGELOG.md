@@ -11,6 +11,8 @@ All notable changes are recorded here. The format follows
   at the end of the page's content, detached from its row) are now read row by row from glyph
   positions, with columns aligned. Before, a table row could reach the model without its
   product name. Pages in normal order are unchanged (`PageText.reading_order` says which).
+- `hawser run --schema module:Model` now finds a model file in the current directory, and an
+  unknown module is reported as an error message instead of a traceback.
 
 ## 0.1.1
 
