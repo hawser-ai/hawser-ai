@@ -1,6 +1,6 @@
 [project]
 name = "hawser-ai"
-version = "0.1.1"
+version = "0.1.2"
 description = "Hawser: an open-source runtime for verifiable multimodal AI workflows."
 readme = "README.md"
 license = "Apache-2.0"

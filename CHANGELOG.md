@@ -6,6 +6,8 @@ All notable changes are recorded here. The format follows
 
 ## Unreleased
 
+## 0.1.2
+
 ### Fixed
 - PDFs whose stored text order is scrambled (text added later by an edit or redaction tool sits
   at the end of the page's content, detached from its row) are now read row by row from glyph
@@ -17,6 +19,7 @@ All notable changes are recorded here. The format follows
   5 MB once base64-encoded, Anthropic's limit). A scanned page on an oversized sheet (a 22×27-inch
   photo page rendered at 150 dpi, 27 MB) failed with HTTP 400 before. Images already within the
   limits are sent unchanged, and stored page images keep their full resolution.
+- `hawser-server` 0.1.2 requires `hawser-ai` 0.1.2, where these fixes live.
 
 ## 0.1.1
 

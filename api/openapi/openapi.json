@@ -6014,7 +6014,7 @@
   "info": {
     "description": "Hawser control plane. Bodies and responses are the contract models published under `api/schemas/`; errors are `application/problem+json` with the error-taxonomy `code`.",
     "title": "Hawser API",
-    "version": "0.1.0+hawserd.0.1.1"
+    "version": "0.1.0+hawserd.0.1.2"
   },
   "openapi": "3.1.0",
   "paths": {
