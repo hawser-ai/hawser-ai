@@ -11,7 +11,8 @@ import io
 import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any
+from statistics import median
+from typing import Any, Literal
 
 import pypdfium2 as pdfium
 from pydantic import BaseModel, Field
@@ -20,6 +21,14 @@ from hawser_media.errors import MediaError
 
 #: Pages with fewer visible characters than this are treated as "needs OCR" (scanned).
 NEEDS_OCR_CHAR_THRESHOLD = 20
+#: A page whose stored text order jumps back up to rows it had already left is rebuilt in layout
+#: order when at least SCRAMBLED_MIN_GLYPHS glyphs jump back, and they either land on at least
+#: SCRAMBLED_MIN_ROWS different rows or one jump goes back at least SCRAMBLED_MIN_JUMP rows.
+#: Less is an ordinary layout choice: a page number drawn last, a two-column header block (the
+#: synthetic invoices jump back at most 3 rows, onto 1 row).
+SCRAMBLED_MIN_GLYPHS = 8
+SCRAMBLED_MIN_ROWS = 3
+SCRAMBLED_MIN_JUMP = 4
 
 
 class PdfInfo(BaseModel):
@@ -80,6 +89,9 @@ class PageText(BaseModel):
     text: str
     chars: list[CharBox]
     lines: list[Line] = Field(default_factory=list)
+    #: ``content``: the order the PDF stores its text in. ``layout``: rebuilt row by row from glyph
+    #: positions, because the stored order was scrambled (see :func:`layout_order`).
+    reading_order: Literal["content", "layout"] = "content"
 
     @property
     def visible_char_count(self) -> int:
@@ -206,10 +218,99 @@ def extract_text(data: bytes, *, pages: list[int] | None = None) -> list[PageTex
                 page.close()
             pt = PageText(page=page_no, width_pt=width, height_pt=height, text=text, chars=chars)
             pt.lines = _group_lines(pt)
-            out.append(pt)
+            out.append(layout_order(pt))
     finally:
         doc.close()
     return out
+
+
+def layout_order(pt: PageText) -> PageText:
+    """Rebuild a page's text row by row from word positions when its stored order is scrambled.
+
+    PDFs store text in drawing order, which usually is reading order. Some do not: text added
+    later (an edited or redacted field, a stamp) sits at the end of the stream, so a table row
+    reads ``10'S 2 1 240.71`` and its product name appears pages of text later, detached. A
+    model cannot reassemble that, and evidence for the name lands nowhere near its row.
+
+    Words (runs of glyphs in stored order, which are always intact) are grouped into rows by
+    position. If, read in stored order, words totalling at least :data:`SCRAMBLED_MIN_GLYPHS`
+    glyphs jump back up past rows already left behind (onto at least :data:`SCRAMBLED_MIN_ROWS`
+    different rows, or by at least :data:`SCRAMBLED_MIN_JUMP` rows), the page is rewritten top
+    to bottom with each row's words left to right, padded with spaces by horizontal position so
+    table columns stay aligned (like ``pdftotext -layout``). Otherwise it is returned unchanged.
+    Multi-column pages also trigger the rewrite; their columns then sit side by side on each
+    row, which models read well.
+
+    ``text[i]`` still corresponds to ``chars[i]``: glyph boxes move with their characters, and
+    the inserted spaces and newlines have no box.
+    """
+    words = [w for line in pt.lines for w in line.words]
+    if sum(w.end - w.start for w in words) < SCRAMBLED_MIN_GLYPHS:
+        return pt
+    rows = _rows(words)
+    row_of = {id(w): r for r, row in enumerate(rows) for w in row}
+    jumped, jumped_rows, longest, furthest = 0, set[int](), 0, -1
+    for w in words:
+        r = row_of[id(w)]
+        if r < furthest - 1:  # one row of slack for superscripts and baseline jitter
+            jumped += w.end - w.start
+            jumped_rows.add(r)
+            longest = max(longest, furthest - r)
+        furthest = max(furthest, r)
+    scrambled = jumped >= SCRAMBLED_MIN_GLYPHS and (
+        len(jumped_rows) >= SCRAMBLED_MIN_ROWS or longest >= SCRAMBLED_MIN_JUMP
+    )
+    if not scrambled:
+        return pt
+
+    char_width = median((w.x1 - w.x0) / max(w.end - w.start, 1) for w in words) or 1.0
+    left = min(w.x0 for w in words)
+    text: list[str] = []
+    chars: list[CharBox] = []
+    for r, row in enumerate(rows):
+        if r:
+            text.append("\n")
+            chars.append(CharBox(char="\n"))
+        col = 0
+        prev: Word | None = None
+        for w in sorted(row, key=lambda w: w.x0):
+            target = round((w.x0 - left) / char_width)
+            if prev is None:
+                pad = max(target, 0)  # keep the row's indentation
+            elif w.x0 - prev.x1 < 2 * char_width:
+                pad = 1  # words of one phrase: a single space, whatever the font's spacing
+            else:
+                pad = max(target - col, 1)  # a column gap: align to the word's position
+            prev = w
+            text.append(" " * pad + pt.text[w.start : w.end])
+            chars.extend(CharBox(char=" ") for _ in range(pad))
+            chars.extend(pt.chars[w.start : w.end])
+            col += pad + (w.end - w.start)
+    out = PageText(
+        page=pt.page,
+        width_pt=pt.width_pt,
+        height_pt=pt.height_pt,
+        text="".join(text),
+        chars=chars,
+        reading_order="layout",
+    )
+    out.lines = _group_lines(out)
+    return out
+
+
+def _rows(words: list[Word]) -> list[list[Word]]:
+    """Group words into rows, top to bottom: a word joins a row its vertical centre falls in."""
+    rows: list[list[Word]] = []
+    top = bottom = 0.0
+    for w in sorted(words, key=lambda w: (w.y0 + w.y1) / 2):
+        centre = (w.y0 + w.y1) / 2
+        if rows and top <= centre <= bottom:
+            rows[-1].append(w)
+            top, bottom = min(top, w.y0), max(bottom, w.y1)
+        else:
+            rows.append([w])
+            top, bottom = w.y0, w.y1
+    return rows
 
 
 def _group_lines(pt: PageText) -> list[Line]:
@@ -301,6 +402,7 @@ __all__ = [
     "RenderedPage",
     "Word",
     "extract_text",
+    "layout_order",
     "probe",
     "render_page",
 ]

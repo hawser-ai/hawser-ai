@@ -6,6 +6,12 @@ All notable changes are recorded here. The format follows
 
 ## Unreleased
 
+### Fixed
+- PDFs whose stored text order is scrambled (text added later by an edit or redaction tool sits
+  at the end of the page's content, detached from its row) are now read row by row from glyph
+  positions, with columns aligned. Before, a table row could reach the model without its
+  product name. Pages in normal order are unchanged (`PageText.reading_order` says which).
+
 ## 0.1.1
 
 ### Fixed
