@@ -7,7 +7,7 @@
     "invoice_date": "2026-05-21",
     "due_date": "2026-06-04",
     "vendor_name": "Northwind Components Ltd",
-    "customer_name": "Aurochs Software Pvt Ltd",
+    "customer_name": "Larkspur Software Ltd",
     "purchase_order_number": "PO-23434",
     "currency": "USD",
     "line_items": [
@@ -475,7 +475,7 @@
         "y1": 118.11
       },
       "coordinate_system": "pdf_points_tl",
-      "text": "Aurochs Software Pvt Ltd",
+      "text": "Larkspur Software Ltd",
       "anchor_confidence": 1.0
     },
     {

@@ -59,8 +59,8 @@
         {
           "pointer": "/invoice/customer_name",
           "template": "/invoice/customer_name",
-          "expected": "Aurochs Software Pvt Ltd",
-          "actual": "Aurochs Software Pvt Ltd",
+          "expected": "Larkspur Software Ltd",
+          "actual": "Larkspur Software Ltd",
           "outcome": "correct"
         },
         {
@@ -332,8 +332,8 @@
         {
           "pointer": "/purchase_order/buyer_name",
           "template": "/purchase_order/buyer_name",
-          "expected": "Aurochs Software Pvt Ltd",
-          "actual": "Aurochs Software Pvt Ltd",
+          "expected": "Larkspur Software Ltd",
+          "actual": "Larkspur Software Ltd",
           "outcome": "correct"
         },
         {
@@ -4991,8 +4991,8 @@
         {
           "pointer": "/invoice/customer_name",
           "template": "/invoice/customer_name",
-          "expected": "Aurochs Software Pvt Ltd",
-          "actual": "Aurochs Software Pvt Ltd",
+          "expected": "Larkspur Software Ltd",
+          "actual": "Larkspur Software Ltd",
           "outcome": "correct"
         },
         {
@@ -5229,8 +5229,8 @@
         {
           "pointer": "/purchase_order/buyer_name",
           "template": "/purchase_order/buyer_name",
-          "expected": "Aurochs Software Pvt Ltd",
-          "actual": "Aurochs Software Pvt Ltd",
+          "expected": "Larkspur Software Ltd",
+          "actual": "Larkspur Software Ltd",
           "outcome": "correct"
         },
         {

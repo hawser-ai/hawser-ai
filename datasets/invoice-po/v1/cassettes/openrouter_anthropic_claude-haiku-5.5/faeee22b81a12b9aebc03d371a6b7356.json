@@ -1,0 +1,628 @@
+{
+  "key": "faeee22b81a12b9aebc03d371a6b7356",
+  "kind": "model",
+  "name": "anthropic/claude-haiku-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-19T12:40:53.467313+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the purchase order."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"purchase_order.pdf\" page=\"1\" of=\"1\" rendered=\"true\"/>"
+          },
+          {
+            "kind": "image",
+            "label": "purchase_order.pdf#page=1",
+            "media_type": "image/png",
+            "sha256": "70e0ebcae172e6833c9a62494e79601dd17ac46b11e23313038e952038c2d433"
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"purchase_order.pdf\" page=\"1\" of=\"1\" source=\"ocr\">\nPURCHASE ORDER\nPO Number:PO-31947\nOrderDate:2026-02-06\nSupplier:\nAuroraFastenersGmbH\nBuyer:\nLarkspur Software Ltd\nCurrency:\nEUR\nItem\nDescription\nQty\nUnit\nTotal\nCB-5503\nCable gland PG13.5IP68\n2\n121.76\n243.52\nSC-6007\nSelf-tapping screw 4.2 x 16, box of 500\n3\n92.64\n277.92\nBR-7781\nBall bearing 6204-2RS\n2\n103.36\n206.72\nHX-1042\nHex bolt M8 x 40 zinc plated, box of 100\n24\n4.17\n100.08\nGK-9004\nGasket kit, nitrile, assorted\n3\n155.88\n467.64\nWS-2210\nFlatwasherM8stainless,packof200\n10\n174.75\n1,747.50\nTM-1180\nThermal paste 10 g tube\n3\n26.53\n79.59\nNet:\n3,122.97\nVAT (19%):\n593.36\nOrder Total:\n3,716.33\nPlease quote the PO number on invoices.Deliveries accepted Mon-Fri 08:00-16:00.\n\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-haiku-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "buyer_name": {
+          "additionalProperties": false,
+          "description": "The organisation placing the order",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The organisation placing the order",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "po_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "po_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "description": "The supplier the order is placed with",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The supplier the order is placed with",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "po_number",
+        "po_date",
+        "vendor_name",
+        "buyer_name",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **purchase order** issued by a buyer to a supplier and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nPurchase-order-specific guidance:\n- `po_number` is the order's identifier (\"PO Number\", \"Order No.\").\n- `vendor_name` is the supplier the order is placed with (\"Supplier\", \"Vendor\"); `buyer_name` is the organisation placing the order (often the letterhead or \"Buyer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Net\"/\"Subtotal\", \"VAT\"/\"Tax\", \"Order Total\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "fallback_from": [],
+    "parse_error": null,
+    "parsed": {
+      "buyer_name": {
+        "found": true,
+        "source_text": "Buyer: Larkspur Software Ltd",
+        "value": "Larkspur Software Ltd"
+      },
+      "currency": {
+        "found": true,
+        "source_text": "Currency: EUR",
+        "value": "EUR"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "Cable gland PG13.5 IP68",
+            "value": "Cable gland PG13.5 IP68"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€243.52",
+            "value": 243.52
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "2",
+            "value": 2
+          },
+          "sku": {
+            "found": true,
+            "source_text": "CB-5503",
+            "value": "CB-5503"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€121.76",
+            "value": 121.76
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Self-tapping screw 4.2 x 16, box of 500",
+            "value": "Self-tapping screw 4.2 x 16, box of 500"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€277.92",
+            "value": 277.92
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "3",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SC-6007",
+            "value": "SC-6007"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€92.64",
+            "value": 92.64
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Ball bearing 6204-2RS",
+            "value": "Ball bearing 6204-2RS"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€206.72",
+            "value": 206.72
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "2",
+            "value": 2
+          },
+          "sku": {
+            "found": true,
+            "source_text": "BR-7781",
+            "value": "BR-7781"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€103.36",
+            "value": 103.36
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Hex bolt M8 x 40 zinc plated, box of 100",
+            "value": "Hex bolt M8 x 40 zinc plated, box of 100"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€100.08",
+            "value": 100.08
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "24",
+            "value": 24
+          },
+          "sku": {
+            "found": true,
+            "source_text": "HX-1042",
+            "value": "HX-1042"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€4.17",
+            "value": 4.17
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Gasket kit, nitrile, assorted",
+            "value": "Gasket kit, nitrile, assorted"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€467.64",
+            "value": 467.64
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "3",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "GK-9004",
+            "value": "GK-9004"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€155.88",
+            "value": 155.88
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Flat washer M8 stainless, pack of 200",
+            "value": "Flat washer M8 stainless, pack of 200"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€1,747.50",
+            "value": 1747.5
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "10",
+            "value": 10
+          },
+          "sku": {
+            "found": true,
+            "source_text": "WS-2210",
+            "value": "WS-2210"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€174.75",
+            "value": 174.75
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Thermal paste 10 g tube",
+            "value": "Thermal paste 10 g tube"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€79.59",
+            "value": 79.59
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "3",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "TM-1180",
+            "value": "TM-1180"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€26.53",
+            "value": 26.53
+          }
+        }
+      ],
+      "po_date": {
+        "found": true,
+        "source_text": "Order Date: 2026-02-06",
+        "value": "2026-02-06"
+      },
+      "po_number": {
+        "found": true,
+        "source_text": "PO Number: PO-31947",
+        "value": "PO-31947"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "Net: €3,122.97",
+        "value": 3122.97
+      },
+      "tax": {
+        "found": true,
+        "source_text": "VAT (19%): €593.36",
+        "value": 593.36
+      },
+      "total": {
+        "found": true,
+        "source_text": "Order Total: €3,716.33",
+        "value": 3716.33
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "Supplier: Aurora Fasteners GmbH",
+        "value": "Aurora Fasteners GmbH"
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"po_number\":{\"value\":\"PO-31947\",\"source_text\":\"PO Number: PO-31947\",\"found\":true},\"po_date\":{\"value\":\"2026-02-06\",\"source_text\":\"Order Date: 2026-02-06\",\"found\":true},\"vendor_name\":{\"value\":\"Aurora Fasteners GmbH\",\"source_text\":\"Supplier: Aurora Fasteners GmbH\",\"found\":true},\"buyer_name\":{\"value\":\"Larkspur Software Ltd\",\"source_text\":\"Buyer: Larkspur Software Ltd\",\"found\":true},\"currency\":{\"value\":\"EUR\",\"source_text\":\"Currency: EUR\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"CB-5503\",\"source_text\":\"CB-5503\",\"found\":true},\"description\":{\"value\":\"Cable gland PG13.5 IP68\",\"source_text\":\"Cable gland PG13.5 IP68\",\"found\":true},\"quantity\":{\"value\":2,\"source_text\":\"2\",\"found\":true},\"unit_price\":{\"value\":121.76,\"source_text\":\"€121.76\",\"found\":true},\"line_total\":{\"value\":243.52,\"source_text\":\"€243.52\",\"found\":true}},{\"sku\":{\"value\":\"SC-6007\",\"source_text\":\"SC-6007\",\"found\":true},\"description\":{\"value\":\"Self-tapping screw 4.2 x 16, box of 500\",\"source_text\":\"Self-tapping screw 4.2 x 16, box of 500\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"3\",\"found\":true},\"unit_price\":{\"value\":92.64,\"source_text\":\"€92.64\",\"found\":true},\"line_total\":{\"value\":277.92,\"source_text\":\"€277.92\",\"found\":true}},{\"sku\":{\"value\":\"BR-7781\",\"source_text\":\"BR-7781\",\"found\":true},\"description\":{\"value\":\"Ball bearing 6204-2RS\",\"source_text\":\"Ball bearing 6204-2RS\",\"found\":true},\"quantity\":{\"value\":2,\"source_text\":\"2\",\"found\":true},\"unit_price\":{\"value\":103.36,\"source_text\":\"€103.36\",\"found\":true},\"line_total\":{\"value\":206.72,\"source_text\":\"€206.72\",\"found\":true}},{\"sku\":{\"value\":\"HX-1042\",\"source_text\":\"HX-1042\",\"found\":true},\"description\":{\"value\":\"Hex bolt M8 x 40 zinc plated, box of 100\",\"source_text\":\"Hex bolt M8 x 40 zinc plated, box of 100\",\"found\":true},\"quantity\":{\"value\":24,\"source_text\":\"24\",\"found\":true},\"unit_price\":{\"value\":4.17,\"source_text\":\"€4.17\",\"found\":true},\"line_total\":{\"value\":100.08,\"source_text\":\"€100.08\",\"found\":true}},{\"sku\":{\"value\":\"GK-9004\",\"source_text\":\"GK-9004\",\"found\":true},\"description\":{\"value\":\"Gasket kit, nitrile, assorted\",\"source_text\":\"Gasket kit, nitrile, assorted\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"3\",\"found\":true},\"unit_price\":{\"value\":155.88,\"source_text\":\"€155.88\",\"found\":true},\"line_total\":{\"value\":467.64,\"source_text\":\"€467.64\",\"found\":true}},{\"sku\":{\"value\":\"WS-2210\",\"source_text\":\"WS-2210\",\"found\":true},\"description\":{\"value\":\"Flat washer M8 stainless, pack of 200\",\"source_text\":\"Flat washer M8 stainless, pack of 200\",\"found\":true},\"quantity\":{\"value\":10,\"source_text\":\"10\",\"found\":true},\"unit_price\":{\"value\":174.75,\"source_text\":\"€174.75\",\"found\":true},\"line_total\":{\"value\":1747.5,\"source_text\":\"€1,747.50\",\"found\":true}},{\"sku\":{\"value\":\"TM-1180\",\"source_text\":\"TM-1180\",\"found\":true},\"description\":{\"value\":\"Thermal paste 10 g tube\",\"source_text\":\"Thermal paste 10 g tube\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"3\",\"found\":true},\"unit_price\":{\"value\":26.53,\"source_text\":\"€26.53\",\"found\":true},\"line_total\":{\"value\":79.59,\"source_text\":\"€79.59\",\"found\":true}}],\"subtotal\":{\"value\":3122.97,\"source_text\":\"Net: €3,122.97\",\"found\":true},\"tax\":{\"value\":593.36,\"source_text\":\"VAT (19%): €593.36\",\"found\":true},\"total\":{\"value\":3716.33,\"source_text\":\"Order Total: €3,716.33\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0013945,
+      "input_tokens": 6580,
+      "latency_ms": 8420,
+      "model": "anthropic/claude-haiku-5.5",
+      "output_tokens": 1473,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792413645-sUit70H1KQ2fI1XOPXpH",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

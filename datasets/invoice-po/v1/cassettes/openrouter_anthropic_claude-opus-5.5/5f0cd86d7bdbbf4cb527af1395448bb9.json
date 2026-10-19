@@ -1,0 +1,603 @@
+{
+  "key": "5f0cd86d7bdbbf4cb527af1395448bb9",
+  "kind": "model",
+  "name": "anthropic/claude-opus-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-19T12:45:29.113033+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the supplier invoice."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"invoice.pdf\" page=\"1\" of=\"1\" rendered=\"true\"/>"
+          },
+          {
+            "kind": "image",
+            "label": "invoice.pdf#page=1",
+            "media_type": "image/png",
+            "sha256": "e41362b627ec1ee6d40c10c3216fb3a201e5253a2e3d4ab3ed3472491a652008"
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"invoice.pdf\" page=\"1\" of=\"1\" source=\"ocr\">\nINVOICE\nKeystone Industrial Pty\n88 CollinsStreet,MelbourneVIC3000,Australia\nInvoiceNo:INV-2026-01004\nBill To:\nInvoice Date: 2026-10-04\nLarkspur Software Ltd\nDue Date:2026-11-18\nCurrency: USD\nPONumber:PO-93556\nSKU\nDescription\nQty\nUnitPrice\nAmount\nCB-5503\nCable gland PG13.5 IP68\n3\n$152.37\n$457.11\nSP-3310\nSpring pin 6 x 30\n10\n$13.76\n$137.60\nHX-1042\nHex bolt M8 x 40 zinc plated, box of 100\n4\n$130.13\n$520.52\nLB-4420\nLithiumgrease400gcartridge\n3\n$129.05\n$387.15\nSubtotal:\n$1,502.38\nTax (5%):\n$75.12\nTotal Due:\n$1,577.50\nPayment terms: net 30 days. Please quote the invoice number on all correspondence.\n\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-opus-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "customer_name": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "due_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "invoice_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "invoice_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "purchase_order_number": {
+          "additionalProperties": false,
+          "description": "The PO reference printed on the invoice",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The PO reference printed on the invoice",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "invoice_number",
+        "invoice_date",
+        "due_date",
+        "vendor_name",
+        "customer_name",
+        "purchase_order_number",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **supplier invoice** and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nInvoice-specific guidance:\n- `invoice_number` is the invoice's own identifier (labels like \"Invoice No\", \"Invoice #\").\n- `purchase_order_number` is the buyer's order reference printed on the invoice (labels like \"PO Number\", \"Your reference\", \"Order ref\"). It is not the invoice number.\n- `vendor_name` is the party issuing the invoice; `customer_name` is the party billed (\"Bill To\", \"Customer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Subtotal\", \"Tax\"/\"VAT\", \"Total Due\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "fallback_from": [],
+    "parse_error": null,
+    "parsed": {
+      "currency": {
+        "found": true,
+        "source_text": "Currency: USD",
+        "value": "USD"
+      },
+      "customer_name": {
+        "found": true,
+        "source_text": "Larkspur Software Ltd",
+        "value": "Larkspur Software Ltd"
+      },
+      "due_date": {
+        "found": true,
+        "source_text": "Due Date:2026-11-18",
+        "value": "2026-11-18"
+      },
+      "invoice_date": {
+        "found": true,
+        "source_text": "Invoice Date: 2026-10-04",
+        "value": "2026-10-04"
+      },
+      "invoice_number": {
+        "found": true,
+        "source_text": "InvoiceNo:INV-2026-01004",
+        "value": "INV-2026-01004"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "Cable gland PG13.5 IP68",
+            "value": "Cable gland PG13.5 IP68"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$457.11",
+            "value": 457.11
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "3",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "CB-5503",
+            "value": "CB-5503"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$152.37",
+            "value": 152.37
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Spring pin 6 x 30",
+            "value": "Spring pin 6 x 30"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$137.60",
+            "value": 137.6
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "10",
+            "value": 10
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SP-3310",
+            "value": "SP-3310"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$13.76",
+            "value": 13.76
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Hex bolt M8 x 40 zinc plated, box of 100",
+            "value": "Hex bolt M8 x 40 zinc plated, box of 100"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$520.52",
+            "value": 520.52
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "4",
+            "value": 4
+          },
+          "sku": {
+            "found": true,
+            "source_text": "HX-1042",
+            "value": "HX-1042"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$130.13",
+            "value": 130.13
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Lithiumgrease400gcartridge",
+            "value": "Lithium grease 400 g cartridge"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$387.15",
+            "value": 387.15
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "3",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "LB-4420",
+            "value": "LB-4420"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$129.05",
+            "value": 129.05
+          }
+        }
+      ],
+      "purchase_order_number": {
+        "found": true,
+        "source_text": "PONumber:PO-93556",
+        "value": "PO-93556"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "$1,502.38",
+        "value": 1502.38
+      },
+      "tax": {
+        "found": true,
+        "source_text": "$75.12",
+        "value": 75.12
+      },
+      "total": {
+        "found": true,
+        "source_text": "$1,577.50",
+        "value": 1577.5
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "Keystone Industrial Pty",
+        "value": "Keystone Industrial Pty"
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"invoice_number\":{\"value\":\"INV-2026-01004\",\"source_text\":\"InvoiceNo:INV-2026-01004\",\"found\":true},\"invoice_date\":{\"value\":\"2026-10-04\",\"source_text\":\"Invoice Date: 2026-10-04\",\"found\":true},\"due_date\":{\"value\":\"2026-11-18\",\"source_text\":\"Due Date:2026-11-18\",\"found\":true},\"vendor_name\":{\"value\":\"Keystone Industrial Pty\",\"source_text\":\"Keystone Industrial Pty\",\"found\":true},\"customer_name\":{\"value\":\"Larkspur Software Ltd\",\"source_text\":\"Larkspur Software Ltd\",\"found\":true},\"purchase_order_number\":{\"value\":\"PO-93556\",\"source_text\":\"PONumber:PO-93556\",\"found\":true},\"currency\":{\"value\":\"USD\",\"source_text\":\"Currency: USD\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"CB-5503\",\"source_text\":\"CB-5503\",\"found\":true},\"description\":{\"value\":\"Cable gland PG13.5 IP68\",\"source_text\":\"Cable gland PG13.5 IP68\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"3\",\"found\":true},\"unit_price\":{\"value\":152.37,\"source_text\":\"$152.37\",\"found\":true},\"line_total\":{\"value\":457.11,\"source_text\":\"$457.11\",\"found\":true}},{\"sku\":{\"value\":\"SP-3310\",\"source_text\":\"SP-3310\",\"found\":true},\"description\":{\"value\":\"Spring pin 6 x 30\",\"source_text\":\"Spring pin 6 x 30\",\"found\":true},\"quantity\":{\"value\":10,\"source_text\":\"10\",\"found\":true},\"unit_price\":{\"value\":13.76,\"source_text\":\"$13.76\",\"found\":true},\"line_total\":{\"value\":137.6,\"source_text\":\"$137.60\",\"found\":true}},{\"sku\":{\"value\":\"HX-1042\",\"source_text\":\"HX-1042\",\"found\":true},\"description\":{\"value\":\"Hex bolt M8 x 40 zinc plated, box of 100\",\"source_text\":\"Hex bolt M8 x 40 zinc plated, box of 100\",\"found\":true},\"quantity\":{\"value\":4,\"source_text\":\"4\",\"found\":true},\"unit_price\":{\"value\":130.13,\"source_text\":\"$130.13\",\"found\":true},\"line_total\":{\"value\":520.52,\"source_text\":\"$520.52\",\"found\":true}},{\"sku\":{\"value\":\"LB-4420\",\"source_text\":\"LB-4420\",\"found\":true},\"description\":{\"value\":\"Lithium grease 400 g cartridge\",\"source_text\":\"Lithiumgrease400gcartridge\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"3\",\"found\":true},\"unit_price\":{\"value\":129.05,\"source_text\":\"$129.05\",\"found\":true},\"line_total\":{\"value\":387.15,\"source_text\":\"$387.15\",\"found\":true}}],\"subtotal\":{\"value\":1502.38,\"source_text\":\"$1,502.38\",\"found\":true},\"tax\":{\"value\":75.12,\"source_text\":\"$75.12\",\"found\":true},\"total\":{\"value\":1577.5,\"source_text\":\"$1,577.50\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.048028,
+      "input_tokens": 6847,
+      "latency_ms": 17222,
+      "model": "anthropic/claude-opus-5.5",
+      "output_tokens": 1032,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792413912-RgMroCtVCB8Q1kaPkbCv",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

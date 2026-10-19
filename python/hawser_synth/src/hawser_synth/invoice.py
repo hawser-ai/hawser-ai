@@ -55,7 +55,7 @@ _VENDORS = [
     ("Keystone Industrial Pty", "88 Collins Street, Melbourne VIC 3000, Australia"),
 ]
 _CUSTOMERS = [
-    "Aurochs Software Pvt Ltd",
+    "Larkspur Software Ltd",
     "Meridian Robotics Inc.",
     "Bluewater Marine Services",
     "Hollis & Partners LLP",

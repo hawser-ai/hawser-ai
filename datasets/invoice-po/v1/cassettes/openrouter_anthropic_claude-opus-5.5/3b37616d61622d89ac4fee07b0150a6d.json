@@ -1,0 +1,537 @@
+{
+  "key": "3b37616d61622d89ac4fee07b0150a6d",
+  "kind": "model",
+  "name": "anthropic/claude-opus-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-19T12:46:14.250514+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the purchase order."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"purchase_order.pdf\" page=\"1\" of=\"1\">\nPURCHASE ORDER PO Number: PO-85711\r\nOrder Date: 2026-08-13\r\nSupplier: Pacific Rim Supply Co.\r\nBuyer: Larkspur Software Ltd\r\nCurrency: GBP\r\nItem Description Qty Unit Total\r\nHX-1042 Hex bolt M8 x 40 zinc plated, box of 100 2 £73.94 £147.88\r\nCB-5503 Cable gland PG13.5 IP68 1 £56.39 £56.39\r\nBR-7781 Ball bearing 6204-2RS 5 £10.33 £51.65\r\nSP-3310 Spring pin 6 x 30 5 £133.32 £666.60\r\nNet: £922.52\r\nVAT (10%): £92.25\r\nOrder Total: £1,014.77\r\nPlease quote the PO number on invoices. Deliveries accepted Mon-Fri 08:00-16:00.\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-opus-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "buyer_name": {
+          "additionalProperties": false,
+          "description": "The organisation placing the order",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The organisation placing the order",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "po_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "po_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "description": "The supplier the order is placed with",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The supplier the order is placed with",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "po_number",
+        "po_date",
+        "vendor_name",
+        "buyer_name",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **purchase order** issued by a buyer to a supplier and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nPurchase-order-specific guidance:\n- `po_number` is the order's identifier (\"PO Number\", \"Order No.\").\n- `vendor_name` is the supplier the order is placed with (\"Supplier\", \"Vendor\"); `buyer_name` is the organisation placing the order (often the letterhead or \"Buyer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Net\"/\"Subtotal\", \"VAT\"/\"Tax\", \"Order Total\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "fallback_from": [],
+    "parse_error": null,
+    "parsed": {
+      "buyer_name": {
+        "found": true,
+        "source_text": "Buyer: Larkspur Software Ltd",
+        "value": "Larkspur Software Ltd"
+      },
+      "currency": {
+        "found": true,
+        "source_text": "Currency: GBP",
+        "value": "GBP"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "Hex bolt M8 x 40 zinc plated, box of 100",
+            "value": "Hex bolt M8 x 40 zinc plated, box of 100"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "£147.88",
+            "value": 147.88
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "2",
+            "value": 2
+          },
+          "sku": {
+            "found": true,
+            "source_text": "HX-1042",
+            "value": "HX-1042"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "£73.94",
+            "value": 73.94
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Cable gland PG13.5 IP68",
+            "value": "Cable gland PG13.5 IP68"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "£56.39",
+            "value": 56.39
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "1",
+            "value": 1
+          },
+          "sku": {
+            "found": true,
+            "source_text": "CB-5503",
+            "value": "CB-5503"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "£56.39",
+            "value": 56.39
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Ball bearing 6204-2RS",
+            "value": "Ball bearing 6204-2RS"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "£51.65",
+            "value": 51.65
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "5",
+            "value": 5
+          },
+          "sku": {
+            "found": true,
+            "source_text": "BR-7781",
+            "value": "BR-7781"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "£10.33",
+            "value": 10.33
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Spring pin 6 x 30",
+            "value": "Spring pin 6 x 30"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "£666.60",
+            "value": 666.6
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "5",
+            "value": 5
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SP-3310",
+            "value": "SP-3310"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "£133.32",
+            "value": 133.32
+          }
+        }
+      ],
+      "po_date": {
+        "found": true,
+        "source_text": "Order Date: 2026-08-13",
+        "value": "2026-08-13"
+      },
+      "po_number": {
+        "found": true,
+        "source_text": "PO Number: PO-85711",
+        "value": "PO-85711"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "Net: £922.52",
+        "value": 922.52
+      },
+      "tax": {
+        "found": true,
+        "source_text": "VAT (10%): £92.25",
+        "value": 92.25
+      },
+      "total": {
+        "found": true,
+        "source_text": "Order Total: £1,014.77",
+        "value": 1014.77
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "Supplier: Pacific Rim Supply Co.",
+        "value": "Pacific Rim Supply Co."
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"po_number\":{\"value\":\"PO-85711\",\"source_text\":\"PO Number: PO-85711\",\"found\":true},\"po_date\":{\"value\":\"2026-08-13\",\"source_text\":\"Order Date: 2026-08-13\",\"found\":true},\"vendor_name\":{\"value\":\"Pacific Rim Supply Co.\",\"source_text\":\"Supplier: Pacific Rim Supply Co.\",\"found\":true},\"buyer_name\":{\"value\":\"Larkspur Software Ltd\",\"source_text\":\"Buyer: Larkspur Software Ltd\",\"found\":true},\"currency\":{\"value\":\"GBP\",\"source_text\":\"Currency: GBP\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"HX-1042\",\"source_text\":\"HX-1042\",\"found\":true},\"description\":{\"value\":\"Hex bolt M8 x 40 zinc plated, box of 100\",\"source_text\":\"Hex bolt M8 x 40 zinc plated, box of 100\",\"found\":true},\"quantity\":{\"value\":2,\"source_text\":\"2\",\"found\":true},\"unit_price\":{\"value\":73.94,\"source_text\":\"£73.94\",\"found\":true},\"line_total\":{\"value\":147.88,\"source_text\":\"£147.88\",\"found\":true}},{\"sku\":{\"value\":\"CB-5503\",\"source_text\":\"CB-5503\",\"found\":true},\"description\":{\"value\":\"Cable gland PG13.5 IP68\",\"source_text\":\"Cable gland PG13.5 IP68\",\"found\":true},\"quantity\":{\"value\":1,\"source_text\":\"1\",\"found\":true},\"unit_price\":{\"value\":56.39,\"source_text\":\"£56.39\",\"found\":true},\"line_total\":{\"value\":56.39,\"source_text\":\"£56.39\",\"found\":true}},{\"sku\":{\"value\":\"BR-7781\",\"source_text\":\"BR-7781\",\"found\":true},\"description\":{\"value\":\"Ball bearing 6204-2RS\",\"source_text\":\"Ball bearing 6204-2RS\",\"found\":true},\"quantity\":{\"value\":5,\"source_text\":\"5\",\"found\":true},\"unit_price\":{\"value\":10.33,\"source_text\":\"£10.33\",\"found\":true},\"line_total\":{\"value\":51.65,\"source_text\":\"£51.65\",\"found\":true}},{\"sku\":{\"value\":\"SP-3310\",\"source_text\":\"SP-3310\",\"found\":true},\"description\":{\"value\":\"Spring pin 6 x 30\",\"source_text\":\"Spring pin 6 x 30\",\"found\":true},\"quantity\":{\"value\":5,\"source_text\":\"5\",\"found\":true},\"unit_price\":{\"value\":133.32,\"source_text\":\"£133.32\",\"found\":true},\"line_total\":{\"value\":666.6,\"source_text\":\"£666.60\",\"found\":true}}],\"subtotal\":{\"value\":922.52,\"source_text\":\"Net: £922.52\",\"found\":true},\"tax\":{\"value\":92.25,\"source_text\":\"VAT (10%): £92.25\",\"found\":true},\"total\":{\"value\":1014.77,\"source_text\":\"Order Total: £1,014.77\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.03372,
+      "input_tokens": 3600,
+      "latency_ms": 11776,
+      "model": "anthropic/claude-opus-5.5",
+      "output_tokens": 966,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792413962-jcIAaoYZdjTpKtsmOyMX",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

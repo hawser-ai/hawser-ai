@@ -5,7 +5,7 @@
       "invoice_date": "2026-06-30",
       "due_date": "2026-07-14",
       "vendor_name": "Keystone Industrial Pty",
-      "customer_name": "Aurochs Software Pvt Ltd",
+      "customer_name": "Larkspur Software Ltd",
       "purchase_order_number": "PO-80082",
       "currency": "EUR",
       "line_items": [
@@ -60,7 +60,7 @@
       "po_number": "PO-80082",
       "po_date": "2026-06-17",
       "vendor_name": "Keystone Industrial Pty",
-      "buyer_name": "Aurochs Software Pvt Ltd",
+      "buyer_name": "Larkspur Software Ltd",
       "currency": "EUR",
       "line_items": [
         {

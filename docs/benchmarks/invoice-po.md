@@ -3,12 +3,14 @@
 Skill `invoice-po-reconciliation@1.0.0`, dataset `invoice-po/v1` (60 synthetic pairs: 2 invoice
 layouts × 2 PO layouts, GBP/EUR/USD, 60% with injected discrepancies — quantity, price,
 missing/extra items, rounding, currency — and 12 rasterised "scans" without a text layer).
-Expected outputs are exact by construction. Recorded on 2026-10-18 through OpenRouter; every
-response is in `datasets/invoice-po/v1/cassettes/` so these runs replay for free.
+Expected outputs are exact by construction. Recorded on 2026-10-18 through OpenRouter; the
+pairs that name the customer "Larkspur Software Ltd" were re-recorded on 2026-10-19 after a
+sample name changed. Every response is in `datasets/invoice-po/v1/cassettes/`, so these runs
+replay for free. Costs and latencies are from the live recordings.
 
 | | Claude Haiku 5.5 (60 pairs) | Claude Opus 5.5 (8-pair smoke) |
 |---|---|---|
-| Field accuracy | **100.0%** (7,463 fields)¹ | **100.0%** (1,017 fields) |
+| Field accuracy | **100.0%** (7,295 fields)¹ | **100.0%** (1,017 fields) |
 | Document pass rate | 100.0% | 100.0% |
 | Status accuracy (accepted vs needs_review) | 100.0% | 100.0% |
 | Review rate | 48.3% (= cases with discrepancies; scans no longer need review) | 50.0% |
@@ -25,7 +27,7 @@ response is in `datasets/invoice-po/v1/cassettes/` so these runs replay for free
 on `pair-01045`; still routed to review), i.e. 99.95% field accuracy. The model is not
 deterministic; treat 99.9–100% as the band.
 
-## Four providers, one skill (native smoke subset, 7 pairs, 1,017 fields)
+## Four providers, one skill (native smoke subset, 7 pairs, 904 fields)
 
 Same bundle, same prompts, same policy; only the model id changes. All routed through
 OpenRouter via the OpenAI-compatible adapter; every entry passed `hawser models check`.
@@ -34,7 +36,7 @@ OpenRouter via the OpenAI-compatible adapter; every entry passed `hawser models 
 |---|---|---|---|---|---|---|
 | Claude Haiku 5.5 | 100.0% | 7/7 | 7/7 | 97.3% | $0.0023 | 14.1 s |
 | Claude Opus 5.5 | 100.0% | 7/7 | 7/7 | 97.3% | $0.0799 | 27.2 s |
-| Gemini 2.5 Flash | 100.0% | 7/7 | 7/7 | 95.3% | $0.0109 | 16.9 s |
+| Gemini 2.5 Flash | 100.0% | 7/7 | 7/7 | 97.3% | $0.0109 | 16.9 s |
 | GPT-4.1 mini | 99.0% | 6/7 | 6/7 | 97.3% | $0.0040 | 13.7 s |
 
 GPT-4.1 mini's miss is a column shift on one purchase-order row (description absorbed the
