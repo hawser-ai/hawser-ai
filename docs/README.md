@@ -8,6 +8,7 @@ use your own documents.
 | Page | What it covers |
 |---|---|
 | [Skills](concepts/skills.md) | Versioned bundles: inputs, schema, workflow, validators, prompts, lockfile |
+| [Policy](concepts/policy.md) | Spending caps, allowed models, repair, review and check severities |
 | [Validation](concepts/validation.md) | Core rules, the expression language, policy escalation, acceptance |
 | [Review](concepts/review.md) | Review workspace, revisions, optimistic concurrency |
 | [Evaluations](concepts/evals.md) | Datasets, scoring, reports, comparison, CI gates |

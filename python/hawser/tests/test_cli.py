@@ -25,6 +25,7 @@ def test_init_and_quickstart_offline(project: Path) -> None:
     assert (project / "hawser.toml").exists()
     assert (project / "quickstart" / "invoice.pdf").exists()
     assert list((project / "quickstart" / "cassette").glob("*.json"))
+    assert not (project / "quickstart" / "__init__.py").exists()
 
     res = runner.invoke(app, ["quickstart", "--json"])
     assert res.exit_code == 0, res.output

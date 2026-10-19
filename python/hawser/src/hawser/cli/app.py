@@ -284,6 +284,8 @@ def init(
     src = resources.files("hawser._quickstart")
     qs.mkdir(exist_ok=True)
     for entry in src.iterdir():
+        if entry.name in ("__init__.py", "__pycache__"):  # package plumbing, not example files
+            continue
         target = qs / entry.name
         if entry.is_dir():
             if target.exists() and force:
