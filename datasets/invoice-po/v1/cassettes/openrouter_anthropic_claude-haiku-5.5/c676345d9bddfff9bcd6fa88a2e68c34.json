@@ -1,0 +1,565 @@
+{
+  "key": "c676345d9bddfff9bcd6fa88a2e68c34",
+  "kind": "model",
+  "name": "anthropic/claude-haiku-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-18T14:38:51.562625+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the supplier invoice."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"invoice.pdf\" page=\"1\" of=\"1\">\nINVOICE Aurora Fasteners GmbH\r\nIndustriestraße 9, 70565 Stuttgart, Germany\r\nInvoice No: INV-2026-01052\r\nInvoice Date: 2026-03-06\r\nDue Date: 2026-04-05\r\nPO Number: PO-44235\r\nBill To:\r\nAurochs Software Pvt Ltd\r\nCurrency: EUR\r\nSKU Description Qty Unit Price Amount\r\nTM-1180 Thermal paste 10 g tube 5 €111.27 €556.35\r\nNT-0808 Nyloc nut M8, pack of 100 5 €167.21 €836.05\r\nSC-6007 Self-tapping screw 4.2 x 16, box of 500 50 €52.56 €2,628.00\r\nSubtotal: €4,020.40\r\nTax (19%): €763.88\r\nTotal Due: €4,784.28\r\nPayment terms: net 30 days. Please quote the invoice number on all correspondence.\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-haiku-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "customer_name": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "due_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "invoice_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "invoice_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "purchase_order_number": {
+          "additionalProperties": false,
+          "description": "The PO reference printed on the invoice",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The PO reference printed on the invoice",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "invoice_number",
+        "invoice_date",
+        "due_date",
+        "vendor_name",
+        "customer_name",
+        "purchase_order_number",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **supplier invoice** and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nInvoice-specific guidance:\n- `invoice_number` is the invoice's own identifier (labels like \"Invoice No\", \"Invoice #\").\n- `purchase_order_number` is the buyer's order reference printed on the invoice (labels like \"PO Number\", \"Your reference\", \"Order ref\"). It is not the invoice number.\n- `vendor_name` is the party issuing the invoice; `customer_name` is the party billed (\"Bill To\", \"Customer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Subtotal\", \"Tax\"/\"VAT\", \"Total Due\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "parse_error": null,
+    "parsed": {
+      "currency": {
+        "found": true,
+        "source_text": "Currency: EUR",
+        "value": "EUR"
+      },
+      "customer_name": {
+        "found": true,
+        "source_text": "Aurochs Software Pvt Ltd",
+        "value": "Aurochs Software Pvt Ltd"
+      },
+      "due_date": {
+        "found": true,
+        "source_text": "Due Date: 2026-04-05",
+        "value": "2026-04-05"
+      },
+      "invoice_date": {
+        "found": true,
+        "source_text": "Invoice Date: 2026-03-06",
+        "value": "2026-03-06"
+      },
+      "invoice_number": {
+        "found": true,
+        "source_text": "Invoice No: INV-2026-01052",
+        "value": "INV-2026-01052"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "Thermal paste 10 g tube",
+            "value": "Thermal paste 10 g tube"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€556.35",
+            "value": 556.35
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "TM-1180 Thermal paste 10 g tube 5",
+            "value": 5
+          },
+          "sku": {
+            "found": true,
+            "source_text": "TM-1180",
+            "value": "TM-1180"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€111.27",
+            "value": 111.27
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Nyloc nut M8, pack of 100",
+            "value": "Nyloc nut M8, pack of 100"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€836.05",
+            "value": 836.05
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "NT-0808 Nyloc nut M8, pack of 100 5",
+            "value": 5
+          },
+          "sku": {
+            "found": true,
+            "source_text": "NT-0808",
+            "value": "NT-0808"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€167.21",
+            "value": 167.21
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "Self-tapping screw 4.2 x 16, box of 500",
+            "value": "Self-tapping screw 4.2 x 16, box of 500"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€2,628.00",
+            "value": 2628.0
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "SC-6007 Self-tapping screw 4.2 x 16, box of 500 50",
+            "value": 50
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SC-6007",
+            "value": "SC-6007"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€52.56",
+            "value": 52.56
+          }
+        }
+      ],
+      "purchase_order_number": {
+        "found": true,
+        "source_text": "PO Number: PO-44235",
+        "value": "PO-44235"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "Subtotal: €4,020.40",
+        "value": 4020.4
+      },
+      "tax": {
+        "found": true,
+        "source_text": "Tax (19%): €763.88",
+        "value": 763.88
+      },
+      "total": {
+        "found": true,
+        "source_text": "Total Due: €4,784.28",
+        "value": 4784.28
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "INVOICE Aurora Fasteners GmbH",
+        "value": "Aurora Fasteners GmbH"
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"invoice_number\":{\"value\":\"INV-2026-01052\",\"source_text\":\"Invoice No: INV-2026-01052\",\"found\":true},\"invoice_date\":{\"value\":\"2026-03-06\",\"source_text\":\"Invoice Date: 2026-03-06\",\"found\":true},\"due_date\":{\"value\":\"2026-04-05\",\"source_text\":\"Due Date: 2026-04-05\",\"found\":true},\"vendor_name\":{\"value\":\"Aurora Fasteners GmbH\",\"source_text\":\"INVOICE Aurora Fasteners GmbH\",\"found\":true},\"customer_name\":{\"value\":\"Aurochs Software Pvt Ltd\",\"source_text\":\"Aurochs Software Pvt Ltd\",\"found\":true},\"purchase_order_number\":{\"value\":\"PO-44235\",\"source_text\":\"PO Number: PO-44235\",\"found\":true},\"currency\":{\"value\":\"EUR\",\"source_text\":\"Currency: EUR\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"TM-1180\",\"source_text\":\"TM-1180\",\"found\":true},\"description\":{\"value\":\"Thermal paste 10 g tube\",\"source_text\":\"Thermal paste 10 g tube\",\"found\":true},\"quantity\":{\"value\":5,\"source_text\":\"TM-1180 Thermal paste 10 g tube 5\",\"found\":true},\"unit_price\":{\"value\":111.27,\"source_text\":\"€111.27\",\"found\":true},\"line_total\":{\"value\":556.35,\"source_text\":\"€556.35\",\"found\":true}},{\"sku\":{\"value\":\"NT-0808\",\"source_text\":\"NT-0808\",\"found\":true},\"description\":{\"value\":\"Nyloc nut M8, pack of 100\",\"source_text\":\"Nyloc nut M8, pack of 100\",\"found\":true},\"quantity\":{\"value\":5,\"source_text\":\"NT-0808 Nyloc nut M8, pack of 100 5\",\"found\":true},\"unit_price\":{\"value\":167.21,\"source_text\":\"€167.21\",\"found\":true},\"line_total\":{\"value\":836.05,\"source_text\":\"€836.05\",\"found\":true}},{\"sku\":{\"value\":\"SC-6007\",\"source_text\":\"SC-6007\",\"found\":true},\"description\":{\"value\":\"Self-tapping screw 4.2 x 16, box of 500\",\"source_text\":\"Self-tapping screw 4.2 x 16, box of 500\",\"found\":true},\"quantity\":{\"value\":50,\"source_text\":\"SC-6007 Self-tapping screw 4.2 x 16, box of 500 50\",\"found\":true},\"unit_price\":{\"value\":52.56,\"source_text\":\"€52.56\",\"found\":true},\"line_total\":{\"value\":2628.00,\"source_text\":\"€2,628.00\",\"found\":true}}],\"subtotal\":{\"value\":4020.40,\"source_text\":\"Subtotal: €4,020.40\",\"found\":true},\"tax\":{\"value\":763.88,\"source_text\":\"Tax (19%): €763.88\",\"found\":true},\"total\":{\"value\":4784.28,\"source_text\":\"Total Due: €4,784.28\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0010375,
+      "input_tokens": 4060,
+      "latency_ms": 5487,
+      "model": "anthropic/claude-haiku-5.5",
+      "output_tokens": 1263,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792334326-oYdhGHpJhxgei4K5lJMo",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

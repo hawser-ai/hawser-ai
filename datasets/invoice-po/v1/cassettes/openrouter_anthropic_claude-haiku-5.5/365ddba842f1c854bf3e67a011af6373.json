@@ -1,0 +1,565 @@
+{
+  "key": "365ddba842f1c854bf3e67a011af6373",
+  "kind": "model",
+  "name": "anthropic/claude-haiku-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-18T14:36:27.872054+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the supplier invoice."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"invoice.pdf\" page=\"1\" of=\"1\">\nPacific Rim Supply Co.\r\n1200 Mission St, San Francisco, CA 94103, USA\r\nTAX INVOICE\r\nInvoice # INV-2026-01040\r\nDate: 2026-05-01\r\nPayment due: 2026-06-15\r\nCustomer:\r\nMeridian Robotics Inc.\r\nYour reference: PO-45720\r\nAll amounts in USD\r\nSKU Description Qty Unit Price Amount\r\nBR-7781 Ball bearing 6204-2RS 3 $109.58 $328.74\r\nSP-3310 Spring pin 6 x 30 12 $134.66 $1,615.92\r\nSC-6007 Self-tapping screw 4.2 x 16, box of 500 4 $67.85 $271.40\r\nSubtotal: $2,216.06\r\nTax (20%): $443.21\r\nTotal Due: $2,659.27\r\nPayment terms: net 30 days. Please quote the invoice number on all correspondence.\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-haiku-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "customer_name": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "due_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "invoice_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "invoice_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "purchase_order_number": {
+          "additionalProperties": false,
+          "description": "The PO reference printed on the invoice",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The PO reference printed on the invoice",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "invoice_number",
+        "invoice_date",
+        "due_date",
+        "vendor_name",
+        "customer_name",
+        "purchase_order_number",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **supplier invoice** and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nInvoice-specific guidance:\n- `invoice_number` is the invoice's own identifier (labels like \"Invoice No\", \"Invoice #\").\n- `purchase_order_number` is the buyer's order reference printed on the invoice (labels like \"PO Number\", \"Your reference\", \"Order ref\"). It is not the invoice number.\n- `vendor_name` is the party issuing the invoice; `customer_name` is the party billed (\"Bill To\", \"Customer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Subtotal\", \"Tax\"/\"VAT\", \"Total Due\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "parse_error": null,
+    "parsed": {
+      "currency": {
+        "found": true,
+        "source_text": "All amounts in USD",
+        "value": "USD"
+      },
+      "customer_name": {
+        "found": true,
+        "source_text": "Meridian Robotics Inc.",
+        "value": "Meridian Robotics Inc."
+      },
+      "due_date": {
+        "found": true,
+        "source_text": "Payment due: 2026-06-15",
+        "value": "2026-06-15"
+      },
+      "invoice_date": {
+        "found": true,
+        "source_text": "Date: 2026-05-01",
+        "value": "2026-05-01"
+      },
+      "invoice_number": {
+        "found": true,
+        "source_text": "Invoice # INV-2026-01040",
+        "value": "INV-2026-01040"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "BR-7781 Ball bearing 6204-2RS 3 $109.58 $328.74",
+            "value": "Ball bearing 6204-2RS"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$328.74",
+            "value": 328.74
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "3",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "BR-7781",
+            "value": "BR-7781"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$109.58",
+            "value": 109.58
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "SP-3310 Spring pin 6 x 30 12 $134.66 $1,615.92",
+            "value": "Spring pin 6 x 30"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$1,615.92",
+            "value": 1615.92
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "12",
+            "value": 12
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SP-3310",
+            "value": "SP-3310"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$134.66",
+            "value": 134.66
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "SC-6007 Self-tapping screw 4.2 x 16, box of 500 4 $67.85 $271.40",
+            "value": "Self-tapping screw 4.2 x 16, box of 500"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$271.40",
+            "value": 271.4
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "4",
+            "value": 4
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SC-6007",
+            "value": "SC-6007"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$67.85",
+            "value": 67.85
+          }
+        }
+      ],
+      "purchase_order_number": {
+        "found": true,
+        "source_text": "Your reference: PO-45720",
+        "value": "PO-45720"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "Subtotal: $2,216.06",
+        "value": 2216.06
+      },
+      "tax": {
+        "found": true,
+        "source_text": "Tax (20%): $443.21",
+        "value": 443.21
+      },
+      "total": {
+        "found": true,
+        "source_text": "Total Due: $2,659.27",
+        "value": 2659.27
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "Pacific Rim Supply Co.",
+        "value": "Pacific Rim Supply Co."
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"invoice_number\":{\"value\":\"INV-2026-01040\",\"source_text\":\"Invoice # INV-2026-01040\",\"found\":true},\"invoice_date\":{\"value\":\"2026-05-01\",\"source_text\":\"Date: 2026-05-01\",\"found\":true},\"due_date\":{\"value\":\"2026-06-15\",\"source_text\":\"Payment due: 2026-06-15\",\"found\":true},\"vendor_name\":{\"value\":\"Pacific Rim Supply Co.\",\"source_text\":\"Pacific Rim Supply Co.\",\"found\":true},\"customer_name\":{\"value\":\"Meridian Robotics Inc.\",\"source_text\":\"Meridian Robotics Inc.\",\"found\":true},\"purchase_order_number\":{\"value\":\"PO-45720\",\"source_text\":\"Your reference: PO-45720\",\"found\":true},\"currency\":{\"value\":\"USD\",\"source_text\":\"All amounts in USD\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"BR-7781\",\"source_text\":\"BR-7781\",\"found\":true},\"description\":{\"value\":\"Ball bearing 6204-2RS\",\"source_text\":\"BR-7781 Ball bearing 6204-2RS 3 $109.58 $328.74\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"3\",\"found\":true},\"unit_price\":{\"value\":109.58,\"source_text\":\"$109.58\",\"found\":true},\"line_total\":{\"value\":328.74,\"source_text\":\"$328.74\",\"found\":true}},{\"sku\":{\"value\":\"SP-3310\",\"source_text\":\"SP-3310\",\"found\":true},\"description\":{\"value\":\"Spring pin 6 x 30\",\"source_text\":\"SP-3310 Spring pin 6 x 30 12 $134.66 $1,615.92\",\"found\":true},\"quantity\":{\"value\":12,\"source_text\":\"12\",\"found\":true},\"unit_price\":{\"value\":134.66,\"source_text\":\"$134.66\",\"found\":true},\"line_total\":{\"value\":1615.92,\"source_text\":\"$1,615.92\",\"found\":true}},{\"sku\":{\"value\":\"SC-6007\",\"source_text\":\"SC-6007\",\"found\":true},\"description\":{\"value\":\"Self-tapping screw 4.2 x 16, box of 500\",\"source_text\":\"SC-6007 Self-tapping screw 4.2 x 16, box of 500 4 $67.85 $271.40\",\"found\":true},\"quantity\":{\"value\":4,\"source_text\":\"4\",\"found\":true},\"unit_price\":{\"value\":67.85,\"source_text\":\"$67.85\",\"found\":true},\"line_total\":{\"value\":271.4,\"source_text\":\"$271.40\",\"found\":true}}],\"subtotal\":{\"value\":2216.06,\"source_text\":\"Subtotal: $2,216.06\",\"found\":true},\"tax\":{\"value\":443.21,\"source_text\":\"Tax (20%): $443.21\",\"found\":true},\"total\":{\"value\":2659.27,\"source_text\":\"Total Due: $2,659.27\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0008776,
+      "input_tokens": 4051,
+      "latency_ms": 4472,
+      "model": "anthropic/claude-haiku-5.5",
+      "output_tokens": 945,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792334183-w0vVRrUKtQCslR1hn8SN",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

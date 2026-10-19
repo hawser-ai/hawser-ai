@@ -31,7 +31,9 @@ dev = [
   "pre-commit>=4.0",
   "types-pyyaml",
   "types-jsonschema",
-  "pgserver>=0.1.4",
+  # Embedded Postgres for the server tests; wheels exist only for CPython 3.12 on x86-64 Linux,
+  # macOS and Windows. Elsewhere the Postgres tests skip (or use HAWSER_TEST_DATABASE_URL).
+  "pgserver>=0.1.4; python_version < '3.13' and (sys_platform != 'linux' or platform_machine == 'x86_64')",
   "moto[s3]>=5.0",
   "boto3-stubs[s3]",
   "rapidocr-onnxruntime>=1.4",

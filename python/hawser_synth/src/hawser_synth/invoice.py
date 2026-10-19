@@ -174,7 +174,7 @@ def _render(  # noqa: PLR0915
 ) -> bytes:
     buf = io.BytesIO()
     pagesize = LETTER if layout == 0 else A4
-    c = canvas.Canvas(buf, pagesize=pagesize)
+    c = canvas.Canvas(buf, pagesize=pagesize, invariant=True)
     width, height = pagesize
     margin = 54
     y = height - margin
@@ -270,7 +270,7 @@ def rasterise(pdf: bytes, *, dpi: float, rotate: float) -> bytes:
         doc.close()
     image = image.rotate(rotate, expand=False, fillcolor="white")
     buf = io.BytesIO()
-    c = canvas.Canvas(buf, pagesize=(width_pt, height_pt))
+    c = canvas.Canvas(buf, pagesize=(width_pt, height_pt), invariant=True)
     c.drawImage(ImageReader(image), 0, 0, width=width_pt, height=height_pt)
     c.showPage()
     c.save()

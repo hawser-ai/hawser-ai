@@ -1,0 +1,617 @@
+{
+  "key": "5567d08e3021958bb97fe7b70be67527",
+  "kind": "model",
+  "name": "anthropic/claude-haiku-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-18T14:32:28.172603+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the purchase order."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"purchase_order.pdf\" page=\"1\" of=\"1\">\nPURCHASE ORDER PO Number: PO-33503\r\nOrder Date: 2026-07-15\r\nSupplier: Northwind Components Ltd\r\nBuyer: Aurochs Software Pvt Ltd\r\nCurrency: EUR\r\nItem Description Qty Unit Total\r\nBR-7781 Ball bearing 6204-2RS 12 €10.22 €122.64\r\nSP-3310 Spring pin 6 x 30 3 €9.58 €28.74\r\nGK-9004 Gasket kit, nitrile, assorted 24 €34.37 €824.88\r\nSC-6007 Self-tapping screw 4.2 x 16, box of 500 2 €18.07 €36.14\r\nTM-1180 Thermal paste 10 g tube 12 €140.95 €1,691.40\r\nNT-0808 Nyloc nut M8, pack of 100 50 €17.74 €887.00\r\nLB-4420 Lithium grease 400 g cartridge 24 €1.50 €36.00\r\nNet: €3,626.80\r\nVAT (19%): €689.09\r\nOrder Total: €4,315.89\r\nPlease quote the PO number on invoices. Deliveries accepted Mon-Fri 08:00-16:00.\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-haiku-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "buyer_name": {
+          "additionalProperties": false,
+          "description": "The organisation placing the order",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The organisation placing the order",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "po_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "po_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "description": "The supplier the order is placed with",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The supplier the order is placed with",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "po_number",
+        "po_date",
+        "vendor_name",
+        "buyer_name",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **purchase order** issued by a buyer to a supplier and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nPurchase-order-specific guidance:\n- `po_number` is the order's identifier (\"PO Number\", \"Order No.\").\n- `vendor_name` is the supplier the order is placed with (\"Supplier\", \"Vendor\"); `buyer_name` is the organisation placing the order (often the letterhead or \"Buyer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Net\"/\"Subtotal\", \"VAT\"/\"Tax\", \"Order Total\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "parse_error": null,
+    "parsed": {
+      "buyer_name": {
+        "found": true,
+        "source_text": "Buyer: Aurochs Software Pvt Ltd",
+        "value": "Aurochs Software Pvt Ltd"
+      },
+      "currency": {
+        "found": true,
+        "source_text": "Currency: EUR",
+        "value": "EUR"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "BR-7781 Ball bearing 6204-2RS 12 €10.22 €122.64",
+            "value": "Ball bearing 6204-2RS"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€122.64",
+            "value": 122.64
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "BR-7781 Ball bearing 6204-2RS 12 €10.22 €122.64",
+            "value": 12
+          },
+          "sku": {
+            "found": true,
+            "source_text": "BR-7781",
+            "value": "BR-7781"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€10.22",
+            "value": 10.22
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "SP-3310 Spring pin 6 x 30 3 €9.58 €28.74",
+            "value": "Spring pin 6 x 30"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€28.74",
+            "value": 28.74
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "SP-3310 Spring pin 6 x 30 3 €9.58 €28.74",
+            "value": 3
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SP-3310",
+            "value": "SP-3310"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€9.58",
+            "value": 9.58
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "GK-9004 Gasket kit, nitrile, assorted 24 €34.37 €824.88",
+            "value": "Gasket kit, nitrile, assorted"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€824.88",
+            "value": 824.88
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "GK-9004 Gasket kit, nitrile, assorted 24 €34.37 €824.88",
+            "value": 24
+          },
+          "sku": {
+            "found": true,
+            "source_text": "GK-9004",
+            "value": "GK-9004"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€34.37",
+            "value": 34.37
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "SC-6007 Self-tapping screw 4.2 x 16, box of 500 2 €18.07 €36.14",
+            "value": "Self-tapping screw 4.2 x 16, box of 500"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€36.14",
+            "value": 36.14
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "SC-6007 Self-tapping screw 4.2 x 16, box of 500 2 €18.07 €36.14",
+            "value": 2
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SC-6007",
+            "value": "SC-6007"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€18.07",
+            "value": 18.07
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "TM-1180 Thermal paste 10 g tube 12 €140.95 €1,691.40",
+            "value": "Thermal paste 10 g tube"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€1,691.40",
+            "value": 1691.4
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "TM-1180 Thermal paste 10 g tube 12 €140.95 €1,691.40",
+            "value": 12
+          },
+          "sku": {
+            "found": true,
+            "source_text": "TM-1180",
+            "value": "TM-1180"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€140.95",
+            "value": 140.95
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "NT-0808 Nyloc nut M8, pack of 100 50 €17.74 €887.00",
+            "value": "Nyloc nut M8, pack of 100"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€887.00",
+            "value": 887
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "NT-0808 Nyloc nut M8, pack of 100 50 €17.74 €887.00",
+            "value": 50
+          },
+          "sku": {
+            "found": true,
+            "source_text": "NT-0808",
+            "value": "NT-0808"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€17.74",
+            "value": 17.74
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "LB-4420 Lithium grease 400 g cartridge 24 €1.50 €36.00",
+            "value": "Lithium grease 400 g cartridge"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "€36.00",
+            "value": 36
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "LB-4420 Lithium grease 400 g cartridge 24 €1.50 €36.00",
+            "value": 24
+          },
+          "sku": {
+            "found": true,
+            "source_text": "LB-4420",
+            "value": "LB-4420"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "€1.50",
+            "value": 1.5
+          }
+        }
+      ],
+      "po_date": {
+        "found": true,
+        "source_text": "Order Date: 2026-07-15",
+        "value": "2026-07-15"
+      },
+      "po_number": {
+        "found": true,
+        "source_text": "PO Number: PO-33503",
+        "value": "PO-33503"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "Net: €3,626.80",
+        "value": 3626.8
+      },
+      "tax": {
+        "found": true,
+        "source_text": "VAT (19%): €689.09",
+        "value": 689.09
+      },
+      "total": {
+        "found": true,
+        "source_text": "Order Total: €4,315.89",
+        "value": 4315.89
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "Supplier: Northwind Components Ltd",
+        "value": "Northwind Components Ltd"
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"po_number\":{\"value\":\"PO-33503\",\"source_text\":\"PO Number: PO-33503\",\"found\":true},\"po_date\":{\"value\":\"2026-07-15\",\"source_text\":\"Order Date: 2026-07-15\",\"found\":true},\"vendor_name\":{\"value\":\"Northwind Components Ltd\",\"source_text\":\"Supplier: Northwind Components Ltd\",\"found\":true},\"buyer_name\":{\"value\":\"Aurochs Software Pvt Ltd\",\"source_text\":\"Buyer: Aurochs Software Pvt Ltd\",\"found\":true},\"currency\":{\"value\":\"EUR\",\"source_text\":\"Currency: EUR\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"BR-7781\",\"source_text\":\"BR-7781\",\"found\":true},\"description\":{\"value\":\"Ball bearing 6204-2RS\",\"source_text\":\"BR-7781 Ball bearing 6204-2RS 12 €10.22 €122.64\",\"found\":true},\"quantity\":{\"value\":12,\"source_text\":\"BR-7781 Ball bearing 6204-2RS 12 €10.22 €122.64\",\"found\":true},\"unit_price\":{\"value\":10.22,\"source_text\":\"€10.22\",\"found\":true},\"line_total\":{\"value\":122.64,\"source_text\":\"€122.64\",\"found\":true}},{\"sku\":{\"value\":\"SP-3310\",\"source_text\":\"SP-3310\",\"found\":true},\"description\":{\"value\":\"Spring pin 6 x 30\",\"source_text\":\"SP-3310 Spring pin 6 x 30 3 €9.58 €28.74\",\"found\":true},\"quantity\":{\"value\":3,\"source_text\":\"SP-3310 Spring pin 6 x 30 3 €9.58 €28.74\",\"found\":true},\"unit_price\":{\"value\":9.58,\"source_text\":\"€9.58\",\"found\":true},\"line_total\":{\"value\":28.74,\"source_text\":\"€28.74\",\"found\":true}},{\"sku\":{\"value\":\"GK-9004\",\"source_text\":\"GK-9004\",\"found\":true},\"description\":{\"value\":\"Gasket kit, nitrile, assorted\",\"source_text\":\"GK-9004 Gasket kit, nitrile, assorted 24 €34.37 €824.88\",\"found\":true},\"quantity\":{\"value\":24,\"source_text\":\"GK-9004 Gasket kit, nitrile, assorted 24 €34.37 €824.88\",\"found\":true},\"unit_price\":{\"value\":34.37,\"source_text\":\"€34.37\",\"found\":true},\"line_total\":{\"value\":824.88,\"source_text\":\"€824.88\",\"found\":true}},{\"sku\":{\"value\":\"SC-6007\",\"source_text\":\"SC-6007\",\"found\":true},\"description\":{\"value\":\"Self-tapping screw 4.2 x 16, box of 500\",\"source_text\":\"SC-6007 Self-tapping screw 4.2 x 16, box of 500 2 €18.07 €36.14\",\"found\":true},\"quantity\":{\"value\":2,\"source_text\":\"SC-6007 Self-tapping screw 4.2 x 16, box of 500 2 €18.07 €36.14\",\"found\":true},\"unit_price\":{\"value\":18.07,\"source_text\":\"€18.07\",\"found\":true},\"line_total\":{\"value\":36.14,\"source_text\":\"€36.14\",\"found\":true}},{\"sku\":{\"value\":\"TM-1180\",\"source_text\":\"TM-1180\",\"found\":true},\"description\":{\"value\":\"Thermal paste 10 g tube\",\"source_text\":\"TM-1180 Thermal paste 10 g tube 12 €140.95 €1,691.40\",\"found\":true},\"quantity\":{\"value\":12,\"source_text\":\"TM-1180 Thermal paste 10 g tube 12 €140.95 €1,691.40\",\"found\":true},\"unit_price\":{\"value\":140.95,\"source_text\":\"€140.95\",\"found\":true},\"line_total\":{\"value\":1691.4,\"source_text\":\"€1,691.40\",\"found\":true}},{\"sku\":{\"value\":\"NT-0808\",\"source_text\":\"NT-0808\",\"found\":true},\"description\":{\"value\":\"Nyloc nut M8, pack of 100\",\"source_text\":\"NT-0808 Nyloc nut M8, pack of 100 50 €17.74 €887.00\",\"found\":true},\"quantity\":{\"value\":50,\"source_text\":\"NT-0808 Nyloc nut M8, pack of 100 50 €17.74 €887.00\",\"found\":true},\"unit_price\":{\"value\":17.74,\"source_text\":\"€17.74\",\"found\":true},\"line_total\":{\"value\":887,\"source_text\":\"€887.00\",\"found\":true}},{\"sku\":{\"value\":\"LB-4420\",\"source_text\":\"LB-4420\",\"found\":true},\"description\":{\"value\":\"Lithium grease 400 g cartridge\",\"source_text\":\"LB-4420 Lithium grease 400 g cartridge 24 €1.50 €36.00\",\"found\":true},\"quantity\":{\"value\":24,\"source_text\":\"LB-4420 Lithium grease 400 g cartridge 24 €1.50 €36.00\",\"found\":true},\"unit_price\":{\"value\":1.5,\"source_text\":\"€1.50\",\"found\":true},\"line_total\":{\"value\":36,\"source_text\":\"€36.00\",\"found\":true}}],\"subtotal\":{\"value\":3626.8,\"source_text\":\"Net: €3,626.80\",\"found\":true},\"tax\":{\"value\":689.09,\"source_text\":\"VAT (19%): €689.09\",\"found\":true},\"total\":{\"value\":4315.89,\"source_text\":\"Order Total: €4,315.89\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.0012667,
+      "input_tokens": 3702,
+      "latency_ms": 6954,
+      "model": "anthropic/claude-haiku-5.5",
+      "output_tokens": 1793,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792333941-PW4H9f2mqHOacmcAEhmI",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

@@ -76,7 +76,7 @@ def pg_admin_url(tmp_path_factory: pytest.TempPathFactory) -> Iterator[str | Non
         yield None
         return
     try:
-        import pgserver
+        import pgserver  # pyright: ignore[reportMissingImports]  # not installed on 3.13+
     except ImportError:
         yield None
         return

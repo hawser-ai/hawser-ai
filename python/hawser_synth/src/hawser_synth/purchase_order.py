@@ -136,7 +136,7 @@ def _source_texts(po: PurchaseOrder, sym: str) -> dict[str, str]:
 def _render_po(po: PurchaseOrder, sym: str, tax_rate: float, layout: int) -> bytes:  # noqa: PLR0915
     buf = io.BytesIO()
     pagesize = A4 if layout == 0 else LETTER
-    c = canvas.Canvas(buf, pagesize=pagesize)
+    c = canvas.Canvas(buf, pagesize=pagesize, invariant=True)
     width, height = pagesize
     margin = 50
     y = height - margin

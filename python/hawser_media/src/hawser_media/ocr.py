@@ -177,7 +177,11 @@ def page_text_from_ocr(result: OcrResult, *, page: int = 1, scale: float = 1.0) 
 
 
 class RapidOcrEngine:
-    """PaddleOCR v4 models through ONNX Runtime; no system packages, models ship in the wheel."""
+    """PaddleOCR v4 models through ONNX Runtime; models ship in the wheel.
+
+    On Linux, OpenCV (a RapidOCR dependency) needs the system library ``libGL.so.1``
+    (Debian/Ubuntu: ``apt-get install libgl1``); the Docker image includes it.
+    """
 
     name = "rapidocr"
     _lock = threading.Lock()
@@ -191,7 +195,11 @@ class RapidOcrEngine:
     def _engine(cls) -> Any:
         with cls._lock:
             if cls._instance is None:
-                from rapidocr_onnxruntime import RapidOCR  # noqa: PLC0415
+                try:
+                    from rapidocr_onnxruntime import RapidOCR  # noqa: PLC0415
+                except ImportError as exc:
+                    hint = " (install the system package libgl1)" if "libGL" in str(exc) else ""
+                    raise MediaError("ocr_failed", f"rapidocr could not load: {exc}{hint}") from exc
 
                 cls._instance = RapidOCR()
             return cls._instance

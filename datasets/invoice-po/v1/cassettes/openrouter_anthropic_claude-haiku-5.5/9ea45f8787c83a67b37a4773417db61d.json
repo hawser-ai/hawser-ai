@@ -1,0 +1,563 @@
+{
+  "key": "9ea45f8787c83a67b37a4773417db61d",
+  "kind": "model",
+  "name": "anthropic/claude-haiku-5.5",
+  "provider": "openrouter",
+  "recorded_at": "2026-10-18T14:39:10.204694+00:00",
+  "request": {
+    "effort": "low",
+    "max_output_tokens": 16000,
+    "messages": [
+      {
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Extract the purchase order."
+          },
+          {
+            "kind": "text",
+            "text": "<document name=\"purchase_order.pdf\" page=\"1\" of=\"1\">\nBluewater Marine Services\r\nProcurement Department\r\nPurchase Order\r\nOrder No. PO-55779\r\nIssued 2026-06-17\r\nAmounts in USD\r\nVendor:\r\nPacific Rim Supply Co.\r\nItem Description Qty Unit Total\r\nSP-3310 Spring pin 6 x 30 2 $5.72 $11.44\r\nWS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08\r\nBR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53\r\nTM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16\r\nCB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85\r\nNet: $4,615.06\r\nVAT (20%): $923.01\r\nOrder Total: $5,538.07\r\nPlease quote the PO number on invoices. Deliveries accepted Mon-Fri 08:00-16:00.\n</document>"
+          },
+          {
+            "kind": "text",
+            "text": "Use only the documents above. Return the requested structure now."
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "openrouter/anthropic/claude-haiku-5.5",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "buyer_name": {
+          "additionalProperties": false,
+          "description": "The organisation placing the order",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The organisation placing the order",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "currency": {
+          "additionalProperties": false,
+          "description": "ISO 4217 code",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 4217 code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "line_items": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "line_total": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "quantity": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "sku": {
+                "additionalProperties": false,
+                "description": "Stock-keeping unit or item code, if printed",
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Stock-keeping unit or item code, if printed",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              },
+              "unit_price": {
+                "additionalProperties": false,
+                "properties": {
+                  "found": {
+                    "description": "true when the value is present in the documents; false if unknown.",
+                    "type": "boolean"
+                  },
+                  "source_text": {
+                    "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "value",
+                  "source_text",
+                  "found"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "sku",
+              "description",
+              "quantity",
+              "unit_price",
+              "line_total"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "po_date": {
+          "additionalProperties": false,
+          "description": "ISO 8601 date, YYYY-MM-DD",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "ISO 8601 date, YYYY-MM-DD",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "po_number": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "subtotal": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "tax": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "total": {
+          "additionalProperties": false,
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        },
+        "vendor_name": {
+          "additionalProperties": false,
+          "description": "The supplier the order is placed with",
+          "properties": {
+            "found": {
+              "description": "true when the value is present in the documents; false if unknown.",
+              "type": "boolean"
+            },
+            "source_text": {
+              "description": "Exact text in the source supporting the value, copied verbatim. Empty string if none.",
+              "type": "string"
+            },
+            "value": {
+              "description": "The supplier the order is placed with",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "source_text",
+            "found"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "po_number",
+        "po_date",
+        "vendor_name",
+        "buyer_name",
+        "currency",
+        "line_items",
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "type": "object"
+    },
+    "system": "You are the extraction engine of Hawser. You are reading a **purchase order** issued by a buyer to a supplier and must fill the requested structure exactly.\n\nEvery field is an envelope with three keys: `value` (typed, converted to the schema type — plain numbers without currency symbols or thousands separators, dates as YYYY-MM-DD, identifiers exactly as printed), `source_text` (the shortest verbatim span containing the value, or `\"\"`), and `found` (`true` if present in the document, `false` otherwise — then `value` is a typed placeholder and is ignored).\n\nPurchase-order-specific guidance:\n- `po_number` is the order's identifier (\"PO Number\", \"Order No.\").\n- `vendor_name` is the supplier the order is placed with (\"Supplier\", \"Vendor\"); `buyer_name` is the organisation placing the order (often the letterhead or \"Buyer\").\n- `line_items`: one element per printed row, in order. `line_total` is the printed row amount; do not compute it.\n- `subtotal`, `tax`, `total`: quote the labelled values (\"Net\"/\"Subtotal\", \"VAT\"/\"Tax\", \"Order Total\"/\"Total\").\n- Never guess. Output only the requested structure.\n"
+  },
+  "response": {
+    "parse_error": null,
+    "parsed": {
+      "buyer_name": {
+        "found": true,
+        "source_text": "Bluewater Marine Services",
+        "value": "Bluewater Marine Services"
+      },
+      "currency": {
+        "found": true,
+        "source_text": "Amounts in USD",
+        "value": "USD"
+      },
+      "line_items": [
+        {
+          "description": {
+            "found": true,
+            "source_text": "SP-3310 Spring pin 6 x 30 2 $5.72 $11.44",
+            "value": "Spring pin 6 x 30"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$11.44",
+            "value": 11.44
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "SP-3310 Spring pin 6 x 30 2 $5.72 $11.44",
+            "value": 2
+          },
+          "sku": {
+            "found": true,
+            "source_text": "SP-3310 Spring pin 6 x 30 2 $5.72 $11.44",
+            "value": "SP-3310"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$5.72",
+            "value": 5.72
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "WS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08",
+            "value": "Flat washer M8 stainless, pack of 200"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$775.08",
+            "value": 775.08
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "WS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08",
+            "value": 12
+          },
+          "sku": {
+            "found": true,
+            "source_text": "WS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08",
+            "value": "WS-2210"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$64.59",
+            "value": 64.59
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "BR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53",
+            "value": "Ball bearing 6204-2RS"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$31.53",
+            "value": 31.53
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "BR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53",
+            "value": 1
+          },
+          "sku": {
+            "found": true,
+            "source_text": "BR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53",
+            "value": "BR-7781"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$31.53",
+            "value": 31.53
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "TM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16",
+            "value": "Thermal paste 10 g tube"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$3,326.16",
+            "value": 3326.16
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "TM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16",
+            "value": 24
+          },
+          "sku": {
+            "found": true,
+            "source_text": "TM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16",
+            "value": "TM-1180"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$138.59",
+            "value": 138.59
+          }
+        },
+        {
+          "description": {
+            "found": true,
+            "source_text": "CB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85",
+            "value": "Cable gland PG13.5 IP68"
+          },
+          "line_total": {
+            "found": true,
+            "source_text": "$470.85",
+            "value": 470.85
+          },
+          "quantity": {
+            "found": true,
+            "source_text": "CB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85",
+            "value": 5
+          },
+          "sku": {
+            "found": true,
+            "source_text": "CB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85",
+            "value": "CB-5503"
+          },
+          "unit_price": {
+            "found": true,
+            "source_text": "$94.17",
+            "value": 94.17
+          }
+        }
+      ],
+      "po_date": {
+        "found": true,
+        "source_text": "Issued 2026-06-17",
+        "value": "2026-06-17"
+      },
+      "po_number": {
+        "found": true,
+        "source_text": "Order No. PO-55779",
+        "value": "PO-55779"
+      },
+      "subtotal": {
+        "found": true,
+        "source_text": "Net: $4,615.06",
+        "value": 4615.06
+      },
+      "tax": {
+        "found": true,
+        "source_text": "VAT (20%): $923.01",
+        "value": 923.01
+      },
+      "total": {
+        "found": true,
+        "source_text": "Order Total: $5,538.07",
+        "value": 5538.07
+      },
+      "vendor_name": {
+        "found": true,
+        "source_text": "Vendor:\nPacific Rim Supply Co.",
+        "value": "Pacific Rim Supply Co."
+      }
+    },
+    "stop_reason": "stop",
+    "structured_fallback": false,
+    "text": "{\"po_number\":{\"value\":\"PO-55779\",\"source_text\":\"Order No. PO-55779\",\"found\":true},\"po_date\":{\"value\":\"2026-06-17\",\"source_text\":\"Issued 2026-06-17\",\"found\":true},\"vendor_name\":{\"value\":\"Pacific Rim Supply Co.\",\"source_text\":\"Vendor:\\nPacific Rim Supply Co.\",\"found\":true},\"buyer_name\":{\"value\":\"Bluewater Marine Services\",\"source_text\":\"Bluewater Marine Services\",\"found\":true},\"currency\":{\"value\":\"USD\",\"source_text\":\"Amounts in USD\",\"found\":true},\"line_items\":[{\"sku\":{\"value\":\"SP-3310\",\"source_text\":\"SP-3310 Spring pin 6 x 30 2 $5.72 $11.44\",\"found\":true},\"description\":{\"value\":\"Spring pin 6 x 30\",\"source_text\":\"SP-3310 Spring pin 6 x 30 2 $5.72 $11.44\",\"found\":true},\"quantity\":{\"value\":2,\"source_text\":\"SP-3310 Spring pin 6 x 30 2 $5.72 $11.44\",\"found\":true},\"unit_price\":{\"value\":5.72,\"source_text\":\"$5.72\",\"found\":true},\"line_total\":{\"value\":11.44,\"source_text\":\"$11.44\",\"found\":true}},{\"sku\":{\"value\":\"WS-2210\",\"source_text\":\"WS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08\",\"found\":true},\"description\":{\"value\":\"Flat washer M8 stainless, pack of 200\",\"source_text\":\"WS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08\",\"found\":true},\"quantity\":{\"value\":12,\"source_text\":\"WS-2210 Flat washer M8 stainless, pack of 200 12 $64.59 $775.08\",\"found\":true},\"unit_price\":{\"value\":64.59,\"source_text\":\"$64.59\",\"found\":true},\"line_total\":{\"value\":775.08,\"source_text\":\"$775.08\",\"found\":true}},{\"sku\":{\"value\":\"BR-7781\",\"source_text\":\"BR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53\",\"found\":true},\"description\":{\"value\":\"Ball bearing 6204-2RS\",\"source_text\":\"BR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53\",\"found\":true},\"quantity\":{\"value\":1,\"source_text\":\"BR-7781 Ball bearing 6204-2RS 1 $31.53 $31.53\",\"found\":true},\"unit_price\":{\"value\":31.53,\"source_text\":\"$31.53\",\"found\":true},\"line_total\":{\"value\":31.53,\"source_text\":\"$31.53\",\"found\":true}},{\"sku\":{\"value\":\"TM-1180\",\"source_text\":\"TM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16\",\"found\":true},\"description\":{\"value\":\"Thermal paste 10 g tube\",\"source_text\":\"TM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16\",\"found\":true},\"quantity\":{\"value\":24,\"source_text\":\"TM-1180 Thermal paste 10 g tube 24 $138.59 $3,326.16\",\"found\":true},\"unit_price\":{\"value\":138.59,\"source_text\":\"$138.59\",\"found\":true},\"line_total\":{\"value\":3326.16,\"source_text\":\"$3,326.16\",\"found\":true}},{\"sku\":{\"value\":\"CB-5503\",\"source_text\":\"CB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85\",\"found\":true},\"description\":{\"value\":\"Cable gland PG13.5 IP68\",\"source_text\":\"CB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85\",\"found\":true},\"quantity\":{\"value\":5,\"source_text\":\"CB-5503 Cable gland PG13.5 IP68 5 $94.17 $470.85\",\"found\":true},\"unit_price\":{\"value\":94.17,\"source_text\":\"$94.17\",\"found\":true},\"line_total\":{\"value\":470.85,\"source_text\":\"$470.85\",\"found\":true}}],\"subtotal\":{\"value\":4615.06,\"source_text\":\"Net: $4,615.06\",\"found\":true},\"tax\":{\"value\":923.01,\"source_text\":\"VAT (20%): $923.01\",\"found\":true},\"total\":{\"value\":5538.07,\"source_text\":\"Order Total: $5,538.07\",\"found\":true}}",
+    "truncated": false,
+    "usage": {
+      "attempts": 1,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_usd": 0.001105,
+      "input_tokens": 3625,
+      "latency_ms": 5324,
+      "model": "anthropic/claude-haiku-5.5",
+      "output_tokens": 1485,
+      "pricing_version": "provider-reported",
+      "provider": "openrouter",
+      "provider_request_id": "gen-1792334344-ua9Kd920UIG0KOnPJYP8",
+      "replayed": false,
+      "step_id": null
+    }
+  },
+  "source": "live"
+}

@@ -1,0 +1,13 @@
+# gitleaks configuration (CI "secret scan" job): the default rules, plus one narrow exception.
+
+[extend]
+useDefault = true
+
+# Recorded model responses (cassettes) start with their request fingerprint, a 32-hex-character
+# sha256 prefix that the generic API-key rule mistakes for a secret. Only that rule, and only on a
+# line that is exactly a fingerprint, is exempt; every other rule still applies everywhere.
+[[allowlists]]
+description = "cassette request fingerprints"
+targetRules = ["generic-api-key"]
+regexTarget = "line"
+regexes = ['''^\s*"key": "[0-9a-f]{32}",?\s*$''']

@@ -33,6 +33,6 @@ web/dist/
 
 # Generated evaluation datasets (rebuild with `python -m hawser_synth.dataset`); recorded cassettes are kept.
 datasets/**
-!datasets/**/cassettes/
+!datasets/**/
 !datasets/**/cassettes/**
 .hawser-try/
